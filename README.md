@@ -12,6 +12,7 @@ media_player:
     name: Great Room
     host: "192.168.1.123"
     channel: 1 
+    on_source: "Source 1 name"
     source_list:
       - "Source 1 name"
       - "Source 2 name"
@@ -19,12 +20,13 @@ media_player:
       - "Source 4 name"
 ````
 ### Available configuration parameters
-* **platform** (Required): Name of a platform
-* **host** (Required):  IP address of a Control 4 Amp
-* **port**(Optional): port of Control4 Amp. Defaults to 8750
+* **platform** (Required): Name of a platform.
+* **host** (Required):  IP address of a Control 4 Amp.
+* **port**(Optional): port of Control4 Amp. Defaults to 8750.
 * **channel** (Required): Output channel of the AMP. 
-* **on_volume** (Optional): Default volume for the amp to turn on to. 5 if omitted
-* **source_list** (Optional): List of source names in source order (e.g., first name = source 1 on amp, second name = source 2 on amp)
+* **on_volume** (Optional): Default volume for the amp to turn on to. 5 if omitted.
+* **on_source** (Optional): Default source for the amp to select when a zone is turned on. Defaults to the first item in the source_list if unspecified.
+* **source_list** (Optional): List of source names in source order (e.g., first name = source 1 on amp, second name = source 2 on amp).
 
 #### My Home Assistant Card
 ![MyCard](https://github.com/Hansen8601/control4-mediaplayer/blob/f7d66aa66f89b2b0bcf36ea5393bb76a07da0f32/Control4AmpCard.png)
