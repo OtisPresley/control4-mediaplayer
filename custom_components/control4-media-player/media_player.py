@@ -28,10 +28,12 @@ CONF_ON_VOLUME = "on_volume"
 CONF_HOST = "host"
 CONF_PORT = "port"
 CONF_CHANNEL = "channel"
+CONF_ON_SOURCE = "on_source"
 CONF_SOURCE_LIST = "source_list"
 
 DEFAULT_PORT = 8750
 DEFAULT_VOLUME = 5
+DEFAULT_ON_SOURCE = 1
 DEFAULT_SOURCE_LIST = ['1','2','3','4']
 
 SUPPORT_CONTROL4 = MediaPlayerEntityFeature.VOLUME_SET \
@@ -48,7 +50,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_HOST): cv.string,
         vol.Required(CONF_CHANNEL): cv.positive_int,
         vol.Optional(CONF_PORT, default=DEFAULT_PORT): cv.port,
-        vol.Optional(CONF_SOURCE_LIST, default=DEFAULT_SOURCE_LIST): cv.ensure_list
+        vol.Optional(CONF_SOURCE_LIST, default=DEFAULT_SOURCE_LIST): cv.ensure_list,
+        vol.Optional(CONF_ON_SOURCE, default=DEFAULT_ON_SOURCE): cv.string
     }
 )
 
@@ -61,27 +64,35 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     host = config.get(CONF_HOST)
     port = config.get(CONF_PORT)
     channel = config.get(CONF_CHANNEL)
+    source = config.get(CONF_ON_SOURCE)
     source_list = config.get(CONF_SOURCE_LIST)
 
-    async_add_entities([Control4MediaPlayer(entity_name, on_volume, host, port, channel,source_list)],)
+    async_add_entities([Control4MediaPlayer(entity_name, on_volume, host, port, channel, source_list, source)],)
 
 class Control4MediaPlayer(MediaPlayerEntity):
     #Research at https://developers.home-assistant.io/docs/core/entity/media-player/
     #_attr_device_class = 
 
-    def __init__(self, name, on_volume, host, port, channel,source_list):
+    def __init__(self, name, on_volume, host, port, channel, source_list, source):
         #self.hass = hass
         self._domain = __name__.split(".")[-2]
         self._name = name
-        self._source = 1
+        self._source = source
         self._source_list = source_list
         self._on_volume = on_volume / 100
         self._mute_volume = on_volume / 100
         self._state = STATE_OFF
         self._available = True
         self._muted = False
-        
-        self._ampChannel = control4AmpChannel(host, port, channel)
+
+        try:
+            source_number = source_list.index(source) + 1
+        except ValueError:
+            _LOGGER.warn("Source '%s' not found for %s. Defaulting to the first list item '%s'.", source, self._name, source_list[0])
+            source_number = 1
+            self._source = source_list[0]
+
+        self._ampChannel = control4AmpChannel(host, port, channel, source_number)
 
     async def async_update(self):
         # Not sure if update(self) is required.
@@ -95,7 +106,7 @@ class Control4MediaPlayer(MediaPlayerEntity):
     def icon(self) -> str | None:
         """Return the icon."""
         return "mdi:speaker"
-    
+
     @property
     def is_volume_muted(self):
         return self._muted
