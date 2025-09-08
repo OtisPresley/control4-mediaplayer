@@ -28,11 +28,11 @@ def send_udp_command(command, host, port):
 class control4AmpChannel(object):
 # Represents a channel of a Control 4 Matrix Amp
 
-    def __init__(self, host, port, channel):
+    def __init__(self, host, port, channel, source):
         self._host = host
         self._port = port
         self._channel = channel
-        self._source = 1
+        self._source = source
         self._volume = 0
 
     @property
@@ -81,4 +81,3 @@ class control4AmpChannel(object):
 
     def turn_off(self):
         return send_udp_command("c4.amp.out 0" + str(self._channel) + " 00", self._host, self._port)
-
