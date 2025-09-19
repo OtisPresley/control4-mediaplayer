@@ -139,7 +139,15 @@ Expected: HA forms re-render after you press **Submit** once.
 
 ---
 
-#### @Hansen8601 Home Assistant Card
+## Acknowledgements
+
+This integration is a fork of the original [control4-mediaplayer](https://github.com/Hansen8601/control4-mediaplayer) by [@Hansen8601](https://github.com/Hansen8601).  
+Huge thanks to their initial work building the foundation that made this project possible.  
+This fork expands on the original with config flow (UI), bulk add, advanced source editing, and other enhancements.
+
+---
+
+#### [@Hansen8601](https://github.com/Hansen8601) Home Assistant Card
 ![MyCard](https://github.com/Hansen8601/control4-mediaplayer/blob/f7d66aa66f89b2b0bcf36ea5393bb76a07da0f32/Control4AmpCard.png)
 
 ---
@@ -147,14 +155,6 @@ Expected: HA forms re-render after you press **Submit** once.
 ## Support
 - [Open an issue](https://github.com/OtisPresley/control4-mediaplayer/issues) if you find a bug.
 - Contributions via PRs are welcome.
-
----
-
-## Acknowledgements
-
-This integration is a fork of the original [control4-mediaplayer](https://github.com/Hansen8601/control4-mediaplayer) by [@Hansen8601](https://github.com/Hansen8601).  
-Huge thanks to their initial work building the foundation that made this project possible.  
-This fork expands on the original with config flow (UI), bulk add, advanced source editing, and other enhancements.
 
 ---
 
