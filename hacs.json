@@ -1,12 +1,4 @@
 {
   "name": "Control4 Media Player",
-  "domains": ["control4_mediaplayer"],
-  "homeassistant": "2023.9.0",
-  "render_readme": true,
-  "iot_class": "local_push",
-  "logo": "custom_components/control4_mediaplayer/assets/logo.svg",
-  "icon": "custom_components/control4_mediaplayer/assets/icon.svg",
-  "dark_logo": "custom_components/control4_mediaplayer/assets/logo_dark.svg",
-  "dark_icon": "custom_components/control4_mediaplayer/assets/icon_dark.svg"
+  "render_readme": true
 }
-
