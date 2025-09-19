@@ -173,23 +173,6 @@ Once you confirm your devices exist in the UI, you can safely remove the YAML bl
 
 ---
 
-## Development Notes
-- **Domain**: `control4_mediaplayer`
-- User-facing strings are **hard-coded** in `config_flow.py` (translations proved unreliable).
-- Advanced editor parsing uses `yaml.safe_load` (also accepts JSON).
-- Unique ID format: `"{host}:{port}:ch{channel}"`
-
----
-
-## Changelog (UI series)
-- Bulk Add with per-channel naming + first-available channel suggestion
-- Friendly host:port messages
-- Advanced Editor (YAML/JSON) + apply-to-all
-- Source List inheritance per device
-- Re-render only on Amp Size / Bulk toggle
-
----
-
 ## Acknowledgements
 This integration is a fork of the original [control4-mediaplayer](https://github.com/Hansen8601/control4-mediaplayer) by [@Hansen8601](https://github.com/Hansen8601).  
 Huge thanks to their initial work building the foundation that made this project possible.  
