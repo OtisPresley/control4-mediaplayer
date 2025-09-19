@@ -2,6 +2,7 @@
   "domain": "control4_mediaplayer",
   "name": "Control4 Media Player",
   "version": "0.2.0",
+  "config_flow": true,
   "documentation": "https://github.com/OtisPresley/control4-mediaplayer",
   "issue_tracker": "https://github.com/OtisPresley/control4-mediaplayer/issues",
   "codeowners": ["@OtisPresley"],
