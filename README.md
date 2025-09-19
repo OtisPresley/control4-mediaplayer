@@ -15,13 +15,13 @@ Provides a full **Config Flow** (UI), **Bulk Add**, **per-zone unique IDs**, and
 - [Installation](#installation)
   - [HACS (recommended)](#hacs-recommended)
   - [Manual Install](#manual-install)
+- [Migrating from configurationyaml](#migrating-from-configurationyaml)
 - [Configuration](#configuration)
   - [Adding a Single Zone](#adding-a-single-zone)
   - [Bulk Add (Add Zones in Bulk)](#bulk-add-add-zones-in-bulk)
   - [Editing Options](#editing-options-per-zone)
 - [Behavior Notes & Guardrails](#behavior-notes--guardrails)
 - [Troubleshooting](#troubleshooting)
-- [Migration from configurationyaml](#migration-from-configurationyaml)
 - [Known Limitations](#known-limitations)
 - [Development Notes](#development-notes)
 - [Changelog](#changelog-ui-series)
@@ -50,9 +50,11 @@ Provides a full **Config Flow** (UI), **Bulk Add**, **per-zone unique IDs**, and
 ### HACS (recommended)
 1. In Home Assistant, open **HACS → Integrations**.
 2. Click the ⋮ menu → **Custom repositories**.
-3. Add this repository URL: https://github.com/OtisPresley/control4-mediaplayer
-
-Category: **Integration**
+3. Add this repository URL:  
+   ```
+   https://github.com/OtisPresley/control4-mediaplayer
+   ```
+   Category: **Integration**
 4. Install **Control4 Media Player** from HACS.
 5. Restart Home Assistant.
 6. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.
@@ -82,6 +84,16 @@ media_player:
         name: Great Room
       - channel: 2
         name: Kitchen
+```
+
+1. Change `platform: control4-mediaplayer` → `platform: control4_mediaplayer` (underscore).  
+2. Restart Home Assistant. Your existing devices will be created under the new domain.  
+
+> ⚠️ This method is intended only as a **bridge**.  
+> The recommended approach is to delete the YAML and re-add zones through the **UI Config Flow**, which generates **unique IDs** and registers your devices/entities properly in HA.  
+
+Once you confirm your devices exist in the UI, you can safely remove the YAML block from `configuration.yaml`.
+
 ---
 
 ## Configuration
@@ -90,48 +102,48 @@ media_player:
 1. **Name**: Friendly name for the zone (e.g., “Great Room”).
 2. **Host / Port**: IP of your Control4 amp and UDP port (default `8750`).
 3. **Amplifier Size**: `4` or `8`.  
-This bounds **Channel** numbers and limits **Source List** size.
+   This bounds **Channel** numbers and limits **Source List** size.
 4. **Channel**: Required, bounded by amplifier size.  
-- If a channel is already in use, the form re-shows with the **next available** channel selected.
+   - If a channel is already in use, the form re-shows with the **next available** channel selected.
 5. **On Volume**: 0–100 (default integration value).
 6. **Source List**: Comma/newline separated.  
-Defaults to `1..N` based on amp size, or inherits from another zone on the same amp.
+   Defaults to `1..N` based on amp size, or inherits from another zone on the same amp.
 
 ---
 
 ### Bulk Add (Add Zones in Bulk)
 1. Toggle **Add Zones in Bulk** and press **Submit** once → the form re-renders showing:
-- **Zone Prefix (bulk)**
-- **Zone Count (bulk)** (bounded by remaining free channels)
+   - **Zone Prefix (bulk)**
+   - **Zone Count (bulk)** (bounded by remaining free channels)
 2. If all zones are already configured for that `host:port`, the flow shows:  
-**“All zones are already configured for host:port.”**
+   **“All zones are already configured for host:port.”**
 3. After submit, a second screen allows **unique names per channel**, prefilled using the prefix.
 
 ---
 
 ### Editing Options (per zone)
 - **Simple Editor**
-- **On Volume**: 0–100
-- **Source List**: comma/newline separated (auto-normalized)
-- **Apply to All Zones on This Device**: propagate the Source List to other zones with the same `host:port`.
+  - **On Volume**: 0–100
+  - **Source List**: comma/newline separated (auto-normalized)
+  - **Apply to All Zones on This Device**: propagate the Source List to other zones with the same `host:port`.
 - **Advanced Editor (YAML/JSON)**
-- Multiline textarea
-- Accepts YAML **or** JSON
-- Example:
- ```yaml
- - HC800-1
- - HC800-2
- - Server
- - Home Assistant
- ```
-- Parse errors keep you on the page with a friendly error + inline example.
+  - Multiline textarea
+  - Accepts YAML **or** JSON
+  - Example:
+    ```yaml
+    - HC800-1
+    - HC800-2
+    - Server
+    - Home Assistant
+    ```
+  - Parse errors keep you on the page with a friendly error + inline example.
 
 ---
 
 ## Behavior Notes & Guardrails
 - **Form re-render** occurs only when:
-- **Amplifier Size** changes, or
-- **Add Zones in Bulk** is toggled  
+  - **Amplifier Size** changes, or
+  - **Add Zones in Bulk** is toggled  
 - **Channel** values are automatically clamped to `1..AmpSize`.
 - **Zone Count** is clamped to the number of available channels.
 - **Source List** longer than Amp Size is truncated.
@@ -141,24 +153,17 @@ Defaults to `1..N` based on amp size, or inherits from another zone on the same 
 
 ## Troubleshooting
 - **“All zones are already configured for host:port.”**  
-→ You’ve used all channels for the selected Amp Size.
+  → You’ve used all channels for the selected Amp Size.
 - **“Channel X is already configured on host:port. Next available is Y.”**  
-→ Select Y or another free channel.
+  → Select Y or another free channel.
 - **“Channel must be between 1 and N.”**  
-→ Adjust the channel or set the correct Amp Size.
-- **Fields don’t appear until I toggle “Add Zones in Bulk”.**  
-→ Expected: forms re-render after you press **Submit** once.
+  → Adjust the channel or set the correct Amp Size.
+- **Fields don’t appear until after I toggle “Add Zones in Bulk”.**  
+  → Expected: forms re-render after you press **Submit** once.
 - Integration not appearing in “Add Integration” screen?  
-→ Verify `custom_components/control4_mediaplayer` is correctly placed and `manifest.json` has `domain: control4_mediaplayer`.
+  → Verify `custom_components/control4_mediaplayer` is correctly placed and `manifest.json` has `domain: control4_mediaplayer`.
 - After updating this integration’s code, bump `"version"` in `manifest.json` and restart HA.
 - If UI looks stale, hard-refresh your browser (**Shift+F5**).
-
----
-
-## Migration from `configuration.yaml`
-- YAML platform entries are no longer needed.
-- UI-based entries create **unique IDs** and persist your devices/entities in the registry.
-- Remove legacy YAML to avoid duplication.
 
 ---
 
