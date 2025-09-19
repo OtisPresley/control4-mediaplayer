@@ -1,4 +1,4 @@
-# Control 4 Matrix Amp [[Home Assistant](https://www.home-assistant.io/) Component]
+# Control4 Media Player — Home Assistant (Custom Integration)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -6,19 +6,40 @@
 ![Validate with HACS](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml/badge.svg)
 
 Control4 multi-zone amplifier/media player integration for [Home Assistant](https://www.home-assistant.io/).  
-Features a full **Config Flow** (UI), **Bulk Add**, **per-zone unique IDs**, and an **Advanced Editor** for source lists (YAML/JSON).
+Provides a full **Config Flow** (UI), **Bulk Add**, **per-zone unique IDs**, and an **Advanced Editor** for source lists (YAML/JSON).
+
+---
+
+## Table of Contents
+- [Highlights](#highlights)
+- [Installation](#installation)
+  - [HACS (recommended)](#hacs-recommended)
+  - [Manual Install](#manual-install)
+- [Configuration](#configuration)
+  - [Adding a Single Zone](#adding-a-single-zone)
+  - [Bulk Add (Add Zones in Bulk)](#bulk-add-add-zones-in-bulk)
+  - [Editing Options](#editing-options-per-zone)
+- [Behavior Notes & Guardrails](#behavior-notes--guardrails)
+- [Troubleshooting](#troubleshooting)
+- [Migration from configurationyaml](#migration-from-configurationyaml)
+- [Known Limitations](#known-limitations)
+- [Development Notes](#development-notes)
+- [Changelog](#changelog-ui-series)
+- [Acknowledgements](#acknowledgements)
+- [Support](#support)
+- [License](#license)
 
 ---
 
 ## Highlights
-- Add zones from **Settings → Devices & Services → Add Integration → Control4 Media Player**.
-- **Unique IDs** per zone: `host:port:chN` → devices/entities are managed in the UI.
-- **Bulk Add** with one-pass naming and channel selection.
-- **First available channel** auto-suggested on form re-renders.
-- Friendly messages (include `host:port`):
+- Add zones via **Settings → Devices & Services → Add Integration → Control4 Media Player**
+- **Unique IDs** per zone: `host:port:chN`
+- **Bulk Add** with one-pass naming and channel selection
+- **First available channel** auto-suggested when the form re-renders
+- Friendly host:port messages:
   - “All zones are already configured for `host:port`.”
   - “Channel X is already configured on `host:port`. Next available is Y.”
-- **Options Flow** for On Volume + Source List, with:
+- **Options Flow** includes:
   - Simple editor (comma/newline separated)
   - **Advanced Editor** (YAML/JSON textarea) + “Apply to all zones on this device”
 
@@ -34,38 +55,61 @@ Features a full **Config Flow** (UI), **Bulk Add**, **per-zone unique IDs**, and
 Category: **Integration**
 4. Install **Control4 Media Player** from HACS.
 5. Restart Home Assistant.
+6. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.
 
 ### Manual install
-1. Copy the folder `custom_components/control4_mediaplayer` to your HA `config/custom_components` directory.
+1. Copy the folder `custom_components/control4_mediaplayer` into your HA `config/custom_components` directory.
 2. Restart Home Assistant.
+3. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.
 
-> No `configuration.yaml` entries are required. Remove any legacy YAML entries after migrating to the UI.
+> ⚠️ No `configuration.yaml` entries are required. Remove any legacy YAML after migrating to the UI.
 
 ---
 
-## Adding a Single Zone
+## Migrating from `configuration.yaml`
+
+If you already had zones defined in `configuration.yaml` using the original integration (`platform: control4-mediaplayer`),  
+you can temporarily migrate them into the new format by editing the file:
+
+```yaml
+media_player:
+  - platform: control4_mediaplayer
+    host: 192.168.1.50
+    port: 8750
+    amplifier_size: 8
+    zones:
+      - channel: 1
+        name: Great Room
+      - channel: 2
+        name: Kitchen
+---
+
+## Configuration
+
+### Adding a Single Zone
 1. **Name**: Friendly name for the zone (e.g., “Great Room”).
 2. **Host / Port**: IP of your Control4 amp and UDP port (default `8750`).
-3. **Amplifier Size**: `4` or `8` → bounds **Channel** and caps **Source List** size.
+3. **Amplifier Size**: `4` or `8`.  
+This bounds **Channel** numbers and limits **Source List** size.
 4. **Channel**: Required, bounded by amplifier size.  
-- If a channel is already in use, the form re-shows with the **next available** channel pre-selected.
-5. **On Volume**: 0–100 (default from integration).
+- If a channel is already in use, the form re-shows with the **next available** channel selected.
+5. **On Volume**: 0–100 (default integration value).
 6. **Source List**: Comma/newline separated.  
 Defaults to `1..N` based on amp size, or inherits from another zone on the same amp.
 
 ---
 
-## Bulk Add (Add Zones in Bulk)
-1. Toggle **Add Zones in Bulk** and **Submit** once → the form re-renders showing:
+### Bulk Add (Add Zones in Bulk)
+1. Toggle **Add Zones in Bulk** and press **Submit** once → the form re-renders showing:
 - **Zone Prefix (bulk)**
 - **Zone Count (bulk)** (bounded by remaining free channels)
-2. If all zones are already configured for that `host:port`, the flow immediately shows:  
+2. If all zones are already configured for that `host:port`, the flow shows:  
 **“All zones are already configured for host:port.”**
-3. After submit, you’ll get a second screen to **enter a unique name per channel** (prefilled using the prefix).
+3. After submit, a second screen allows **unique names per channel**, prefilled using the prefix.
 
 ---
 
-## Editing Options (per zone)
+### Editing Options (per zone)
 - **Simple Editor**
 - **On Volume**: 0–100
 - **Source List**: comma/newline separated (auto-normalized)
@@ -80,58 +124,60 @@ Defaults to `1..N` based on amp size, or inherits from another zone on the same 
  - Server
  - Home Assistant
  ```
-- Parse errors keep you on the page with a friendly message + inline example.
+- Parse errors keep you on the page with a friendly error + inline example.
 
 ---
 
 ## Behavior Notes & Guardrails
-- **Form re-render** happens only when:
+- **Form re-render** occurs only when:
 - **Amplifier Size** changes, or
 - **Add Zones in Bulk** is toggled  
-(Channel/Host/Port validations still happen on submit.)
-- **Channel** is clamped to `1..AmpSize`; **Zone Count** is clamped to available channels.
-- **Source List** longer than Amp Size is truncated to Amp Size.
-- When editing/adding on the same `host:port`, the **Source List** auto-inherits from an existing zone unless overridden.
+- **Channel** values are automatically clamped to `1..AmpSize`.
+- **Zone Count** is clamped to the number of available channels.
+- **Source List** longer than Amp Size is truncated.
+- When editing/adding on the same `host:port`, the **Source List** auto-inherits unless overridden.
 
 ---
 
 ## Troubleshooting
-- **All zones are already configured for host:port.**  
-You’ve used all channels for the selected Amp Size.
-- **Channel X is already configured on host:port. Next available is Y.**  
-Pick Y or another free channel.
-- **Channel must be between 1 and N.**  
-Adjust the channel or set the correct Amp Size first.
-- **Fields don’t appear until after I toggle “Add Zones in Bulk”.**  
-Expected: HA forms re-render after you press **Submit** once.
-- After updating code, bump `"version"` in `manifest.json` and restart HA.
-- If the UI looks stale, hard-refresh your browser (Shift+F5).
+- **“All zones are already configured for host:port.”**  
+→ You’ve used all channels for the selected Amp Size.
+- **“Channel X is already configured on host:port. Next available is Y.”**  
+→ Select Y or another free channel.
+- **“Channel must be between 1 and N.”**  
+→ Adjust the channel or set the correct Amp Size.
+- **Fields don’t appear until I toggle “Add Zones in Bulk”.**  
+→ Expected: forms re-render after you press **Submit** once.
+- Integration not appearing in “Add Integration” screen?  
+→ Verify `custom_components/control4_mediaplayer` is correctly placed and `manifest.json` has `domain: control4_mediaplayer`.
+- After updating this integration’s code, bump `"version"` in `manifest.json` and restart HA.
+- If UI looks stale, hard-refresh your browser (**Shift+F5**).
 
 ---
 
 ## Migration from `configuration.yaml`
 - YAML platform entries are no longer needed.
 - UI-based entries create **unique IDs** and persist your devices/entities in the registry.
-- Remove legacy YAML lines to avoid duplication.
+- Remove legacy YAML to avoid duplication.
 
 ---
 
 ## Known Limitations
-- No automatic network discovery (Control4 protocol behavior without a controller is limited).
-- The form can’t live-update fields without submit; we use a minimal “soft refresh” pattern.
+- No automatic network discovery (Control4 protocol without a controller is limited).
+- The form can’t live-update fields without submit; a minimal “soft refresh” pattern is used.
 
 ---
 
 ## Development Notes
-- Domain: `control4_mediaplayer`
+- **Domain**: `control4_mediaplayer`
 - User-facing strings are **hard-coded** in `config_flow.py` (translations proved unreliable).
-- Advanced editor parsing via `yaml.safe_load` (accepts JSON too). Non-list/str → friendly parse error.
+- Advanced editor parsing uses `yaml.safe_load` (also accepts JSON).
 - Unique ID format: `"{host}:{port}:ch{channel}"`
 
 ---
 
 ## Changelog (UI series)
-- Bulk Add with per-channel naming, first-available channel suggestion
+- Bulk Add with per-channel naming + first-available channel suggestion
 - Friendly host:port messages
 - Advanced Editor (YAML/JSON) + apply-to-all
 - Source List inheritance per device
@@ -140,15 +186,9 @@ Expected: HA forms re-render after you press **Submit** once.
 ---
 
 ## Acknowledgements
-
 This integration is a fork of the original [control4-mediaplayer](https://github.com/Hansen8601/control4-mediaplayer) by [@Hansen8601](https://github.com/Hansen8601).  
 Huge thanks to their initial work building the foundation that made this project possible.  
-This fork expands on the original with config flow (UI), bulk add, advanced source editing, and other enhancements.
-
----
-
-#### [@Hansen8601](https://github.com/Hansen8601) Home Assistant Card
-![MyCard](https://github.com/Hansen8601/control4-mediaplayer/blob/f7d66aa66f89b2b0bcf36ea5393bb76a07da0f32/Control4AmpCard.png)
+This fork expands with config flow (UI), bulk add, advanced source editing, and other enhancements.
 
 ---
 
