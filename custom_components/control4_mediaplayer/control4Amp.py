@@ -8,7 +8,7 @@ def send_udp_command(command, host, port):
 
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.settimeout(1)
+        sock.settimeout(0.5)
         sock.setblocking(0)
         sock.sendto(bytes(COMMAND, "utf-8"), (host, port))
         data, _ = sock.recvfrom(1024)
@@ -28,11 +28,11 @@ def send_udp_command(command, host, port):
 class control4AmpChannel(object):
 # Represents a channel of a Control 4 Matrix Amp
 
-    def __init__(self, host, port, channel, source):
+    def __init__(self, host, port, channel):
         self._host = host
         self._port = port
         self._channel = channel
-        self._source = source
+        self._source = 1
         self._volume = 0
 
     @property
@@ -81,3 +81,4 @@ class control4AmpChannel(object):
 
     def turn_off(self):
         return send_udp_command("c4.amp.out 0" + str(self._channel) + " 00", self._host, self._port)
+
