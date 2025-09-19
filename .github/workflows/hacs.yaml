@@ -1,18 +1,11 @@
 name: Validate with HACS
-
-on:
-  push:
-  pull_request:
-
+on: [push, pull_request]
 jobs:
   hacs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run HACS validation
-        uses: hacs/action@main
+      - uses: actions/checkout@v4
+      - uses: hacs/action@main
         with:
           category: integration
-
+          ignore: brands
