@@ -1,4 +1,4 @@
-**# Control 4 Matrix Amp [[Home Assistant](https://www.home-assistant.io/) Component]
+# Control 4 Matrix Amp [[Home Assistant](https://www.home-assistant.io/) Component]
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
