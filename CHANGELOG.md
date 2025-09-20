@@ -8,14 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Support for future Control4 amp models.
-- Placeholder for new features.
+- Migration from `configuration.yaml` to UI-based device creation and management
 
 ---
 
 ## [0.2.0] - 2025-09-18
 ### Added
-- Migration from `configuration.yaml` to UI-based device creation and management
 - **Bulk Add**: Add multiple zones at once with a prefix and zone count.
 - **Advanced Editor**: YAML/JSON source list editor with “Apply to all zones” option.
 - **Friendly messages** in config flow for when channels/zones are already configured.
@@ -39,5 +37,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 [Unreleased]: https://github.com/OtisPresley/control4-m edi aplayer/compare/0.2.0...HEAD
-[0.2.0]: https://github.com/OtisPresley/control4-m edi aplayer/releases/tag/0.2.0
-[0.2.1]: https://github.com/OtisPresley/control4-m edi aplayer/releases/tag/0.2.1
+[0.2.0]: https://github.com/OtisPresley/control4-media_player/releases/tag/0.2.0
+[0.2.1]: https://github.com/OtisPresley/control4-media_player/releases/tag/0.2.1
