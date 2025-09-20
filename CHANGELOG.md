@@ -33,9 +33,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Preparation for branding support
 - Ability to install the integrations through HACS
-
----
-
-[Unreleased]: https://github.com/OtisPresley/control4-m edi aplayer/compare/0.2.0...HEAD
-[0.2.0]: https://github.com/OtisPresley/control4-media_player/releases/tag/0.2.0
-[0.2.1]: https://github.com/OtisPresley/control4-media_player/releases/tag/0.2.1
