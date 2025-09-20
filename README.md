@@ -111,7 +111,7 @@ Once you confirm your devices exist in the UI, you can safely remove the YAML bl
 
 Example Dashboard Cards:
 
-<img src="custom_components/control4_mediaplayer/assets/screenshot1.png" alt="Screenshot 1" width="300"/>
+<img src="custom_components/control4_mediaplayer/assets/screenshot4.png" alt="Screenshot 1" width="300"/>
 
 ---
 
