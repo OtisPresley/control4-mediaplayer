@@ -33,3 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Preparation for branding support
 - Ability to install the integrations through HACS
+
+---
+
+## [2.0.2] - 2025-09-01
+### Added
+- Fixed version number in manifest to match version in [Releases](https://github.com/OtisPresley/control4-mediaplayer/releases)
