@@ -5,8 +5,8 @@
 ![Validate with hassfest](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml/badge.svg)
 ![Validate with HACS](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml/badge.svg)
 
-Control4 multi-zone amplifier/media player integration for [Home Assistant](https://www.home-assistant.io/).  
-Provides a full **Config Flow** (UI), **Bulk Add**, **per-zone unique IDs**, and an **Advanced Editor** for source lists (YAML/JSON).
+Control4 Matrix Amplifier integration for [Home Assistant](https://www.home-assistant.io/).  
+This integration alllows you to use your amplifier without a Control4 Controller and turn the channel/zones into media players in Home Assistant.
 
 ---
 
@@ -33,15 +33,12 @@ Provides a full **Config Flow** (UI), **Bulk Add**, **per-zone unique IDs**, and
 
 ## Highlights
 - Add zones via **Settings → Devices & Services → Add Integration → Control4 Media Player**
-- **Unique IDs** per zone: `host:port:chN`
-- **Bulk Add** with one-pass naming and channel selection
-- **First available channel** auto-suggested when the form re-renders
-- Friendly host:port messages:
-  - “All zones are already configured for `host:port`.”
-  - “Channel X is already configured on `host:port`. Next available is Y.”
-- **Options Flow** includes:
-  - Simple editor (comma/newline separated)
-  - **Advanced Editor** (YAML/JSON textarea) + “Apply to all zones on this device”
+- Creates a media player per zone managed via the GUI
+- **Bulk Add** zones with one-pass naming and channel selection
+- Tracks used channels to avoid duplicate media players
+- Easily edit default volome and sources for zones after creation:
+  - Simple editor (comma/newline separated list of inputs/sources)
+  - **Advanced Editor** (YAML/JSON textarea) editing option + option to “Apply to all zones on this device”
 
 ---
 
@@ -78,19 +75,16 @@ media_player:
   - platform: control4_mediaplayer
     host: 192.168.1.50
     port: 8750
-    amplifier_size: 8
-    zones:
-      - channel: 1
-        name: Great Room
-      - channel: 2
-        name: Kitchen
+    channel: 1
+    name: Great Room
+    ...
 ```
 
 1. Change `platform: control4-mediaplayer` → `platform: control4_mediaplayer` (underscore).  
-2. Restart Home Assistant. Your existing devices will be created under the new domain.  
+2. Restart Home Assistant. Your existing devices will be created in the UI under the integration.  
 
 > ⚠️ This method is intended only as a **bridge**.  
-> The recommended approach is to delete the YAML and re-add zones through the **UI Config Flow**, which generates **unique IDs** and registers your devices/entities properly in HA.  
+> The recommended approach is to delete the YAML and re-add zones through the **UI via the integration**, which generates **unique IDs** and registers your devices/entities properly in HA.  
 
 Once you confirm your devices exist in the UI, you can safely remove the YAML block from `configuration.yaml`.
 
