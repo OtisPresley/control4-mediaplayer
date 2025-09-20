@@ -109,10 +109,6 @@ Once you confirm your devices exist in the UI, you can safely remove the YAML bl
 6. **Source List**: Comma/newline separated.  
    Defaults to `1..N` based on amp size, or inherits from another zone on the same amp.
 
-Example Dashboard Cards:
-
-<img src="custom_components/control4_mediaplayer/assets/screenshot4.png" alt="Screenshot 1" width="300"/>
-
 ---
 
 ### Bulk Add (Add Zones in Bulk)
@@ -152,6 +148,10 @@ Example Dashboard Cards:
 - **Zone Count** is clamped to the number of available channels.
 - **Source List** longer than Amp Size is truncated.
 - When editing/adding on the same `host:port`, the **Source List** auto-inherits unless overridden.
+
+Example Dashboard Cards:
+
+<img src="custom_components/control4_mediaplayer/assets/screenshot4.png" alt="Screenshot 1" width="300"/>
 
 ---
 
