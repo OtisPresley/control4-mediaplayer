@@ -110,6 +110,7 @@ Once you confirm your devices exist in the UI, you can safely remove the YAML bl
    Defaults to `1..N` based on amp size, or inherits from another zone on the same amp.
 
 Example Dashboard Cards:
+
 <img src="custom_components/control4_mediaplayer/assets/screenshot1.png" alt="Screenshot 1" width="300"/>
 
 ---
