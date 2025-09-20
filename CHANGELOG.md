@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.2.1] - 2025-09-01
+## [2.0.1] - 2025-09-01
 ### Added
 - Preparation for branding support
 - Ability to install the integrations through HACS
