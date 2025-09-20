@@ -15,7 +15,7 @@ This integration alllows you to use your amplifier without a Control4 Controller
 - [Installation](#installation)
   - [HACS (recommended)](#hacs-recommended)
   - [Manual Install](#manual-install)
-- [Migrating from configurationyaml](#migrating-from-configurationyaml)
+- [Migrating from configuration.yaml](#migrating-from-configurationyaml)
 - [Configuration](#configuration)
   - [Adding a Single Zone](#adding-a-single-zone)
   - [Bulk Add (Add Zones in Bulk)](#bulk-add-add-zones-in-bulk)
