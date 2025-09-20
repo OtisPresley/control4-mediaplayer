@@ -40,9 +40,9 @@ This integration alllows you to use your amplifier without a Control4 Controller
   - Simple editor (comma/newline separated list of inputs/sources)
   - **Advanced Editor** (YAML/JSON textarea) editing option + option to “Apply to all zones on this device”
 
-![UI Screenshot](custom_components/control4_mediaplayer/assets/screenshot1.png)
-![UI Screenshot](custom_components/control4_mediaplayer/assets/screenshot2.png)
-![UI Screenshot](custom_components/control4_mediaplayer/assets/screenshot3.png)
+<img src="custom_components/control4_mediaplayer/assets/screenshot1.png" alt="Add Zone image" width="200"/>
+<img src="custom_components/control4_mediaplayer/assets/screenshot2.png" alt="Add Zone image" width="200"/>
+<img src="custom_components/control4_mediaplayer/assets/screenshot3.png" alt="Add Zone image" width="200"/>
 
 ---
 
