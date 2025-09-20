@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.2.0] - 2025-09-18
+## [2.0.1] - 2025-09-18
 ### Added
 - **Bulk Add**: Add multiple zones at once with a prefix and zone count.
 - **Advanced Editor**: YAML/JSON source list editor with “Apply to all zones” option.
