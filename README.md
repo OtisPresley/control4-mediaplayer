@@ -4,8 +4,8 @@
 [![License](https://img.shields.io/github/license/OtisPresley/control4-mediaplayer)](LICENSE)
 ![Validate with hassfest](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml/badge.svg)
 ![Validate with HACS](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml/badge.svg)
-[![hacs installs](https://img.shields.io/endpoint?url=https://api.hacs.xyz/hacsbadges/control4-mediaplayer)](https://github.com/OtisPresley/control4-mediaplayer)
 [![GitHub stars](https://img.shields.io/github/stars/OtisPresley/control4-mediaplayer?style=social)](https://github.com/OtisPresley/control4-mediaplayer/stargazers)
+[![GitHub downloads](https://img.shields.io/github/downloads/OtisPresley/control4-mediaplayer/total)](https://github.com/OtisPresley/control4-mediaplayer/releases)
 
 Control4 Matrix Amplifier integration for [Home Assistant](https://www.home-assistant.io/).  
 This integration alllows you to use your amplifier without a Control4 Controller and turn the channel/zones into media players in Home Assistant.
