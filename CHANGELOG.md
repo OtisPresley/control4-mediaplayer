@@ -39,3 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.2] - 2025-09-01
 ### Fixed
 - Fixed version number in manifest to match version in [Releases](https://github.com/OtisPresley/control4-mediaplayer/releases)
+
+---
+
+## [2.0.3] - 2025-09-01
+### Fixed
+- Updated README
