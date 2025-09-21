@@ -1,7 +1,7 @@
 # Control4 Media Player: Home Assistant Custom Integration
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz)
-[![License](https://img.shields.io/github/license/OtisPresley/control4-mediaplayer)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![hassfest](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hassfest.yaml?branch=main&label=hassfest)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml)
 [![HACS Action](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yaml?branch=main&label=HACS%20Action)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml)
 [![GitHub downloads](https://img.shields.io/github/downloads/OtisPresley/control4-mediaplayer/total)](https://github.com/OtisPresley/control4-mediaplayer/releases)
