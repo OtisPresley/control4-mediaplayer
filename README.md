@@ -2,8 +2,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz)
 [![License](https://img.shields.io/github/license/OtisPresley/control4-mediaplayer)](LICENSE)
-[![hassfest](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yml/badge.svg)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yml)
-[![HACS Action](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yml/badge.svg)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yml)
+[![hassfest](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hassfest.yml?branch=main&label=hassfest)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yml)
+[![HACS Action](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yml?branch=main&label=HACS%20Action)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yml)
 [![GitHub downloads](https://img.shields.io/github/downloads/OtisPresley/control4-mediaplayer/total)](https://github.com/OtisPresley/control4-mediaplayer/releases)
 [![GitHub stars](https://img.shields.io/github/stars/OtisPresley/control4-mediaplayer?style=social)](https://github.com/OtisPresley/control4-mediaplayer/stargazers)
 
