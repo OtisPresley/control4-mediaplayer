@@ -1,4 +1,4 @@
-# Control4 Media Player — Home Assistant (Custom Integration)
+# Control4 Media Player: Home Assistant Custom Integration
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz)
 [![License](https://img.shields.io/github/license/OtisPresley/control4-mediaplayer)](LICENSE)
