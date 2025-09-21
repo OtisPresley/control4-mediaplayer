@@ -188,6 +188,11 @@ This fork expands with config flow (UI), bulk add, advanced source editing, and 
 - [Open an issue](https://github.com/OtisPresley/control4-mediaplayer/issues) if you find a bug.
 - Contributions via PRs are welcome.
 
+If you find this integration useful and want to support development, you can:
+
+[![Buy Me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/OtisPresley)
+[![Donate via PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://paypal.me/OtisPresley)
+
 ---
 
 ## License
