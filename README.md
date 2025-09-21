@@ -2,8 +2,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz)
 [![License](https://img.shields.io/github/license/OtisPresley/control4-mediaplayer)](LICENSE)
-![Validate with hassfest](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml/badge.svg)
-![Validate with HACS](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml/badge.svg)
+![hassfest Action](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml/badge.svg)
+![HACS Action](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml/badge.svg)
 [![GitHub downloads](https://img.shields.io/github/downloads/OtisPresley/control4-mediaplayer/total)](https://github.com/OtisPresley/control4-mediaplayer/releases)
 [![GitHub stars](https://img.shields.io/github/stars/OtisPresley/control4-mediaplayer?style=social)](https://github.com/OtisPresley/control4-mediaplayer/stargazers)
 
