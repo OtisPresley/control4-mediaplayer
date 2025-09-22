@@ -187,7 +187,7 @@ Example Dashboard Cards:
 ---
 
 ## Acknowledgements
-This integration is a fork of the original [control4-mediaplayer](https://github.com/Hansen8601/control4-mediaplayer) by [@Hansen8601](https://github.com/Hansen8601).  
+This integration is a fork of the original [control4-mediaplayer](https://github.com/Hansen8601/control4-mediaplayer) by [@Hansen8601](https://github.com/Hansen8601) and based off the work of [@kmakar89](https://github.com/kmakar89).  
 Huge thanks to their initial work building the foundation that made this project possible.  
 This fork expands with config flow (UI), bulk add, advanced source editing, and other enhancements.
 
