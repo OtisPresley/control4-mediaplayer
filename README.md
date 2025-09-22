@@ -82,7 +82,7 @@ After installation, restart Home Assistant and add the integration:
 
 ## Migrating from `configuration.yaml`
 
-If you already had zones defined in `configuration.yaml` using the original integration (`platform: control4-mediaplayer`), you can temporarily migrate them into the new format by editing the file:
+If you already had zones defined in `configuration.yaml` using the original integration (`platform: control4-mediaplayer`), you can migrate them into the new format by editing the file:
 
 ```yaml
 media_player:
