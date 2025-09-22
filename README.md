@@ -1,12 +1,11 @@
 # Control4 Media Player: Home Assistant Custom Integration
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![hassfest](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hassfest.yaml?branch=main&label=hassfest)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml)
 [![HACS Action](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yaml?branch=main&label=HACS%20Action)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml)
-[![GitHub downloads](https://img.shields.io/github/downloads/OtisPresley/control4-mediaplayer/total)](https://github.com/OtisPresley/control4-mediaplayer/releases)
+[![HACS Installs](https://img.shields.io/endpoint?url=https://api.hacs.xyz/hacsbadges/control4-mediaplayer&label=HACS%20Installs)](https://github.com/OtisPresley/control4-mediaplayer)
 [![GitHub stars](https://img.shields.io/github/stars/OtisPresley/control4-mediaplayer?style=social)](https://github.com/OtisPresley/control4-mediaplayer/stargazers)
-<!-- [![hacs installs](https://img.shields.io/endpoint?url=https://api.hacs.xyz/hacsbadges/control4-mediaplayer)](https://github.com/OtisPresley/control4-mediaplayer) Enable after HACS merged-->
 
 Control4 Matrix Amplifier integration for [Home Assistant](https://www.home-assistant.io/).  
 This integration alllows you to use your amplifier without a Control4 Controller and turn the channel/zones into media players in Home Assistant.
@@ -54,16 +53,11 @@ This integration alllows you to use your amplifier without a Control4 Controller
 ## Installation
 
 ### HACS (recommended)
+
 1. In Home Assistant, open **HACS → Integrations**.
-2. Click the ⋮ menu → **Custom repositories**.
-3. Add this repository URL:  
-   ```
-   https://github.com/OtisPresley/control4-mediaplayer
-   ```
-   Category: **Integration**
-4. Install **Control4 Media Player** from HACS.
-5. Restart Home Assistant.
-6. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.
+2. Click **Explore & Download Repositories**, search for **Control4 Media Player**, then click **Download**.
+3. **Restart Home Assistant**.
+4. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.
 
 ### Manual install
 1. Copy the folder `custom_components/control4_mediaplayer` into your HA `config/custom_components` directory.
