@@ -423,7 +423,53 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_create_entry(title=title, data=first_data)
 
     async def async_step_import(self, user_input: dict[str, Any]):
-        return await self.async_step_user(user_input)
+        """Import a single zone from configuration.yaml into a config entry."""
+        # Map YAML keys (CONF_*) to the same structure used by entries/options
+        name = str(user_input.get("name", "")).strip()
+        host = str(user_input.get(CONF_HOST, "")).strip()
+        port = int(user_input.get(CONF_PORT, DEFAULT_PORT))
+        channel = int(user_input.get(CONF_CHANNEL, 1))
+        on_volume = int(user_input.get(CONF_ON_VOLUME, DEFAULT_VOLUME))
+        source_list = _normalize_sources(user_input.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST))
+    
+        # Infer a reasonable amp size bound (keep it simple: cap by common sizes)
+        # If an explicit amp size was provided in YAML, respect it; otherwise assume 8.
+        amp_size_yaml = user_input.get("amp_size") or user_input.get(F_AMP_SIZE)
+        try:
+            amp_size = int(amp_size_yaml) if amp_size_yaml is not None else 8
+        except Exception:
+            amp_size = 8
+        amp_size = amp_size if amp_size in AMP_SIZE_CHOICES else 8
+    
+        # Clamp/validate channel against amp size
+        if channel < 1 or channel > amp_size:
+            channel = max(1, min(channel, amp_size))
+    
+        # Prevent duplicates on the same amp/channel
+        existing = _existing_channels(self, host, port) if host and port else set()
+        if channel in existing:
+            return self.async_abort(reason="already_configured")
+    
+        # Unique ID: host:port:chN
+        unique = f"{host}:{port}:ch{channel}"
+        await self.async_set_unique_id(unique)
+        # Abort if this exact unique_id already exists
+        self._abort_if_unique_id_configured()
+    
+        # Finalize entry payload
+        if not name:
+            name = f"Zone {channel}"
+    
+        data = {
+            "name": name,
+            CONF_HOST: host,
+            CONF_PORT: port,
+            CONF_CHANNEL: channel,
+            CONF_ON_VOLUME: on_volume,
+            CONF_SOURCE_LIST: source_list,
+        }
+        title = f"{name} ({host}:{port} ch{channel})"
+        return self.async_create_entry(title=title, data=data)
 
     @staticmethod
     @callback
