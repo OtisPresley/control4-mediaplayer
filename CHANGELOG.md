@@ -52,3 +52,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved assets folder out of the integration directory structure
 - Updated README to add badges and prepare for the official HACS repository
+
+---
+
+## [2.1.0] - 2025-09-01
+### Changed
+- Updated for first release on HACS repo
+
+---
+
+## [2.1.1] - 2025-09-01
+### Changed
+- Updated README badges
