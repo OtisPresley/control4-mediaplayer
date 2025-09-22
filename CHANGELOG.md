@@ -77,3 +77,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.3] - 2025-09-01
 ### Fixed
 - Fixed broken image links
+
+---
+
+## [2.1.4] - 2025-09-01
+### Fixed
+- Added missing config flow to manifest
