@@ -83,3 +83,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.4] - 2025-09-01
 ### Fixed
 - Added missing config flow to manifest
+
+---
+
+## [2.1.5] - 2025-09-01
+### Changed
+- Updated README minor issues
+- Added README acknowledgement
