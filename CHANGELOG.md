@@ -71,3 +71,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated README badges
 - Deleted local icons and logos
+
+---
+
+## [2.1.3] - 2025-09-01
+### Fixed
+- Fixed broken image links
