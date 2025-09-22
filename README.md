@@ -1,12 +1,12 @@
 # Control4 Media Player: Home Assistant Custom Integration
 
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-41BDF5?logo=home-assistant&logoColor=white&style=flat)](https://www.home-assistant.io/)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
+[![HACS Badge(https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat)](https://opensource.org/licenses/MIT)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/otispresley/control4-mediaplayer?style=flat)](https://github.com/OtisPresley/control4-mediaplayer/releases)
 [![hassfest](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hassfest.yaml?branch=main&label=hassfest)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml)
-[![HACS Action](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yaml?branch=main&label=HACS%20Action)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml)
-[![HACS Installs](https://img.shields.io/endpoint?url=https://api.hacs.xyz/hacsbadges/otispresley/control4-mediaplayer&label=HACS%20Installs&cacheSeconds=3600)](https://github.com/OtisPresley/control4-mediaplayer)
+[![HACS](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yaml?branch=main&label=HACS%20Action)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml)
+[![Installs](https://img.shields.io/endpoint?url=https://api.hacs.xyz/hacsbadges/otispresley/control4-mediaplayer&label=HACS%20Installs&cacheSeconds=3600)](https://github.com/OtisPresley/control4-mediaplayer)
 [![GitHub stars](https://img.shields.io/github/stars/OtisPresley/control4-mediaplayer?style=social)](https://github.com/OtisPresley/control4-mediaplayer/stargazers)
 
 Control4 Matrix Amplifier integration for [Home Assistant](https://www.home-assistant.io/).  
