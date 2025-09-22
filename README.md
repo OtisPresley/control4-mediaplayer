@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![hassfest](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hassfest.yaml?branch=main&label=hassfest)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml)
 [![HACS Action](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yaml?branch=main&label=HACS%20Action)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml)
-[![HACS Installs](https://img.shields.io/endpoint?url=https://api.hacs.xyz/hacsbadges/OtisPresley/control4-mediaplayer&label=HACS%20Installs)](https://github.com/OtisPresley/control4-mediaplayer)
+[![HACS Installs](https://img.shields.io/endpoint?url=https://api.hacs.xyz/hacsbadges/otispresley/control4-mediaplayer&label=HACS%20Installs&cacheSeconds=3600)](https://github.com/OtisPresley/control4-mediaplayer)
 [![GitHub stars](https://img.shields.io/github/stars/OtisPresley/control4-mediaplayer?style=social)](https://github.com/OtisPresley/control4-mediaplayer/stargazers)
 
 Control4 Matrix Amplifier integration for [Home Assistant](https://www.home-assistant.io/).  
