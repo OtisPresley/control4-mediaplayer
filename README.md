@@ -6,7 +6,7 @@
 [![GitHub Release (latest by date)](https://img.shields.io/github/v/release/otispresley/control4-mediaplayer?style=flat)](https://github.com/OtisPresley/control4-mediaplayer/releases)
 [![hassfest](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hassfest.yaml?branch=main&label=hassfest)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml)
 [![HACS](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yaml?branch=main&label=HACS)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml)
-[![Installs](https://img.shields.io/endpoint?url=https://analytics.home-assistant.io/custom_integrations.json&query=$.control4_mediaplayer.total)](https://github.com/OtisPresley/control4-mediaplayer)
+[![Installs](https://img.shields.io/badge/dynamic/json?color=41BDF5&logo=home-assistant&label=integration%20usage&suffix=%20installs&cacheSeconds=15600&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.control4_mediaplayer.total)](https://analytics.home-assistant.io/custom_integrations.json)
 [![GitHub stars](https://img.shields.io/github/stars/OtisPresley/control4-mediaplayer?style=social)](https://github.com/OtisPresley/control4-mediaplayer/stargazers)
 
 Control4 Matrix Amplifier integration for [Home Assistant](https://www.home-assistant.io/).  
