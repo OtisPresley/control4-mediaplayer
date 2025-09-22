@@ -53,11 +53,21 @@ This integration alllows you to use your amplifier without a Control4 Controller
 ## Installation
 
 ### HACS (recommended)
+You can install this integration directly from HACS:
 
-1. In Home Assistant, open **HACS → Integrations**.
-2. Click **Explore & Download Repositories**, search for **Control4 Media Player**, then click **Download**.
-3. **Restart Home Assistant**.
-4. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.
+[![Open your Home Assistant instance and show the repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=OtisPresley&repository=control4-mediaplayer)
+
+After installation, restart Home Assistant and add the integration:
+
+[![Open your Home Assistant instance and add this integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=control4_mediaplayer)
+
+---
+
+#### Manual steps (if you prefer not to use the buttons)
+1. In Home Assistant, open **HACS → Integrations**.  
+2. Click **Explore & Download Repositories**, search for **Control4 Media Player**, then click **Download**.  
+3. **Restart Home Assistant**.  
+4. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.  
 
 ### Manual install
 1. Copy the folder `custom_components/control4_mediaplayer` into your HA `config/custom_components` directory.
