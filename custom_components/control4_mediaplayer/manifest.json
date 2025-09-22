@@ -2,6 +2,7 @@
   "domain": "control4_mediaplayer",
   "name": "Control4 Media Player",
   "codeowners": ["@OtisPresley"],
+  "config_flow": true,
   "documentation": "https://github.com/OtisPresley/control4-mediaplayer",
   "integration_type": "hub",
   "iot_class": "local_push",
