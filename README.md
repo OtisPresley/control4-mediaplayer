@@ -2,7 +2,7 @@
 
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-41BDF5?logo=home-assistant&logoColor=white&style=flat)](https://www.home-assistant.io/)
 [![HACS Badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
-[![License](https://img.shields.io/github/license/otispresley/control4-mediaplayer?style=flat)](LICENSE)
+[![License: MIT](https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/license-mit.svg)](https://github.com/OtisPresley/control4-mediaplayer/blob/main/LICENSE)
 [![GitHub Release (latest by date)](https://img.shields.io/github/v/release/otispresley/control4-mediaplayer?style=flat)](https://github.com/OtisPresley/control4-mediaplayer/releases)
 [![hassfest](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hassfest.yaml?branch=main&label=hassfest)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml)
 [![HACS](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yaml?branch=main&label=HACS)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml)
@@ -45,9 +45,9 @@ This integration alllows you to use your amplifier without a Control4 Controller
   - **Advanced Editor** (YAML/JSON textarea) editing option + option to “Apply to all zones on this device”
 
 <p float="left">
-  <img src="assets/screenshot1.png" alt="Screenshot 1" width="250"/>
-  <img src="assets/screenshot2.png" alt="Screenshot 2" width="250"/>
-  <img src="assets/screenshot3.png" alt="Screenshot 3" width="250"/>
+  <img src="https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/screenshot1.png" alt="Screenshot 1" width="250"/>
+  <img src="https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/screenshot2.png" alt="Screenshot 2" width="250"/>
+  <img src="https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/screenshot3.png" alt="Screenshot 3" width="250"/>
 </p>
 
 ---
@@ -160,7 +160,7 @@ Once you confirm your devices exist in the UI, you can safely remove the YAML bl
 
 Example Dashboard Cards:
 
-<img src="assets/screenshot4.png" alt="Screenshot 1" width="300"/>
+<img src="https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/screenshot4.png" alt="Screenshot 4" width="300"/>
 
 ---
 
