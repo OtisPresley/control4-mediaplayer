@@ -172,9 +172,6 @@ Example Dashboard Cards:
   → Adjust the channel or set the correct Amp Size.
 - **Fields don’t appear until after I toggle “Add Zones in Bulk”.**  
   → Expected: forms re-render after you press **Submit** once.
-- Integration not appearing in “Add Integration” screen?  
-  → Verify `custom_components/control4_mediaplayer` is correctly placed and `manifest.json` has `domain: control4_mediaplayer`.
-- After updating this integration’s code, bump `"version"` in `manifest.json` and restart HA.
 - If UI looks stale, hard-refresh your browser (**Shift+F5**).
 
 ---
