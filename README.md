@@ -28,7 +28,7 @@ This integration alllows you to use your amplifier without a Control4 Controller
 - [Troubleshooting](#troubleshooting)
 - [Known Limitations](#known-limitations)
 - [Development Notes](#development-notes)
-- [Changelog](https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/CHANGELOG.md)
+- [Changelog](https://github.com/OtisPresley/control4-mediaplayer/blob/main/CHANGELOG.md)
 - [Acknowledgements](#acknowledgements)
 - [Support](#support)
 - [License](#license)
