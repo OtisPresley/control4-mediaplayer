@@ -427,6 +427,9 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         # Map YAML keys (CONF_*) to the same structure used by entries/options
         name = str(user_input.get("name", "")).strip()
         host = str(user_input.get(CONF_HOST, "")).strip()
+        if not host:
+            return self.async_abort(reason="invalid_yaml_missing_host")
+    
         port = int(user_input.get(CONF_PORT, DEFAULT_PORT))
         channel = int(user_input.get(CONF_CHANNEL, 1))
         on_volume = int(user_input.get(CONF_ON_VOLUME, DEFAULT_VOLUME))
