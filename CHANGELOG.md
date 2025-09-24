@@ -102,3 +102,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Cleaned up code in config flow
+
+---
+
+## [2.1.6] - 2025-09-01
+### Added
+- Added build validation with python
+
+### Changed
+- Updated README to adjust badges
+- Moved .pre-commit-config.yaml to tests
+- Updated .gitignore with more strings
+- Updated ci.yaml to point to new location of requirements
+
+### Fixed
+- Cleaned up code in config flow
+
