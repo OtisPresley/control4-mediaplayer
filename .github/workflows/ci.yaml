@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.10"]  # match local; you can add "3.12" later
 
     steps:
       - name: Checkout
@@ -25,49 +25,23 @@ jobs:
 
       - name: Show environment
         run: |
-          set -euxo pipefail
-          python --version
-          which python
-          pip --version
-          python - <<'PY'
-          import sys, site
-          print("sys.executable:", sys.executable)
-          print("sys.version:", sys.version.split()[0])
-          print("usersite:", site.getusersitepackages())
-          PY
+          python -V
+          python -m pip -V
 
       - name: Upgrade pip
         run: |
-          set -euxo pipefail
-          python -m pip install --upgrade pip
-          python -m pip --version
+          python -m pip install --upgrade pip wheel
 
       - name: Install dev/test deps
         run: |
           set -euxo pipefail
-          if [ -f requirements_test.txt ]; then python -m pip install --no-cache-dir -r requirements_test.txt; fi
-          python -m pip install --no-cache-dir \
-            "pytest==8.3.3" \
-            "pytest-asyncio==0.23.8" \
-            "pytest-homeassistant-custom-component>=0.13.100" \
-            "ruff"
-          python - <<'PY'
-          import importlib
-          for m in ("ruff","pytest"):
-              importlib.import_module(m)
-              print(m, "import OK")
-          PY
-          python -m pip freeze
+          python -m pip install --no-cache-dir -r requirements_test.txt
+          python -m pip install --no-cache-dir ruff
 
       - name: Ruff (lint)
         run: |
-          set -euxo pipefail
-          python -m ruff --version
           python -m ruff check .
 
       - name: Pytest
-        env:
-          PYTHONPATH: .
         run: |
-          set -euxo pipefail
-          python -m pytest -vv
+          python -m pytest -q
