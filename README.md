@@ -3,11 +3,9 @@
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-41BDF5?logo=home-assistant&logoColor=white&style=flat)](https://www.home-assistant.io/)
 [![HACS Badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
 [![License: MIT](https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/license-mit.svg)](https://github.com/OtisPresley/control4-mediaplayer/blob/main/LICENSE)
-[![GitHub Release (latest by date)](https://img.shields.io/github/v/release/otispresley/control4-mediaplayer?style=flat)](https://github.com/OtisPresley/control4-mediaplayer/releases)
 [![hassfest](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hassfest.yaml?branch=main&label=hassfest)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hassfest.yaml)
 [![HACS](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yaml?branch=main&label=HACS)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml)
-[![Installs](https://img.shields.io/badge/dynamic/json?color=41BDF5&label=Installs&cacheSeconds=3600&style=flat&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.control4_mediaplayer.total)](https://analytics.home-assistant.io/custom_integrations.json)
-[![GitHub stars](https://img.shields.io/github/stars/OtisPresley/control4-mediaplayer?style=social)](https://github.com/OtisPresley/control4-mediaplayer/stargazers)
+[![CI](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/ci.yaml/badge.svg)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/ci.yaml)
 
 Control4 Matrix Amplifier integration for [Home Assistant](https://www.home-assistant.io/).  
 This integration alllows you to use your amplifier without a Control4 Controller and turn the channel/zones into media players in Home Assistant.
