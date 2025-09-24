@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
@@ -23,28 +24,32 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt', 'ruff.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install dev deps
+      - name: Upgrade pip
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements_test.txt ]; then pip install -r requirements_test.txt; fi
-          pip install ruff
+          python -m pip --version
+
+      - name: Install dev/test deps
+        run: |
+          # Install your repo's test requirements (if present)
+          if [ -f requirements_test.txt ]; then python -m pip install -r requirements_test.txt; fi
+          # Pin versions that work well together (avoids plugin/version mismatch)
+          python -m pip install \
+            "pytest==8.3.3" \
+            "pytest-asyncio==0.23.8" \
+            "pytest-homeassistant-custom-component>=0.13.100" \
+            "ruff"
+          # Show what got installed for debugging
+          python -m pip freeze
 
       - name: Ruff (lint)
         run: |
-          ruff --version
-          ruff check .
+          python -m ruff --version
+          python -m ruff check .
 
       - name: Pytest
         env:
           PYTHONPATH: .
         run: |
-          pytest -q
-
+          # Verbose output so failures are easy to diagnose in Actions UI
+          python -m pytest -vv
