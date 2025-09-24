@@ -1,0 +1,918 @@
+Collecting pytest==8.3.3
+  Using cached pytest-8.3.3-py3-none-any.whl.metadata (7.5 kB)
+Collecting pytest-asyncio==0.23.8
+  Using cached pytest_asyncio-0.23.8-py3-none-any.whl.metadata (3.9 kB)
+Requirement already satisfied: pytest-homeassistant-custom-component in /home/jamie/.local/lib/python3.10/site-packages (0.13.45)
+Requirement already satisfied: iniconfig in /home/jamie/.local/lib/python3.10/site-packages (from pytest==8.3.3) (2.1.0)
+Requirement already satisfied: packaging in /home/jamie/.local/lib/python3.10/site-packages (from pytest==8.3.3) (25.0)
+Requirement already satisfied: pluggy<2,>=1.5 in /home/jamie/.local/lib/python3.10/site-packages (from pytest==8.3.3) (1.6.0)
+Requirement already satisfied: exceptiongroup>=1.0.0rc8 in /home/jamie/.local/lib/python3.10/site-packages (from pytest==8.3.3) (1.3.0)
+Requirement already satisfied: tomli>=1 in /home/jamie/.local/lib/python3.10/site-packages (from pytest==8.3.3) (2.0.1)
+Requirement already satisfied: sqlalchemy in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (2.0.15)
+Requirement already satisfied: coverage==7.2.4 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (7.2.4)
+Requirement already satisfied: freezegun==1.2.2 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (1.2.2)
+Requirement already satisfied: mock-open==1.4.0 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (1.4.0)
+Requirement already satisfied: pydantic==1.10.9 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (1.10.9)
+Requirement already satisfied: pylint-per-file-ignores==1.1.0 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (1.1.0)
+Requirement already satisfied: pipdeptree==2.7.0 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (2.7.0)
+INFO: pip is looking at multiple versions of pytest-homeassistant-custom-component to determine which version is compatible with other requirements. This could take a while.
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.13.45-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.44-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.43-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.42-py3-none-any.whl.metadata (1.8 kB)
+INFO: pip is still looking at multiple versions of pytest-homeassistant-custom-component to determine which version is compatible with other requirements. This could take a while.
+  Using cached pytest_homeassistant_custom_component-0.13.41-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.40-py3-none-any.whl.metadata (1.8 kB)
+INFO: This is taking longer than usual. You might need to provide the dependency resolver with stricter constraints to reduce runtime. See https://pip.pypa.io/warnings/backtracking for guidance. If you want to abort this run, press Ctrl + C.
+  Using cached pytest_homeassistant_custom_component-0.13.39-py3-none-any.whl.metadata (1.8 kB)
+Collecting pydantic==1.10.8 (from pytest-homeassistant-custom-component)
+  Using cached pydantic-1.10.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (146 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.13.38-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.37-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.36-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.35-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.34-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.33-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.32-py3-none-any.whl.metadata (1.8 kB)
+Collecting coverage==7.2.3 (from pytest-homeassistant-custom-component)
+  Using cached coverage-7.2.3-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.6 kB)
+Collecting pydantic==1.10.7 (from pytest-homeassistant-custom-component)
+  Using cached pydantic-1.10.7-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (145 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.13.31-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.30-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.29-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.28-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.27-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.26-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.25-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.24-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.23-py3-none-any.whl.metadata (1.8 kB)
+Collecting coverage==7.2.1 (from pytest-homeassistant-custom-component)
+  Using cached coverage-7.2.1-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.5 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.13.22-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.21-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.20-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.19-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.18-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.17-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.16-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.15-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.14-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.13-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.12-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.11-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.10-py3-none-any.whl.metadata (1.8 kB)
+Collecting coverage==7.1.0 (from pytest-homeassistant-custom-component)
+  Using cached coverage-7.1.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.5 kB)
+Collecting pydantic==1.10.5 (from pytest-homeassistant-custom-component)
+  Using cached pydantic-1.10.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (143 kB)
+Collecting pipdeptree==2.5.0 (from pytest-homeassistant-custom-component)
+  Using cached pipdeptree-2.5.0-py3-none-any.whl.metadata (15 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.13.9-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.8-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.7-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.6-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.5-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.4-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.3-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.2-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.1-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.13.0-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.57-py3-none-any.whl.metadata (1.7 kB)
+Collecting coverage==7.0.5 (from pytest-homeassistant-custom-component)
+  Using cached coverage-7.0.5-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.5 kB)
+Collecting pipdeptree==2.3.1 (from pytest-homeassistant-custom-component)
+  Using cached pipdeptree-2.3.1-py3-none-any.whl.metadata (15 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.12.56-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.55-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.54-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.53-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.52-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.51-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.50-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.49-py3-none-any.whl.metadata (1.8 kB)
+Collecting coverage==7.0.0 (from pytest-homeassistant-custom-component)
+  Using cached coverage-7.0.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.5 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.12.48-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.47-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.46-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.45-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.44-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.43-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.42-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.41-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.40-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.39-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.38-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.37-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.36-py3-none-any.whl.metadata (1.8 kB)
+Collecting coverage==6.4.4 (from pytest-homeassistant-custom-component)
+  Using cached coverage-6.4.4-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (8.1 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.12.35-py3-none-any.whl.metadata (1.8 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.34-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.33-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.32-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.31-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.30-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.29-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.28-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.27-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.26-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.25-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.24-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.23-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.22-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.21-py3-none-any.whl.metadata (1.7 kB)
+Collecting pytest-aiohttp==0.3.0 (from pytest-homeassistant-custom-component)
+  Using cached pytest_aiohttp-0.3.0-py3-none-any.whl.metadata (2.1 kB)
+Requirement already satisfied: pytest-cov==3.0.0 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (3.0.0)
+Collecting pytest-freezegun==0.4.2 (from pytest-homeassistant-custom-component)
+  Using cached pytest_freezegun-0.4.2-py2.py3-none-any.whl.metadata (4.5 kB)
+Requirement already satisfied: pytest-socket==0.5.1 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (0.5.1)
+Requirement already satisfied: pytest-test-groups==1.0.3 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (1.0.3)
+Collecting pytest-sugar==0.9.5 (from pytest-homeassistant-custom-component)
+  Using cached pytest_sugar-0.9.5-py2.py3-none-any.whl.metadata (2.7 kB)
+Requirement already satisfied: pytest-timeout==2.1.0 in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (2.1.0)
+Collecting pytest-xdist==2.5.0 (from pytest-homeassistant-custom-component)
+  Using cached pytest_xdist-2.5.0-py3-none-any.whl.metadata (21 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.12.20-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.19-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.18-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.17-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.16-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.15-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.14-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.13-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.12-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.11-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.10-py3-none-any.whl.metadata (1.7 kB)
+Collecting freezegun==1.2.1 (from pytest-homeassistant-custom-component)
+  Using cached freezegun-1.2.1-py3-none-any.whl.metadata (10 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.12.9-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.8-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.7-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.6-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.5-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.4-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.3-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.2-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.1-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.12.0-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.26-py3-none-any.whl.metadata (1.6 kB)
+Collecting pipdeptree==2.2.1 (from pytest-homeassistant-custom-component)
+  Using cached pipdeptree-2.2.1-py3-none-any.whl.metadata (16 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.11.25-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.24-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.23-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.22-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.21-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.20-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.19-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.18-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.17-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.16-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.15-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.14-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.13-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.12-py3-none-any.whl.metadata (1.6 kB)
+Collecting coverage==6.4.2 (from pytest-homeassistant-custom-component)
+  Using cached coverage-6.4.2-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (8.1 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.11.11-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.10-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.9-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.8-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.7-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.6-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.5-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.4-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.3-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.2-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.1-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.11.0-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.10.8-py3-none-any.whl.metadata (1.7 kB)
+Collecting coverage==6.4.1 (from pytest-homeassistant-custom-component)
+  Using cached coverage-6.4.1-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (8.1 kB)
+Collecting pylint-strict-informational==0.1 (from pytest-homeassistant-custom-component)
+  Using cached pylint_strict_informational-0.1-py2.py3-none-any.whl.metadata (1.3 kB)
+Collecting pytest-sugar==0.9.4 (from pytest-homeassistant-custom-component)
+  Using cached pytest-sugar-0.9.4.tar.gz (12 kB)
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.10.7-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.10.6-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.10.5-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.10.4-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.10.3-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.10.2-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.10.1-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.10.0-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.17-py3-none-any.whl.metadata (1.7 kB)
+Collecting coverage==6.4 (from pytest-homeassistant-custom-component)
+  Using cached coverage-6.4-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (8.1 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.9.16-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.15-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.14-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.13-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.12-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.11-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.10-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.9-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.8-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.7-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.6-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.5-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.4-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.3-py3-none-any.whl.metadata (1.7 kB)
+Collecting coverage==6.3.2 (from pytest-homeassistant-custom-component)
+  Using cached coverage-6.3.2-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.7 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.9.2-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.1-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.9.0-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.12-py3-none-any.whl.metadata (1.7 kB)
+Collecting pytest-cov==2.12.1 (from pytest-homeassistant-custom-component)
+  Using cached pytest_cov-2.12.1-py2.py3-none-any.whl.metadata (22 kB)
+Collecting pytest-socket==0.4.1 (from pytest-homeassistant-custom-component)
+  Using cached pytest_socket-0.4.1-py3-none-any.whl.metadata (5.8 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.8.11-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.10-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.9-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.8-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.7-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.6-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.5-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.4-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.3-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.2-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.1-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.8.0-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.7.7-py3-none-any.whl.metadata (1.6 kB)
+Collecting coverage==6.3.1 (from pytest-homeassistant-custom-component)
+  Using cached coverage-6.3.1-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.7 kB)
+Collecting freezegun==1.1.0 (from pytest-homeassistant-custom-component)
+  Using cached freezegun-1.1.0-py2.py3-none-any.whl.metadata (10 kB)
+Collecting pytest-xdist==2.4.0 (from pytest-homeassistant-custom-component)
+  Using cached pytest_xdist-2.4.0-py3-none-any.whl.metadata (16 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.7.6-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.7.5-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.7.4-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.7.3-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.7.2-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.7.1-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.7.0-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.22-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.21-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.20-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.19-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.18-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.17-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.16-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.15-py3-none-any.whl.metadata (1.6 kB)
+Collecting coverage==6.2.0 (from pytest-homeassistant-custom-component)
+  Using cached coverage-6.2-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (7.6 kB)
+Collecting jsonpickle==1.4.1 (from pytest-homeassistant-custom-component)
+  Using cached jsonpickle-1.4.1-py2.py3-none-any.whl.metadata (6.6 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.6.14-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.13-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.12-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.11-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.10-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.9-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.8-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.7-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.6-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.5-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.4-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.3-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.2-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.1-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.6.0-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.14-py3-none-any.whl.metadata (1.7 kB)
+Collecting pipdeptree==2.2.0 (from pytest-homeassistant-custom-component)
+  Using cached pipdeptree-2.2.0-py3-none-any.whl.metadata (16 kB)
+Collecting pytest-timeout==2.0.1 (from pytest-homeassistant-custom-component)
+  Using cached pytest_timeout-2.0.1-py3-none-any.whl.metadata (13 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.5.13-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.12-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.11-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.10-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.9-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.8-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.7-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.6-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.5-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.4-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.3-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.2-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.1-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.5.0-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.4.12-py3-none-any.whl.metadata (1.6 kB)
+Collecting coverage==6.0.2 (from pytest-homeassistant-custom-component)
+  Using cached coverage-6.0.2-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (7.8 kB)
+Collecting pipdeptree==2.1.0 (from pytest-homeassistant-custom-component)
+  Using cached pipdeptree-2.1.0-py3-none-any.whl.metadata (16 kB)
+Collecting pytest-timeout==1.4.2 (from pytest-homeassistant-custom-component)
+  Using cached pytest_timeout-1.4.2-py2.py3-none-any.whl.metadata (11 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.4.11-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.4.10-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.4.9-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.4.8-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.4.7-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.4.6-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.4.5-py3-none-any.whl.metadata (1.6 kB)
+Collecting coverage==5.5 (from pytest-homeassistant-custom-component)
+  Using cached coverage-5.5-cp310-cp310-manylinux1_x86_64.whl.metadata (8.0 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.4.4-py3-none-any.whl.metadata (1.5 kB)
+Collecting pipdeptree==1.0.0 (from pytest-homeassistant-custom-component)
+  Using cached pipdeptree-1.0.0-py3-none-any.whl.metadata (12 kB)
+Collecting pytest-xdist==2.2.1 (from pytest-homeassistant-custom-component)
+  Using cached pytest_xdist-2.2.1-py3-none-any.whl.metadata (14 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.4.3-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.4.2-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.4.1-py3-none-any.whl.metadata (1.5 kB)
+Collecting pytest-cov==2.10.1 (from pytest-homeassistant-custom-component)
+  Using cached pytest_cov-2.10.1-py2.py3-none-any.whl.metadata (20 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.4.0-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.3.2-py3-none-any.whl.metadata (1.5 kB)
+Collecting pytest-xdist==2.1.0 (from pytest-homeassistant-custom-component)
+  Using cached pytest_xdist-2.1.0-py3-none-any.whl.metadata (15 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.3.1-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.3.0-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.2.1-py3-none-any.whl.metadata (1.5 kB)
+Requirement already satisfied: homeassistant in /home/jamie/.local/lib/python3.10/site-packages (from pytest-homeassistant-custom-component) (2023.7.3)
+  Using cached pytest_homeassistant_custom_component-0.2.0-py3-none-any.whl.metadata (1.5 kB)
+Collecting coverage==5.4 (from pytest-homeassistant-custom-component)
+  Using cached coverage-5.4.tar.gz (687 kB)
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.1.1-py3-none-any.whl.metadata (1.5 kB)
+Collecting awesomeversion==21.1.6 (from pytest-homeassistant-custom-component)
+  Using cached awesomeversion-21.1.6-py3-none-any.whl.metadata (3.4 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.1.0-py3-none-any.whl.metadata (1.5 kB)
+Collecting coverage==5.3 (from pytest-homeassistant-custom-component)
+  Using cached coverage-5.3.tar.gz (693 kB)
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.0.24-py3-none-any.whl.metadata (1.7 kB)
+Collecting asynctest==0.13.0 (from pytest-homeassistant-custom-component)
+  Using cached asynctest-0.13.0-py3-none-any.whl.metadata (5.4 kB)
+Collecting pytest-homeassistant-custom-component
+  Using cached pytest_homeassistant_custom_component-0.0.23-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.22-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.21-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.20-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.19-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.17-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.16-py3-none-any.whl.metadata (1.7 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.8-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.7-py3-none-any.whl.metadata (1.6 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.6-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.5-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.4-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.3-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.2-py3-none-any.whl.metadata (1.5 kB)
+  Using cached pytest_homeassistant_custom_component-0.0.1-py3-none-any.whl.metadata (1.5 kB)
+Collecting pluggy<2,>=1.5 (from pytest==8.3.3)
+  Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+
+The conflict is caused by:
+    The user requested pytest-asyncio==0.23.8
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.44 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.43 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.42 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.41 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.40 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.39 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.38 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.37 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.36 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.35 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.34 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.33 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.32 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.31 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.30 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.29 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.28 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.27 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.26 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.25 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.24 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.23 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.22 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.21 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.20 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.19 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.18 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.17 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.16 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.15 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.14 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.13 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.12 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.11 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.10 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.9 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.8 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.7 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.6 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.5 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.4 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.3 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.2 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.1 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.0 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.57 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.56 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.55 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.54 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.53 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.52 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.51 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.50 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.49 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.48 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.47 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.46 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.45 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.44 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.43 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.42 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.41 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.40 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.39 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.38 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.37 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.36 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.35 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.34 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.33 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.32 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.31 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.30 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.29 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.28 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.27 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.26 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.25 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.24 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.23 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.22 depends on pytest-asyncio==0.20.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    The user requested pytest==8.3.3
+    pytest-asyncio 0.23.8 depends on pytest<9 and >=7.0.0
+    pytest-homeassistant-custom-component 0.12.21 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.20 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.19 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.18 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.17 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.16 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.15 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.14 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.13 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.12 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.11 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.10 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.9 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.8 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.7 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.6 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.5 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.4 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.3 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.2 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.1 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.12.0 depends on pytest==7.1.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.26 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.25 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.24 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.23 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.22 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.21 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.20 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.19 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.18 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.17 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.16 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.15 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.14 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.13 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.12 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.11 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.10 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.9 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.8 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.7 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.6 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.5 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.4 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.3 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.2 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.1 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.11.0 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.10.8 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.10.7 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.10.6 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.10.5 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.10.4 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.10.3 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.10.2 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.10.1 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.10.0 depends on pytest==7.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.17 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.16 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.15 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.14 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.13 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.12 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.11 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.10 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.9 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.8 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.7 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.6 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.5 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.4 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.3 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.2 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.1 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.9.0 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.12 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.11 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.10 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.9 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.8 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.7 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.6 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.5 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.4 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.3 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.2 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.1 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.8.0 depends on pytest==7.1.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.7.7 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.7.6 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.7.5 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.7.4 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.7.3 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.7.2 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.7.1 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.7.0 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.22 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.21 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.20 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.19 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.18 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.17 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.16 depends on pytest==7.0.1
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.15 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.14 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.13 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.12 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.11 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.10 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.9 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.8 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.7 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.6 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.5 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.4 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.3 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.2 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.1 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.6.0 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.14 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.13 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.12 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.11 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.10 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.9 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.8 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.7 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.6 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.5 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.4 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.3 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.2 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.1 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.5.0 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.12 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.11 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.10 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.9 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.8 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.7 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.6 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.5 depends on pytest==6.2.5
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.4 depends on pytest==6.2.4
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.3 depends on pytest==6.2.4
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.2 depends on pytest==6.2.4
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.1 depends on pytest==6.2.4
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.4.0 depends on pytest==6.2.4
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.3.2 depends on pytest==6.2.3
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.3.1 depends on pytest==6.2.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.3.0 depends on pytest==6.2.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.2.1 depends on pytest==6.2.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.2.0 depends on pytest==6.2.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.1.1 depends on pytest==6.2.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.1.0 depends on pytest==6.1.2
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.24 depends on codecov==2.1.10
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.23 depends on codecov==2.1.10
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.22 depends on codecov==2.1.10
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.21 depends on codecov==2.1.10
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.20 depends on codecov==2.1.10
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.19 depends on codecov==2.1.10
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.17 depends on codecov==2.1.10
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.16 depends on codecov==2.1.10
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.8 depends on codecov==2.1.9
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.7 depends on codecov==2.1.9
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.6 depends on codecov==2.1.0
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.5 depends on codecov==2.1.0
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.4 depends on codecov==2.1.0
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.3 depends on codecov==2.1.0
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.2 depends on codecov==2.1.0
+    pytest-homeassistant-custom-component 0.13.45 depends on pytest-asyncio==0.20.3
+    pytest-homeassistant-custom-component 0.0.1 depends on codecov==2.1.0
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip to attempt to solve the dependency conflict
+

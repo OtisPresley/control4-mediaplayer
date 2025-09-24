@@ -1,0 +1,10 @@
+target-version = "py312"
+line-length = 120
+
+[lint]
+select = ["E","F","I","B","UP"]
+ignore = ["E203"]  # keep if you ever add Black; optional
+
+[format]
+quote-style = "double"
+

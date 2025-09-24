@@ -1,6 +1,6 @@
-import socket
 import random
-import select
+import socket
+
 
 def send_udp_command(command, host, port):
     COUNTER = "0s2a" + str(random.randint(10, 99))
@@ -13,7 +13,7 @@ def send_udp_command(command, host, port):
         sock.sendto(bytes(COMMAND, "utf-8"), (host, port))
         data, _ = sock.recvfrom(1024)
         received = str(data, "utf-8")
-    except socket.timeout:
+    except TimeoutError:
         received = "Timeout occurred during data reception"
     except Exception as e:
         received = {e}
@@ -25,7 +25,7 @@ def send_udp_command(command, host, port):
 
 
 
-class control4AmpChannel(object):
+class control4AmpChannel:
 # Represents a channel of a Control 4 Matrix Amp
 
     def __init__(self, host, port, channel):

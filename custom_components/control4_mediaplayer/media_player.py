@@ -2,24 +2,31 @@
 from __future__ import annotations
 
 import logging
-import voluptuous as vol
-import homeassistant.helpers.config_validation as cv
 
+import homeassistant.helpers.config_validation as cv
+import voluptuous as vol
 from homeassistant.components.media_player import (
     PLATFORM_SCHEMA,
     MediaPlayerEntity,
     MediaPlayerEntityFeature,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import STATE_OFF, STATE_ON
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.const import STATE_OFF, STATE_ON
 
-from .control4Amp import control4AmpChannel
 from .const import (
-    DOMAIN, CONF_HOST, CONF_PORT, CONF_CHANNEL, CONF_ON_VOLUME, CONF_SOURCE_LIST,
-    DEFAULT_PORT, DEFAULT_VOLUME, DEFAULT_SOURCE_LIST,
+    CONF_CHANNEL,
+    CONF_HOST,
+    CONF_ON_VOLUME,
+    CONF_PORT,
+    CONF_SOURCE_LIST,
+    DEFAULT_PORT,
+    DEFAULT_SOURCE_LIST,
+    DEFAULT_VOLUME,
+    DOMAIN,
 )
+from .control4Amp import control4AmpChannel
 
 _LOGGER = logging.getLogger(__name__)
 

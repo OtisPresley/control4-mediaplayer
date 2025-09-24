@@ -1,23 +1,23 @@
 from __future__ import annotations
 
-from typing import Any, Set
+from typing import Any
+
 import voluptuous as vol
 import yaml  # for Advanced Editor YAML/JSON parsing
-
 from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.helpers import selector  # numeric + text selectors
 
 from .const import (
-    DOMAIN,
-    CONF_HOST,
-    CONF_PORT,
     CONF_CHANNEL,
+    CONF_HOST,
     CONF_ON_VOLUME,
+    CONF_PORT,
     CONF_SOURCE_LIST,
     DEFAULT_PORT,
-    DEFAULT_VOLUME,
     DEFAULT_SOURCE_LIST,
+    DEFAULT_VOLUME,
+    DOMAIN,
 )
 
 # Human-facing labels used in this flow (no translations)
@@ -92,7 +92,7 @@ def _dump_sources_as_yaml_list(sources: list[str]) -> str:
     return "\n".join(f"- {s}" for s in sources)
 
 
-def _existing_channels(flow: config_entries.ConfigFlow, host: str, port: int) -> Set[int]:
+def _existing_channels(flow: config_entries.ConfigFlow, host: str, port: int) -> set[int]:
     """All configured channels for the given amp (Host+Port)."""
     return {
         int(e.data.get(CONF_CHANNEL))
@@ -101,7 +101,7 @@ def _existing_channels(flow: config_entries.ConfigFlow, host: str, port: int) ->
     }
 
 
-def _next_available(existing: Set[int], amp_size: int) -> int | None:
+def _next_available(existing: set[int], amp_size: int) -> int | None:
     for ch in range(1, amp_size + 1):
         if ch not in existing:
             return ch
@@ -221,11 +221,6 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             existing = set()
 
         start_ch = min(max(channel, 1), amp_size)
-        if host and port:
-            remaining_from_start = [ch for ch in range(start_ch, amp_size + 1) if ch not in existing]
-            zone_max = max(1, len(remaining_from_start)) if bulk else amp_size
-        else:
-            zone_max = amp_size
 
         # If user turned on Bulk and all zones are already configured → abort now (no re-render)
         next_avail = _next_available(existing, amp_size)
@@ -447,7 +442,12 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
                 return await self.async_step_advanced()
 
             on_volume = int(user_input.get(F_ON_VOLUME, data.get(CONF_ON_VOLUME, DEFAULT_VOLUME)))
-            source_list = _normalize_sources(user_input.get(F_SOURCE_LIST, data.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST)))
+            source_list = _normalize_sources(
+                user_input.get(
+                    F_SOURCE_LIST,
+                    data.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST),
+                )
+            )
             apply_to_all = bool(user_input.get(F_APPLY_TO_ALL, True))
             return await self._save_and_broadcast(on_volume, source_list, apply_to_all)
 
@@ -501,7 +501,12 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
         default_yaml = _dump_sources_as_yaml_list(current_sources)
         schema = vol.Schema(
             {
-                vol.Required(F_SOURCE_LIST_YAML, default=default_yaml): selector.selector({"text": {"multiline": True}}),
+                vol.Required(
+                    F_SOURCE_LIST_YAML,
+                    default=default_yaml,
+                ): selector.selector(
+                    {"text": {"multiline": True}}
+                ),
                 vol.Optional(F_APPLY_TO_ALL, default=self._pending.get(F_APPLY_TO_ALL, True)): bool,
             }
         )
@@ -522,3 +527,4 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
                     self.hass.config_entries.async_update_entry(e, options=opts)
 
         return self.async_create_entry(title="", data=new_options)
+
