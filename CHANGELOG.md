@@ -90,3 +90,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated README minor issues
 - Added README acknowledgement
+
+---
+
+## [2.1.6 Beta 1] - 2025-09-01
+### Added
+- Added build validation with python
+
+### Changed
+- Updated README to adjust badges
+
+### Fixed
+- Cleaned up code in config flow
