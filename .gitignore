@@ -1,12 +1,34 @@
 # Python / tooling
 .venv/
+venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+.tox/
+.cache/
 
-# Editors/OS
+# Build & packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Test / coverage outputs
+.coverage
+coverage.xml
+htmlcov/
+
+# Logs
+*.log
+
+# Editors / OS
 .idea/
 .vscode/
 .DS_Store
+Thumbs.db
+
+# Local HACS bundles (if you ever zip for manual testing)
+hacs/*.zip
