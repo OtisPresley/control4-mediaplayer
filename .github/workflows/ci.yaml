@@ -35,7 +35,7 @@ jobs:
       - name: Install dev/test deps
         run: |
           set -euxo pipefail
-          python -m pip install --no-cache-dir -r requirements_test.txt
+          python -m pip install --no-cache-dir -r tests/requirements_test.txt
           python -m pip install --no-cache-dir ruff
 
       - name: Ruff (lint)
