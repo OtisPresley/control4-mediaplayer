@@ -118,3 +118,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Cleaned up code in config flow
 
+---
+
+## [2.1.7] - 2026-01-10
+### Fixed
+- Corrected power button behavior not reflecting state correctly in HA
