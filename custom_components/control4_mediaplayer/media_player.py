@@ -27,7 +27,7 @@ from .const import (
     DEFAULT_VOLUME,
     DOMAIN,
 )
-from .control4Amp import control4AmpChannel
+from .control4Amp import control4AmpChannel, send_udp_command
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -131,6 +131,7 @@ class Control4MediaPlayer(MediaPlayerEntity):
         self._mute_volume = self._on_volume
 
         self._amp = control4AmpChannel(host, port, channel)
+        self._channel = channel
 
         # When polling is enabled, avoid immediately overriding optimistic state right after
         # a local on/off command (some controllers report the previous state for a moment).
