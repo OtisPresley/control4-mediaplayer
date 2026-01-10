@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from time import monotonic
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
@@ -104,7 +105,7 @@ async def async_setup_entry(
 
 
 class Control4MediaPlayer(MediaPlayerEntity):
-    _attr_should_poll = False
+    _attr_should_poll = True
     _attr_icon = "mdi:speaker"
     _attr_supported_features = SUPPORT_C4
     _attr_has_entity_name = False  # we pass a full name
@@ -131,13 +132,70 @@ class Control4MediaPlayer(MediaPlayerEntity):
 
         self._amp = control4AmpChannel(host, port, channel)
 
+        # When polling is enabled, avoid immediately overriding optimistic state right after
+        # a local on/off command (some controllers report the previous state for a moment).
+        self._last_command_ts = 0.0
+
         # ---- Stable unique ID per zone ----
         self._attr_unique_id = unique_id
 
         # Group zones per amp (device)
         self._device_identifier = f"{host}:{port}"
 
-    # ---- Device registry card ----
+    
+    async def async_update(self):
+        """Poll Control4 for the channel output so HA reflects external on/off changes.
+
+        Note: Some Control4 controllers may briefly report the previous output right after
+        an on/off command. We keep the optimistic HA state for a short grace period to
+        avoid flipping back immediately.
+        """
+        # Grace period after local commands (seconds)
+        if monotonic() - getattr(self, "_last_command_ts", 0.0) < 1.5:
+            return
+
+        try:
+            resp = send_udp_command(
+                f"c4.amp.out 0{self._channel}",
+                self._amp.host,
+                self._amp.port,
+            )
+        except Exception as err:  # keep entity available even if polling fails
+            _LOGGER.debug("Control4 poll failed for %s: %s", self._name, err)
+            return
+
+        if resp is None:
+            return
+
+        resp_s = str(resp).strip()
+        if not resp_s:
+            return
+
+        tokens = resp_s.split()
+        src = tokens[-1] if tokens else ""
+        src = src.replace("\r", "").replace("\n", "").strip()
+
+        # Off is typically "00"
+        if src in ("00", "0", "000"):
+            self._state = STATE_OFF
+            return
+
+        self._state = STATE_ON
+
+        # Best-effort: map numeric source back to the configured source_list
+        try:
+            src_i = int(src, 16) if src.lower().startswith("0x") else int(src)
+        except ValueError:
+            try:
+                src_i = int(src, 16)
+            except ValueError:
+                return
+
+        if src_i > 0 and src_i <= len(self._source_list):
+            self._source = self._source_list[src_i - 1]
+
+
+# ---- Device registry card ----
     @property
     def device_info(self):
         return {
@@ -177,12 +235,14 @@ class Control4MediaPlayer(MediaPlayerEntity):
     async def async_turn_on(self):
         self._amp.volume = self._on_volume
         self._amp.turn_on()
+        self._last_command_ts = monotonic()
         self._state = STATE_ON
         self.async_write_ha_state()
 
     async def async_turn_off(self):
         self._amp.volume = self._on_volume
         self._amp.turn_off()
+        self._last_command_ts = monotonic()
         self._state = STATE_OFF
         self.async_write_ha_state()
 
