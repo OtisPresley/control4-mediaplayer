@@ -1,9 +1,9 @@
 """Control4 Media Player platform (config entry + YAML import)."""
 from __future__ import annotations
 
-from datetime import timedelta
 import logging
 import re
+from datetime import timedelta
 from time import monotonic
 
 import voluptuous as vol
