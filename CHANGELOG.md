@@ -129,3 +129,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.8] - 2026-01-11
 ### Fixed
 - Corrected power button not maintaining state in HA
+
+---
+
+## [2.1.9-beta.1] - 2026-01-11
+### Added
+- **External State Polling** per zone:
+  - Creates additiona timer-based polling on a per-zone basis
+  - Allows customization of the Polling interval between 1 and 300 seconds
+  - Good for those who also control the Amp with a Control4 Controller
