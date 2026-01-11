@@ -1,8 +1,8 @@
 """Control4 Media Player platform (config entry + YAML import)."""
 from __future__ import annotations
 
-import logging
 from datetime import timedelta
+import logging
 import re
 from time import monotonic
 
@@ -95,8 +95,12 @@ async def async_setup_entry(
     port = data.get(CONF_PORT, DEFAULT_PORT)
     channel = data[CONF_CHANNEL]
     on_volume = int(opts.get(CONF_ON_VOLUME, data.get(CONF_ON_VOLUME, DEFAULT_VOLUME)))
-    poll_external = bool(opts.get(CONF_POLL_EXTERNAL, data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)))
-    poll_interval = int(opts.get(CONF_POLL_INTERVAL, data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)))
+    poll_external = bool(
+        opts.get(CONF_POLL_EXTERNAL, data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL))
+    )
+    poll_interval = int(
+        opts.get(CONF_POLL_INTERVAL, data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL))
+    )
     poll_interval = max(1, min(poll_interval, 300))
     src = opts.get(CONF_SOURCE_LIST, data.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST))
     if isinstance(src, str):
