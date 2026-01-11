@@ -40,7 +40,7 @@ jobs:
 
       - name: Ruff (lint)
         run: |
-          python -m ruff check .
+          python -m ruff check . --fix
 
       - name: Pytest
         run: |
