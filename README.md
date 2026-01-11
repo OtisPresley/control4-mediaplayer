@@ -38,6 +38,7 @@ This integration alllows you to use your amplifier without a Control4 Controller
 - Creates a media player per zone managed via the GUI
 - **Bulk Add** zones with one-pass naming and channel selection
 - Tracks used channels to avoid duplicate media players
+- Per-zone option for additional state polling if also controlled by a Control4 Controller
 - Easily edit default volome and sources for zones after creation:
   - Simple editor (comma/newline separated list of inputs/sources)
   - **Advanced Editor** (YAML/JSON textarea) editing option + option to “Apply to all zones on this device”
@@ -130,6 +131,7 @@ Once you confirm your devices exist in the UI, you can safely remove the YAML bl
 ### Editing Options (per zone)
 - **Simple Editor**
   - **On Volume**: 0–100
+  - **External State Polling**: Enabled/Disabled plus polling interval 1-300 seconds
   - **Source List**: comma/newline separated (auto-normalized)
   - **Apply to All Zones on This Device**: propagate the Source List to other zones with the same `host:port`.
 - **Advanced Editor (YAML/JSON)**
