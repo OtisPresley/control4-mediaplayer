@@ -12,8 +12,12 @@ from .const import (
     CONF_CHANNEL,
     CONF_HOST,
     CONF_ON_VOLUME,
+    CONF_POLL_EXTERNAL,
+    CONF_POLL_INTERVAL,
     CONF_PORT,
     CONF_SOURCE_LIST,
+    DEFAULT_POLL_EXTERNAL,
+    DEFAULT_POLL_INTERVAL,
     DEFAULT_PORT,
     DEFAULT_SOURCE_LIST,
     DEFAULT_VOLUME,
@@ -27,6 +31,8 @@ F_PORT = "Port"
 F_AMP_SIZE = "Amplifier Size"
 F_CHANNEL = "Channel"
 F_ON_VOLUME = "On Volume"
+F_POLL_EXTERNAL = "External State Polling"
+F_POLL_INTERVAL = "Polling Interval (seconds)"
 F_SOURCE_LIST = "Source List (comma or newline separated)"
 F_BULK_ADD = "Add Zones in Bulk"
 F_NAME_PREFIX = "Zone Prefix (bulk)"
@@ -152,6 +158,10 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Optional(F_ON_VOLUME, default=int(defaults.get(F_ON_VOLUME, DEFAULT_VOLUME))): vol.All(
                 int, vol.Range(min=0, max=100)
             ),
+            vol.Optional(F_POLL_EXTERNAL, default=bool(defaults.get(F_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL))): bool,
+            vol.Optional(F_POLL_INTERVAL, default=int(defaults.get(F_POLL_INTERVAL, DEFAULT_POLL_INTERVAL))): selector.selector(
+                {"number": {"min": 1, "max": 300, "mode": "box"}}
+            ),
             vol.Optional(F_SOURCE_LIST, default=str(defaults.get(F_SOURCE_LIST, ",".join(DEFAULT_SOURCE_LIST)))): str,
             vol.Optional(F_BULK_ADD, default=bool(defaults.get(F_BULK_ADD, False))): bool,
         }
@@ -198,6 +208,10 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         amp_size = int(user_input.get(F_AMP_SIZE, 8))
         channel = int(user_input.get(F_CHANNEL, 1))
         on_volume = int(user_input.get(F_ON_VOLUME, DEFAULT_VOLUME))
+        poll_external = bool(user_input.get(F_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL))
+        poll_interval = int(user_input.get(F_POLL_INTERVAL, DEFAULT_POLL_INTERVAL))
+        poll_interval = max(1, min(poll_interval, 300))
+
         bulk = bool(user_input.get(F_BULK_ADD, False))
         prefix = str(user_input.get(F_NAME_PREFIX, "")).strip()
 
@@ -344,6 +358,8 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_HOST: host,
                 CONF_PORT: port,
                 CONF_ON_VOLUME: on_volume,
+                CONF_POLL_EXTERNAL: poll_external,
+                CONF_POLL_INTERVAL: poll_interval,
                 CONF_SOURCE_LIST: source_list,
             }
             return await self.async_step_user_bulk_names()
@@ -358,6 +374,8 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             CONF_PORT: port,
             CONF_CHANNEL: channel,
             CONF_ON_VOLUME: on_volume,
+            CONF_POLL_EXTERNAL: poll_external,
+            CONF_POLL_INTERVAL: poll_interval,
             CONF_SOURCE_LIST: source_list,
         }
         title = f"{name} ({host}:{port} ch{channel})"
@@ -368,6 +386,9 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         host = self._pending[CONF_HOST]
         port = int(self._pending.get(CONF_PORT, DEFAULT_PORT))
         on_volume = int(self._pending.get(CONF_ON_VOLUME, DEFAULT_VOLUME))
+        poll_external = bool(self._pending.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL))
+        poll_interval = int(self._pending.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL))
+        poll_interval = max(1, min(poll_interval, 300))
         source_list = _normalize_sources(self._pending.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST))
         channels: list[int] = list(self._pending["targets"])
         prefix = str(self._pending.get("names_prefix", "")).strip()
@@ -395,6 +416,8 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_PORT: port,
                 CONF_CHANNEL: ch,
                 CONF_ON_VOLUME: on_volume,
+                CONF_POLL_EXTERNAL: poll_external,
+                CONF_POLL_INTERVAL: poll_interval,
                 CONF_SOURCE_LIST: source_list,
             }
             self.hass.async_create_task(
@@ -412,6 +435,8 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             CONF_PORT: port,
             CONF_CHANNEL: first_ch,
             CONF_ON_VOLUME: on_volume,
+            CONF_POLL_EXTERNAL: poll_external,
+            CONF_POLL_INTERVAL: poll_interval,
             CONF_SOURCE_LIST: source_list,
         }
         title = f"{names[first_ch]} ({host}:{port} ch{first_ch})"
@@ -438,10 +463,15 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
             if user_input.get(F_ADVANCED_EDITOR):
                 # Stash simple fields; Source List is handled in advanced step
                 self._pending[F_ON_VOLUME] = int(user_input.get(F_ON_VOLUME, data.get(CONF_ON_VOLUME, DEFAULT_VOLUME)))
+                self._pending[F_POLL_EXTERNAL] = bool(user_input.get(F_POLL_EXTERNAL, data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)))
+                self._pending[F_POLL_INTERVAL] = int(user_input.get(F_POLL_INTERVAL, data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)))
                 self._pending[F_APPLY_TO_ALL] = bool(user_input.get(F_APPLY_TO_ALL, True))
                 return await self.async_step_advanced()
 
             on_volume = int(user_input.get(F_ON_VOLUME, data.get(CONF_ON_VOLUME, DEFAULT_VOLUME)))
+            poll_external = bool(user_input.get(F_POLL_EXTERNAL, data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)))
+            poll_interval = int(user_input.get(F_POLL_INTERVAL, data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)))
+            poll_interval = max(1, min(poll_interval, 300))
             source_list = _normalize_sources(
                 user_input.get(
                     F_SOURCE_LIST,
@@ -449,12 +479,16 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
                 )
             )
             apply_to_all = bool(user_input.get(F_APPLY_TO_ALL, True))
-            return await self._save_and_broadcast(on_volume, source_list, apply_to_all)
+            return await self._save_and_broadcast(on_volume, source_list, poll_external, poll_interval, apply_to_all)
 
         schema = vol.Schema(
             {
                 vol.Required(F_ON_VOLUME, default=data.get(CONF_ON_VOLUME, DEFAULT_VOLUME)): vol.All(
                     int, vol.Range(min=0, max=100)
+                ),
+                vol.Optional(F_POLL_EXTERNAL, default=data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)): bool,
+                vol.Optional(F_POLL_INTERVAL, default=data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)): selector.selector(
+                    {"number": {"min": 1, "max": 300, "mode": "box"}}
                 ),
                 vol.Optional(
                     F_SOURCE_LIST, default=",".join(_normalize_sources(data.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST)))
@@ -493,8 +527,11 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
                 )
 
             on_volume = int(self._pending.get(F_ON_VOLUME, data.get(CONF_ON_VOLUME, DEFAULT_VOLUME)))
+            poll_external = bool(self._pending.get(F_POLL_EXTERNAL, data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)))
+            poll_interval = int(self._pending.get(F_POLL_INTERVAL, data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)))
+            poll_interval = max(1, min(poll_interval, 300))
             apply_to_all = bool(user_input.get(F_APPLY_TO_ALL, self._pending.get(F_APPLY_TO_ALL, True)))
-            return await self._save_and_broadcast(on_volume, source_list, apply_to_all)
+            return await self._save_and_broadcast(on_volume, source_list, poll_external, poll_interval, apply_to_all)
 
         # Initial render of advanced editor: show current list as YAML
         current_sources = _normalize_sources(data.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST))
@@ -512,8 +549,13 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
         )
         return self.async_show_form(step_id="advanced", data_schema=schema)
 
-    async def _save_and_broadcast(self, on_volume: int, source_list: list[str], apply_to_all: bool):
-        new_options = {CONF_ON_VOLUME: int(on_volume), CONF_SOURCE_LIST: list(source_list)}
+    async def _save_and_broadcast(self, on_volume: int, source_list: list[str], poll_external: bool, poll_interval: int, apply_to_all: bool):
+        new_options = {
+            CONF_ON_VOLUME: int(on_volume),
+            CONF_POLL_EXTERNAL: bool(poll_external),
+            CONF_POLL_INTERVAL: int(poll_interval),
+            CONF_SOURCE_LIST: list(source_list),
+        }
 
         if apply_to_all:
             host = self.entry.data.get(CONF_HOST)
@@ -524,7 +566,8 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
                 if e.data.get(CONF_HOST) == host and int(e.data.get(CONF_PORT, DEFAULT_PORT)) == port:
                     opts = dict(e.options) if e.options else {}
                     opts[CONF_SOURCE_LIST] = list(source_list)
+                    opts[CONF_POLL_EXTERNAL] = bool(poll_external)
+                    opts[CONF_POLL_INTERVAL] = int(poll_interval)
                     self.hass.config_entries.async_update_entry(e, options=opts)
 
         return self.async_create_entry(title="", data=new_options)
-
