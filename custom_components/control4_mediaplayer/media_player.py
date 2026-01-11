@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from time import monotonic
 
 import homeassistant.helpers.config_validation as cv
@@ -172,9 +173,13 @@ class Control4MediaPlayer(MediaPlayerEntity):
         if not resp_s:
             return
 
-        tokens = resp_s.split()
-        src = tokens[-1] if tokens else ""
-        src = src.replace("\r", "").replace("\n", "").strip()
+                # Extract the channel output byte from the response. Some controllers
+        # append extra tokens (e.g. 'OK'), so we can't rely on the last token.
+        m = re.search(r"\bc4\.amp\.out\b\s+0?\d+\s+([0-9A-Fa-f]{2})\b", resp_s)
+        if not m:
+            return
+        src = m.group(1).strip()
+
 
         # Off is typically "00"
         if src in ("00", "0", "000"):
