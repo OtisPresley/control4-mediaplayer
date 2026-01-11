@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import timedelta
 import re
 from time import monotonic
 
@@ -16,13 +17,18 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_OFF, STATE_ON
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.event import async_track_time_interval
 
 from .const import (
     CONF_CHANNEL,
     CONF_HOST,
     CONF_ON_VOLUME,
+    CONF_POLL_EXTERNAL,
+    CONF_POLL_INTERVAL,
     CONF_PORT,
     CONF_SOURCE_LIST,
+    DEFAULT_POLL_EXTERNAL,
+    DEFAULT_POLL_INTERVAL,
     DEFAULT_PORT,
     DEFAULT_SOURCE_LIST,
     DEFAULT_VOLUME,
@@ -61,6 +67,8 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         CONF_PORT: config.get(CONF_PORT, DEFAULT_PORT),
         CONF_CHANNEL: config.get(CONF_CHANNEL),
         CONF_ON_VOLUME: config.get(CONF_ON_VOLUME, DEFAULT_VOLUME),
+        CONF_POLL_EXTERNAL: config.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL),
+        CONF_POLL_INTERVAL: config.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL),
         CONF_SOURCE_LIST: config.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST),
     }
     unique = f'{data[CONF_HOST]}:{data[CONF_PORT]}:ch{data[CONF_CHANNEL]}'
@@ -87,6 +95,9 @@ async def async_setup_entry(
     port = data.get(CONF_PORT, DEFAULT_PORT)
     channel = data[CONF_CHANNEL]
     on_volume = int(opts.get(CONF_ON_VOLUME, data.get(CONF_ON_VOLUME, DEFAULT_VOLUME)))
+    poll_external = bool(opts.get(CONF_POLL_EXTERNAL, data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)))
+    poll_interval = int(opts.get(CONF_POLL_INTERVAL, data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)))
+    poll_interval = max(1, min(poll_interval, 300))
     src = opts.get(CONF_SOURCE_LIST, data.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST))
     if isinstance(src, str):
         source_list = [s.strip() for s in src.split(",") if s.strip()]
@@ -99,6 +110,8 @@ async def async_setup_entry(
         port=port,
         channel=channel,
         on_volume=on_volume,
+        poll_external=poll_external,
+        poll_interval=poll_interval,
         source_list=source_list,
         unique_id=entry.unique_id or f"{host}:{port}:ch{channel}",
     )
@@ -106,7 +119,7 @@ async def async_setup_entry(
 
 
 class Control4MediaPlayer(MediaPlayerEntity):
-    _attr_should_poll = True
+    _attr_should_poll = False
     _attr_icon = "mdi:speaker"
     _attr_supported_features = SUPPORT_C4
     _attr_has_entity_name = False  # we pass a full name
@@ -118,6 +131,8 @@ class Control4MediaPlayer(MediaPlayerEntity):
         port: int,
         channel: int,
         on_volume: int,
+        poll_external: bool,
+        poll_interval: int,
         source_list: list[str],
         unique_id: str,
     ):
@@ -130,6 +145,10 @@ class Control4MediaPlayer(MediaPlayerEntity):
 
         self._on_volume = max(0.0, min(1.0, float(on_volume) / 100.0))
         self._mute_volume = self._on_volume
+
+        self._poll_external = bool(poll_external)
+        self._poll_interval = max(1, min(int(poll_interval), 300))
+        self._poll_unsub = None
 
         self._amp = control4AmpChannel(host, port, channel)
         self._channel = channel
@@ -152,6 +171,9 @@ class Control4MediaPlayer(MediaPlayerEntity):
         an on/off command. We keep the optimistic HA state for a short grace period to
         avoid flipping back immediately.
         """
+        if not self._poll_external:
+            return
+
         # Grace period after local commands (seconds)
         if monotonic() - getattr(self, "_last_command_ts", 0.0) < 1.5:
             return
@@ -210,6 +232,26 @@ class Control4MediaPlayer(MediaPlayerEntity):
             "name": f"Control4 Matrix Amp ({self._device_identifier})",
             "model": "Matrix Amplifier",
         }
+    async def async_added_to_hass(self) -> None:
+        """Set up periodic polling (optional)."""
+        await super().async_added_to_hass()
+        if not self._poll_external:
+            return
+
+        async def _poll(_now) -> None:
+            # Run async_update() then write state
+            await self.async_update_ha_state(True)
+
+        self._poll_unsub = async_track_time_interval(
+            self.hass, _poll, timedelta(seconds=self._poll_interval)
+        )
+
+    async def async_will_remove_from_hass(self) -> None:
+        """Clean up polling subscription."""
+        if self._poll_unsub:
+            self._poll_unsub()
+            self._poll_unsub = None
+        await super().async_will_remove_from_hass()
 
     # ---- Entity properties ----
     @property
