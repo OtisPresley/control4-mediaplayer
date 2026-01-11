@@ -6,8 +6,8 @@ import logging
 import re
 from time import monotonic
 
-import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
+import homeassistant.helpers.config_validation as cv
 from homeassistant.components.media_player import (
     PLATFORM_SCHEMA,
     MediaPlayerEntity,
