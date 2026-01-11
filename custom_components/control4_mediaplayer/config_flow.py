@@ -103,7 +103,10 @@ def _existing_channels(flow: config_entries.ConfigFlow, host: str, port: int) ->
     return {
         int(e.data.get(CONF_CHANNEL))
         for e in flow._async_current_entries()  # type: ignore[attr-defined]
-        if e.data.get(CONF_HOST) == host and int(e.data.get(CONF_PORT, DEFAULT_PORT)) == port
+        if (
+            e.data.get(CONF_HOST) == host
+            and int(e.data.get(CONF_PORT, DEFAULT_PORT)) == port
+        )
     }
 
 
@@ -148,21 +151,35 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Required(F_NAME, default=str(defaults.get(F_NAME, ""))): str,
             vol.Required(F_HOST, default=str(defaults.get(F_HOST, ""))): str,
             vol.Optional(F_PORT, default=int(defaults.get(F_PORT, DEFAULT_PORT))): vol.All(
-                int, vol.Range(min=1, max=65535)
+                int,
+                vol.Range(min=1, max=65535),
             ),
-            vol.Optional(F_AMP_SIZE, default=int(defaults.get(F_AMP_SIZE, 8))): vol.In(AMP_SIZE_CHOICES),
+            vol.Optional(F_AMP_SIZE, default=int(defaults.get(F_AMP_SIZE, 8))): vol.In(
+                AMP_SIZE_CHOICES
+            ),
             # Required channel selector bounded by amp size
             vol.Required(F_CHANNEL, default=ch_default): selector.selector(
                 {"number": {"min": 1, "max": amp_max, "mode": "box"}}
             ),
-            vol.Optional(F_ON_VOLUME, default=int(defaults.get(F_ON_VOLUME, DEFAULT_VOLUME))): vol.All(
-                int, vol.Range(min=0, max=100)
+            vol.Optional(
+                F_ON_VOLUME,
+                default=int(defaults.get(F_ON_VOLUME, DEFAULT_VOLUME)),
+            ): vol.All(
+                int,
+                vol.Range(min=0, max=100),
             ),
-            vol.Optional(F_POLL_EXTERNAL, default=bool(defaults.get(F_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL))): bool,
-            vol.Optional(F_POLL_INTERVAL, default=int(defaults.get(F_POLL_INTERVAL, DEFAULT_POLL_INTERVAL))): selector.selector(
-                {"number": {"min": 1, "max": 300, "mode": "box"}}
-            ),
-            vol.Optional(F_SOURCE_LIST, default=str(defaults.get(F_SOURCE_LIST, ",".join(DEFAULT_SOURCE_LIST)))): str,
+            vol.Optional(
+                F_POLL_EXTERNAL,
+                default=bool(defaults.get(F_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)),
+            ): bool,
+            vol.Optional(
+                F_POLL_INTERVAL,
+                default=int(defaults.get(F_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)),
+            ): selector.selector({"number": {"min": 1, "max": 300, "mode": "box"}}),
+            vol.Optional(
+                F_SOURCE_LIST,
+                default=str(defaults.get(F_SOURCE_LIST, ",".join(DEFAULT_SOURCE_LIST))),
+            ): str,
             vol.Optional(F_BULK_ADD, default=bool(defaults.get(F_BULK_ADD, False))): bool,
         }
 
@@ -216,11 +233,17 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         prefix = str(user_input.get(F_NAME_PREFIX, "")).strip()
 
         # Inherit sources from sibling (same Host/Port) if present
-        inherited = None
+        inherited: list[str] | None = None
         for e in self._async_current_entries():
-            if e.data.get(CONF_HOST) == host and int(e.data.get(CONF_PORT, DEFAULT_PORT)) == port:
+            if (
+                e.data.get(CONF_HOST) == host
+                and int(e.data.get(CONF_PORT, DEFAULT_PORT)) == port
+            ):
                 inherited = _normalize_sources(
-                    e.options.get(CONF_SOURCE_LIST, e.data.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST))
+                    e.options.get(
+                        CONF_SOURCE_LIST,
+                        e.data.get(CONF_SOURCE_LIST, DEFAULT_SOURCE_LIST),
+                    )
                 )
                 break
 
@@ -463,8 +486,18 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
             if user_input.get(F_ADVANCED_EDITOR):
                 # Stash simple fields; Source List is handled in advanced step
                 self._pending[F_ON_VOLUME] = int(user_input.get(F_ON_VOLUME, data.get(CONF_ON_VOLUME, DEFAULT_VOLUME)))
-                self._pending[F_POLL_EXTERNAL] = bool(user_input.get(F_POLL_EXTERNAL, data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)))
-                self._pending[F_POLL_INTERVAL] = int(user_input.get(F_POLL_INTERVAL, data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)))
+                self._pending[F_POLL_EXTERNAL] = bool(
+                    user_input.get(
+                        F_POLL_EXTERNAL,
+                        data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL),
+                    )
+                )
+                self._pending[F_POLL_INTERVAL] = int(
+                    user_input.get(
+                        F_POLL_INTERVAL,
+                        data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL),
+                    )
+                )
                 self._pending[F_APPLY_TO_ALL] = bool(user_input.get(F_APPLY_TO_ALL, True))
                 return await self.async_step_advanced()
 
@@ -487,7 +520,10 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
                     int, vol.Range(min=0, max=100)
                 ),
                 vol.Optional(F_POLL_EXTERNAL, default=data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)): bool,
-                vol.Optional(F_POLL_INTERVAL, default=data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)): selector.selector(
+                vol.Optional(
+                    F_POLL_INTERVAL,
+                    default=data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL),
+                ): selector.selector(
                     {"number": {"min": 1, "max": 300, "mode": "box"}}
                 ),
                 vol.Optional(
@@ -527,7 +563,12 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
                 )
 
             on_volume = int(self._pending.get(F_ON_VOLUME, data.get(CONF_ON_VOLUME, DEFAULT_VOLUME)))
-            poll_external = bool(self._pending.get(F_POLL_EXTERNAL, data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL)))
+            poll_external = bool(
+            self._pending.get(
+                F_POLL_EXTERNAL,
+                data.get(CONF_POLL_EXTERNAL, DEFAULT_POLL_EXTERNAL),
+            )
+        )
             poll_interval = int(self._pending.get(F_POLL_INTERVAL, data.get(CONF_POLL_INTERVAL, DEFAULT_POLL_INTERVAL)))
             poll_interval = max(1, min(poll_interval, 300))
             apply_to_all = bool(user_input.get(F_APPLY_TO_ALL, self._pending.get(F_APPLY_TO_ALL, True)))
@@ -549,7 +590,14 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
         )
         return self.async_show_form(step_id="advanced", data_schema=schema)
 
-    async def _save_and_broadcast(self, on_volume: int, source_list: list[str], poll_external: bool, poll_interval: int, apply_to_all: bool):
+    async def _save_and_broadcast(
+        self,
+        on_volume: int,
+        source_list: list[str],
+        poll_external: bool,
+        poll_interval: int,
+        apply_to_all: bool,
+    ):
         new_options = {
             CONF_ON_VOLUME: int(on_volume),
             CONF_POLL_EXTERNAL: bool(poll_external),
@@ -563,7 +611,10 @@ class Control4OptionsFlow(config_entries.OptionsFlow):
             for e in self.hass.config_entries.async_entries(DOMAIN):
                 if e.entry_id == self.entry.entry_id:
                     continue
-                if e.data.get(CONF_HOST) == host and int(e.data.get(CONF_PORT, DEFAULT_PORT)) == port:
+                if (
+            e.data.get(CONF_HOST) == host
+            and int(e.data.get(CONF_PORT, DEFAULT_PORT)) == port
+        ):
                     opts = dict(e.options) if e.options else {}
                     opts[CONF_SOURCE_LIST] = list(source_list)
                     opts[CONF_POLL_EXTERNAL] = bool(poll_external)
