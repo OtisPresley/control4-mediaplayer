@@ -138,3 +138,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Creates additiona timer-based polling on a per-zone basis
   - Allows customization of the Polling interval between 1 and 300 seconds
   - Good for those who also control the Amp with a Control4 Controller
+
+---
+
+## [2.1.9-beta.2] - 2026-01-11
+### Fixed
+- Polling was not actually firing
