@@ -246,7 +246,10 @@ class Control4MediaPlayer(MediaPlayerEntity):
         def _poll(_now) -> None:
             # Schedule an entity refresh (forces async_update()).
             # Use a sync callback here; the event helper expects a normal callable.
-            self.async_schedule_update_ha_state(True)
+            # Call in a thread-safe way (the scheduler may invoke from outside the event loop).
+            self.hass.loop.call_soon_threadsafe(
+                self.async_schedule_update_ha_state, True
+            )
 
         self._poll_unsub = async_track_time_interval(
             self.hass, _poll, timedelta(seconds=self._poll_interval)
