@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import logging
 import re
+import time
+from dataclasses import dataclass
 from datetime import timedelta
 from time import monotonic
 
@@ -18,7 +20,7 @@ from homeassistant.const import STATE_OFF, STATE_ON
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.event import async_track_time_interval
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
     CONF_CHANNEL,
@@ -47,6 +49,44 @@ SUPPORT_C4 = (
     | MediaPlayerEntityFeature.SELECT_SOURCE
     | MediaPlayerEntityFeature.VOLUME_MUTE
 )
+
+
+@dataclass(frozen=True)
+class _PolledOutStatus:
+    """Parsed output/source status for a channel."""
+
+    is_on: bool
+    source_index: int | None  # 1-based
+
+
+_RE_OUT = re.compile(r"\bc4\.amp\.out\b\s+0?\d+\s+([0-9A-Fa-f]{2})\b")
+
+
+def _parse_c4_amp_out(resp: str) -> _PolledOutStatus | None:
+    """Parse `c4.amp.out` response.
+
+    Expected to contain: `c4.amp.out 0<channel> <byte>`.
+    Some devices append extra tokens (e.g. `OK`), so we locate the byte via regex.
+    """
+    m = _RE_OUT.search(resp)
+    if not m:
+        return None
+
+    token = m.group(1).strip()
+    # Off is typically 00
+    if token in ("00", "0", "000"):
+        return _PolledOutStatus(is_on=False, source_index=None)
+
+    # Source is typically numeric (decimal) or hex byte.
+    try:
+        src_i = int(token, 16)
+    except ValueError:
+        return None
+
+    if src_i <= 0:
+        return _PolledOutStatus(is_on=False, source_index=None)
+
+    return _PolledOutStatus(is_on=True, source_index=src_i)
 
 # ----------------- optional legacy YAML import -----------------
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
@@ -119,8 +159,78 @@ async def async_setup_entry(
         poll_interval=poll_interval,
         source_list=source_list,
         unique_id=entry.unique_id or f"{host}:{port}:ch{channel}",
+        coordinator=(
+            _Control4OutCoordinator(
+                hass=hass,
+                host=host,
+                port=port,
+                channel=channel,
+                interval_seconds=poll_interval,
+            )
+            if poll_external
+            else None
+        ),
     )
+
+    # If external polling is enabled, start the coordinator so state can reflect
+    # changes coming from a Control4 Controller/keypads.
+    if entity.coordinator is not None:
+        await entity.coordinator.async_config_entry_first_refresh()
+
     async_add_entities([entity])
+
+
+class _Control4OutCoordinator(DataUpdateCoordinator[_PolledOutStatus | None]):
+    """Coordinator that polls `c4.amp.out` for a single channel."""
+
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        host: str,
+        port: int,
+        channel: int,
+        interval_seconds: int,
+    ) -> None:
+        self._host = host
+        self._port = port
+        self._channel = channel
+        self._interval = max(1, min(int(interval_seconds), 300))
+
+        super().__init__(
+            hass,
+            _LOGGER,
+            name=f"control4_mediaplayer_out_{host}_{port}_ch{channel}",
+            update_interval=timedelta(seconds=self._interval),
+        )
+
+    async def _async_update_data(self) -> _PolledOutStatus | None:
+        """Fetch latest output/source byte from the amp."""
+
+        def _query() -> _PolledOutStatus | None:
+            # The current send_udp_command implementation uses a non-blocking socket,
+            # so an immediate recv can miss the reply. Retry once with a short delay.
+            cmd = f"c4.amp.out 0{self._channel}"
+            for attempt in (0, 1):
+                try:
+                    resp = send_udp_command(cmd, self._host, self._port)
+                except Exception:
+                    resp = None
+
+                if resp is not None:
+                    resp_s = str(resp).strip()
+                    parsed = _parse_c4_amp_out(resp_s) if resp_s else None
+                    if parsed is not None:
+                        return parsed
+
+                if attempt == 0:
+                    time.sleep(0.05)
+
+            return None
+
+        try:
+            return await self.hass.async_add_executor_job(_query)
+        except Exception as err:
+            raise UpdateFailed(str(err)) from err
 
 
 class Control4MediaPlayer(MediaPlayerEntity):
@@ -140,6 +250,7 @@ class Control4MediaPlayer(MediaPlayerEntity):
         poll_interval: int,
         source_list: list[str],
         unique_id: str,
+        coordinator: _Control4OutCoordinator | None,
     ):
         self._name = name
         self._state = STATE_OFF
@@ -153,7 +264,8 @@ class Control4MediaPlayer(MediaPlayerEntity):
 
         self._poll_external = bool(poll_external)
         self._poll_interval = max(1, min(int(poll_interval), 300))
-        self._poll_unsub = None
+        self._coordinator = coordinator
+        self._unsub_coordinator = None
 
         self._amp = control4AmpChannel(host, port, channel)
         self._channel = channel
@@ -168,67 +280,25 @@ class Control4MediaPlayer(MediaPlayerEntity):
         # Group zones per amp (device)
         self._device_identifier = f"{host}:{port}"
 
-    
-    async def async_update(self):
-        """Poll Control4 for the channel output so HA reflects external on/off changes.
+    @property
+    def coordinator(self) -> _Control4OutCoordinator | None:
+        return self._coordinator
 
-        Note: Some Control4 controllers may briefly report the previous output right after
-        an on/off command. We keep the optimistic HA state for a short grace period to
-        avoid flipping back immediately.
-        """
-        if not self._poll_external:
-            return
-
+    def _apply_polled_status(self, status: _PolledOutStatus) -> None:
         # Grace period after local commands (seconds)
         if monotonic() - getattr(self, "_last_command_ts", 0.0) < 1.5:
             return
 
-        try:
-            resp = send_udp_command(
-                f"c4.amp.out 0{self._channel}",
-                self._amp.host,
-                self._amp.port,
-            )
-        except Exception as err:  # keep entity available even if polling fails
-            _LOGGER.debug("Control4 poll failed for %s: %s", self._name, err)
-            return
-
-        if resp is None:
-            return
-
-        resp_s = str(resp).strip()
-        if not resp_s:
-            return
-
-                # Extract the channel output byte from the response. Some controllers
-        # append extra tokens (e.g. 'OK'), so we can't rely on the last token.
-        m = re.search(r"\bc4\.amp\.out\b\s+0?\d+\s+([0-9A-Fa-f]{2})\b", resp_s)
-        if not m:
-            return
-        src = m.group(1).strip()
-
-
-        # Off is typically "00"
-        if src in ("00", "0", "000"):
+        if not status.is_on:
             self._state = STATE_OFF
             return
 
         self._state = STATE_ON
-
-        # Best-effort: map numeric source back to the configured source_list
-        try:
-            src_i = int(src, 16) if src.lower().startswith("0x") else int(src)
-        except ValueError:
-            try:
-                src_i = int(src, 16)
-            except ValueError:
-                return
-
-        if src_i > 0 and src_i <= len(self._source_list):
-            self._source = self._source_list[src_i - 1]
+        if status.source_index and 1 <= status.source_index <= len(self._source_list):
+            self._source = self._source_list[status.source_index - 1]
 
 
-# ---- Device registry card ----
+    # ---- Device registry card ----
     @property
     def device_info(self):
         return {
@@ -237,29 +307,30 @@ class Control4MediaPlayer(MediaPlayerEntity):
             "name": f"Control4 Matrix Amp ({self._device_identifier})",
             "model": "Matrix Amplifier",
         }
+
     async def async_added_to_hass(self) -> None:
-        """Set up periodic polling (optional)."""
+        """Subscribe to coordinator updates (optional)."""
         await super().async_added_to_hass()
-        if not self._poll_external:
+
+        if self._coordinator is None:
             return
 
-        def _poll(_now) -> None:
-            # Schedule an entity refresh (forces async_update()).
-            # Use a sync callback here; the event helper expects a normal callable.
-            # Call in a thread-safe way (the scheduler may invoke from outside the event loop).
-            self.hass.loop.call_soon_threadsafe(
-                self.async_schedule_update_ha_state, True
-            )
+        # Push initial coordinator data (if any) into entity state.
+        if self._coordinator.data is not None:
+            self._apply_polled_status(self._coordinator.data)
 
-        self._poll_unsub = async_track_time_interval(
-            self.hass, _poll, timedelta(seconds=self._poll_interval)
-        )
+        def _handle_update() -> None:
+            if self._coordinator and self._coordinator.data is not None:
+                self._apply_polled_status(self._coordinator.data)
+                self.async_write_ha_state()
+
+        self._unsub_coordinator = self._coordinator.async_add_listener(_handle_update)
 
     async def async_will_remove_from_hass(self) -> None:
-        """Clean up polling subscription."""
-        if self._poll_unsub:
-            self._poll_unsub()
-            self._poll_unsub = None
+        """Clean up coordinator subscription."""
+        if self._unsub_coordinator:
+            self._unsub_coordinator()
+            self._unsub_coordinator = None
         await super().async_will_remove_from_hass()
 
     # ---- Entity properties ----
