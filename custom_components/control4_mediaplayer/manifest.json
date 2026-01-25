@@ -5,7 +5,6 @@
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/OtisPresley/control4-mediaplayer",
-  "integration_type": "hub",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/OtisPresley/control4-mediaplayer/issues",
   "requirements": [],
