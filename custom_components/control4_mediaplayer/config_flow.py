@@ -51,7 +51,10 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     )
             return self.async_abort(reason="bulk_add_success")
 
-        fields = {vol.Optional(f"zone{i}", default=f"Zone {i}"): str for i in range(1, int(self.init_info.get("amp_size", 8)) + 1)}
+        fields = {
+                vol.Optional(f"zone{i}", default=f"Zone {i}"): str 
+                for i in range(1, int(self.init_info.get("amp_size", 8)) + 1)
+            }
         return self.async_show_form(step_id="zones", data_schema=vol.Schema(fields))
 
     async def async_step_import(self, data):
