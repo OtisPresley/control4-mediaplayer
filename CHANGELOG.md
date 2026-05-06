@@ -147,12 +147,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-# Changelog
-
 ## [2.2.0] - 2026-05-05
 
 ### ⚠️ BREAKING CHANGES
-* **Entity Naming & Registry Management**: Transitioned to a versioned registry (v27) to support consolidated device grouping. Existing entities from versions 2.1.8 and below will be purged from the registry to prevent "ghost" devices and naming conflicts.
+* **Entity Naming & Registry Management**: Transitioned to a versioned registry to support consolidated device grouping. Existing entities from versions 2.1.8 and below will be purged from the registry to prevent "ghost" devices and naming conflicts.
 * **Configuration Method**: Manual setup via `configuration.yaml` is no longer supported. All users must migrate to the UI-based configuration via **Settings > Devices & Services**.
 
 ### Added
@@ -162,6 +160,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **Enhanced UI Labels**: Updated `strings.json` and translations to provide clear descriptions for all new configuration fields.
 
 ### Changed
-* **Device Grouping**: Reworked the `DeviceInfo` logic to group all 8 amplifier zones under a single "Matrix Amp" device card instead of scattered individual devices.
 * **Standalone Options Flow**: Refactored the configuration handler into a standalone `OptionsFlowHandler` class to resolve 500 Internal Server Errors and improve stability.
 * **Unique ID Synchronization**: Standardized the unique ID format (`v27_{host}_ch{channel}`) across the entire integration for better reliability in the Home Assistant entity registry.
