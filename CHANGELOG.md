@@ -165,8 +165,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **Device Grouping**: Reworked the `DeviceInfo` logic to group all 8 amplifier zones under a single "Matrix Amp" device card instead of scattered individual devices.
 * **Standalone Options Flow**: Refactored the configuration handler into a standalone `OptionsFlowHandler` class to resolve 500 Internal Server Errors and improve stability.
 * **Unique ID Synchronization**: Standardized the unique ID format (`v27_{host}_ch{channel}`) across the entire integration for better reliability in the Home Assistant entity registry.
-
-### Fixed
-* **Config Flow Load Failure**: Resolved "Config flow could not be loaded: 500 Internal Server Error" by correcting the `async_get_options_flow` callback and class registration.
-* **Input List Regression**: Restored the default setup form to show 8 input slots instead of 2.
-* **Settings Persistence**: Fixed an issue where "Power On Volume" and "Zone Name" would not save correctly by implementing explicit `async_update_entry` calls.
