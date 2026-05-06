@@ -15,13 +15,13 @@ jobs:
         python-version: ["3.10"]  # match local; you can add "3.12" later
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4  # REPLACES @v2 or @v3
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5  # REPLACES @v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.12"  # REPLACES 3.10 to match modern HA testing
 
       - name: Show environment
         run: |
