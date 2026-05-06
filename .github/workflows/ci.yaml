@@ -24,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5  # REPLACES @v2
         with:
-          python-version: "3.12"  # REPLACES 3.10 to match modern HA testing
+          python-version: "3.10"  # REPLACES 3.10 to match modern HA testing
 
       - name: Show environment
         run: |
