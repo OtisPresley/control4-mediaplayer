@@ -7,6 +7,7 @@
   "documentation": "https://github.com/OtisPresley/control4-mediaplayer",
   "integration_type": "device",
   "iot_class": "assumed_state",
+  "issue_tracker": "https://github.com/OtisPresley/control4-mediaplayer/issues",
   "requirements": [],
   "version": "2.2.0"
 }
