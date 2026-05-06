@@ -1,34 +1,44 @@
-"""Init for Control4 Media Player (config-entry)."""
-from __future__ import annotations
-
-from homeassistant.config_entries import ConfigEntry
+import logging
 from homeassistant.core import HomeAssistant
-
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import device_registry as dr
 from .const import DOMAIN
 
-PLATFORMS = ["media_player"]
-
-
-async def async_setup(hass: HomeAssistant, config: dict) -> bool:
-    # If YAML is present, media_player.async_setup_platform will import it one time.
-    return True
-
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = entry.data
+    ent_reg = er.async_get(hass)
+    dev_reg = dr.async_get(hass)
+    prefix = "v27"
 
-    entry.async_on_unload(entry.add_update_listener(_async_update_listener))
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    # Registry cleanup logic remains exactly as is
+    entities_to_remove = [
+        entity.entity_id for entity in ent_reg.entities.values() 
+        if entity.platform == DOMAIN and not str(entity.unique_id).startswith(prefix)
+    ]
+    for entity_id in entities_to_remove:
+        ent_reg.async_remove(entity_id)
+
+    devices_to_remove = [
+        device.id for device in dev_reg.devices.values() 
+        if any(identifier[0] == DOMAIN and not str(identifier[1]).startswith(prefix) 
+               for identifier in device.identifiers)
+    ]
+    for device_id in devices_to_remove:
+        dev_reg.async_remove_device(device_id)
+
+    # ADDED: Listen for option updates
+    entry.async_on_unload(entry.add_update_listener(update_listener))
+
+    await hass.config_entries.async_forward_entry_setups(entry, ["media_player"])
     return True
 
-
-async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Handle options updates."""
+# ADDED: The listener that triggers the reload
+async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Handle options update."""
     await hass.config_entries.async_reload(entry.entry_id)
 
-
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-    if unload_ok:
-        hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
-    return unload_ok
+    """Unload entry."""
+    return await hass.config_entries.async_unload_platforms(entry, ["media_player"])

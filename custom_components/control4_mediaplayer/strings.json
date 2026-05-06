@@ -1,0 +1,47 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Control4 Amplifier",
+        "description": "Enter the connection details for your Matrix Amplifier.",
+        "data": {
+          "host": "IP Address",
+          "port": "Port",
+          "name": "Amplifier Name (Optional)",
+          "amp_size": "Model / Zone Count",
+          "source_list": "Input Names (One per line)"
+        }
+      },
+      "zones": {
+        "title": "Name Your Zones",
+        "description": "Provide a name for each zone (e.g., 'Kitchen'). Leave a field blank to skip that zone.",
+        "data": {
+          "zone1": "Zone 1",
+          "zone2": "Zone 2",
+          "zone3": "Zone 3",
+          "zone4": "Zone 4",
+          "zone5": "Zone 5",
+          "zone6": "Zone 6",
+          "zone7": "Zone 7",
+          "zone8": "Zone 8"
+        }
+      }
+    },
+    "abort": {
+      "bulk_add_success": "All zones have been added successfully."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Zone Settings",
+        "data": {
+          "zone_custom_name": "Zone Name",
+          "on_volume": "Power On Volume (0-100)",
+          "source_list": "Source List (One per line)",
+          "copy_to_all": "Copy source list to all zones"
+        }
+      }
+    }
+  }
+}
