@@ -33,15 +33,12 @@ This integration alllows you to use your amplifier without a Control4 Controller
 
 ---
 
-## Highlights
-- Add zones via **Settings → Devices & Services → Add Integration → Control4 Media Player**
-- Creates a media player per zone managed via the GUI
-- **Bulk Add** zones with one-pass naming and channel selection
-- Tracks used channels to avoid duplicate media players
-- Per-zone option for additional state polling if also controlled by a Control4 Controller
-- Easily edit default volome and sources for zones after creation:
-  - Simple editor (comma/newline separated list of inputs/sources)
-  - **Advanced Editor** (YAML/JSON textarea) editing option + option to “Apply to all zones on this device”
+## Features
+* **Unified Device Management**: All 8 zones are grouped under a single "Matrix Amp" device for a cleaner UI.
+* **Per-Zone Configuration**: Customize names and settings for each zone independently.
+* **Power-On Volume**: Set a specific volume level (0-100%) that the zone will automatically jump to when turned on.
+* **Bulk Input Sync**: Update input names once and sync them to all 8 zones instantly with a single checkbox.
+* **Automatic Registry Cleanup**: Modern v27 architecture ensures old "ghost" entities are purged during updates.
 
 <p float="left">
   <img width="500" alt="image" src="https://github.com/user-attachments/assets/0052a65d-e13d-4a90-9551-1bf9f8ac21c1" />
@@ -70,91 +67,37 @@ After installation, restart Home Assistant and add the integration:
 4. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.  
 
 ### Manual install
-1. Copy the folder `custom_components/control4_mediaplayer` into your HA `config/custom_components` directory.
+1. Copy the `control4_mediaplayer` folder to your `custom_components` directory.
 2. Restart Home Assistant.
-3. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.
-
-> ⚠️ No `configuration.yaml` entries are required. Remove any legacy YAML after migrating to the UI.
-
+3. ⚠️ This integration is configured via the UI. Manual setup in `configuration.yaml` is not supported.
+4. Navigate to **Settings > Devices & Services > Add Integration** and search for "Control4 Media Player".
 ---
 
-## Migrating from `configuration.yaml`
+## Configuration & Usage
 
-If you already had zones defined in `configuration.yaml` using the original integration (`platform: control4-mediaplayer`), you can migrate them into the new format by editing the file:
+### Initial Setup
+1. Go to **Settings > Devices & Services**.
+2. Click **Add Integration** and search for **Control4 Media Player**.
+3. Provide the IP Address and Port (default 8750).
+4. Name your amplifier and define your initial input list.
+5. On the second screen, name each of your zones (e.g., "Kitchen", "Patio").
 
-```yaml
-media_player:
-  - platform: control4_mediaplayer
-    host: 192.168.1.50
-    port: 8750
-    channel: 1
-    name: Great Room
-    ...
-```
-
-1. Change `platform: control4-mediaplayer` → `platform: control4_mediaplayer` (underscore).  
-2. Restart Home Assistant. Your existing devices will be created in the UI under the integration.  
-
-> ⚠️ This method is intended only as a **bridge**.  
-> The recommended approach is to delete the YAML and re-add zones through the **UI via the integration**, which generates **unique IDs** and registers your devices/entities properly in HA.  
-
-Once you confirm your devices exist in the UI, you can safely remove the YAML block from `configuration.yaml`.
-
----
-
-## Configuration
-
-### Adding a Single Zone
-1. **Name**: Friendly name for the zone (e.g., “Great Room”).
-2. **Host / Port**: IP of your Control4 amp and UDP port (default `8750`).
-3. **Amplifier Size**: `4` or `8`.  
-   This bounds **Channel** numbers and limits **Source List** size.
-4. **Channel**: Required, bounded by amplifier size.  
-   - If a channel is already in use, the form re-shows with the **next available** channel selected.
-5. **On Volume**: 0–100 (default integration value).
-6. **Source List**: Comma/newline separated.  
-   Defaults to `1..N` based on amp size, or inherits from another zone on the same amp.
-
----
-
-### Bulk Add (Add Zones in Bulk)
-1. Toggle **Add Zones in Bulk** and press **Submit** once → the form re-renders showing:
-   - **Zone Prefix (bulk)**
-   - **Zone Count (bulk)** (bounded by remaining free channels)
-2. If all zones are already configured for that `host:port`, the flow shows:  
-   **“All zones are already configured for host:port.”**
-3. After submit, a second screen allows **unique names per channel**, prefilled using the prefix.
-
----
-
-### Editing Options (per zone)
-- **Simple Editor**
-  - **On Volume**: 0–100
-  - **External State Polling**: Enabled/Disabled plus polling interval 1-300 seconds
-  - **Source List**: comma/newline separated (auto-normalized)
-  - **Apply to All Zones on This Device**: propagate the Source List to other zones with the same `host:port`.
-- **Advanced Editor (YAML/JSON)**
-  - Multiline textarea
-  - Accepts YAML **or** JSON
-  - Example:
-    ```yaml
-    - HC800-1
-    - HC800-2
-    - Server
-    - Home Assistant
-    ```
-  - Parse errors keep you on the page with a friendly error + inline example.
+### Managing Zone Options
+Once installed, you can tune each zone by clicking the **Configure** button on the integration card:
+* **Zone Name**: Change the display name for that specific zone.
+* **Power On Volume**: Define the startup volume level.
+* **Source List**: Edit your input names.
+* **Sync to All**: Check **"Copy input list to all zones"** to push your current source names to every other zone on the amplifier automatically.
 
 ---
 
 ## Behavior Notes & Guardrails
-- **Form re-render** occurs only when:
-  - **Amplifier Size** changes, or
-  - **Add Zones in Bulk** is toggled  
-- **Channel** values are automatically clamped to `1..AmpSize`.
-- **Zone Count** is clamped to the number of available channels.
-- **Source List** longer than Amp Size is truncated.
-- When editing/adding on the same `host:port`, the **Source List** auto-inherits unless overridden.
+
+* **Versioned Registry**: This integration uses a versioned unique ID system. When you upgrade or re-add the integration, it automatically purges old, orphaned entities from your Home Assistant registry to prevent "ghost" devices.
+* **Power-On Sequence**: Turning on a zone triggers a two-step UDP command: first, it sends a wake-up call to the amplifier's power-save system; second, it sets the zone to the designated Power On Volume and Source.
+* **Volume Mapping**: Volume levels in Home Assistant (0.0 to 1.0) are mapped to the Control4 hex scale with a protocol-required offset of 160. 
+* **State Synchronization**: Because the Control4 Matrix Amp does not provide a feedback state via UDP, Home Assistant manages the "assumed state". Clicking "Submit" in the Options menu will force a reload of the entity to ensure the UI reflects your latest settings.
+* **Bulk Updates**: Using the "Copy to all zones" feature will overwrite the `source_list` on all 8 entries but will *not* change their individual names or power-on volume settings.
 
 Example Dashboard Cards:
 
@@ -163,21 +106,20 @@ Example Dashboard Cards:
 ---
 
 ## Troubleshooting
-- **“All zones are already configured for host:port.”**  
-  → You’ve used all channels for the selected Amp Size.
-- **“Channel X is already configured on host:port. Next available is Y.”**  
-  → Select Y or another free channel.
-- **“Channel must be between 1 and N.”**  
-  → Adjust the channel or set the correct Amp Size.
-- **Fields don’t appear until after I toggle “Add Zones in Bulk”.**  
-  → Expected: forms re-render after you press **Submit** once.
-- If UI looks stale, hard-refresh your browser (**Shift+F5**).
+
+* **Integration won't load/500 Error**: Ensure you have restarted Home Assistant after copying the files. The v27 architecture requires a clean boot to register the Options Flow handler.
+* **Entities missing after update**: If you previously used an older version (v26 or below), the v27 janitor logic in `__init__.py` will purge those entities to prevent registry corruption. Simply re-add the integration via the UI.
+* **Commands not responding**: Verify the IP address and Port (default 8750) are correct in your configuration. The integration uses one-way UDP; if the IP is wrong, Home Assistant will show the device as "On," but the physical amplifier will not react.
+* **Config changes not reflecting**: If names or inputs don't update instantly, ensure the `update_listener` is active. A single restart after the first installation usually resolves this.
 
 ---
 
 ## Known Limitations
-- No automatic network discovery (Control4 protocol without a controller is limited).
-- The form can’t live-update fields without submit; a minimal “soft refresh” pattern is used.
+
+* **No State Feedback**: The Control4 Matrix Amp does not send status updates back over UDP. Home Assistant maintains an "assumed state." If you manually change a zone using a physical Control4 keypad, Home Assistant will not reflect that change.
+* **UDP Reliability**: As UDP is a connectionless protocol, commands can occasionally be dropped if your network is congested. The integration uses random counters to help the amp distinguish between unique commands.
+* **UI Only**: Configuration via `configuration.yaml` is not supported. All setup and zone adjustments must be done through the Home Assistant Integrations dashboard.
+* **Single Device Logic**: While all zones appear on a single device page, they are technically individual config entries. This is required to allow the "Configure" button to work for each specific zone.
 
 ---
 
