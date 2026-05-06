@@ -44,9 +44,8 @@ This integration alllows you to use your amplifier without a Control4 Controller
   - **Advanced Editor** (YAML/JSON textarea) editing option + option to “Apply to all zones on this device”
 
 <p float="left">
-  <img src="https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/screenshot1.png" alt="Screenshot 1" width="250"/>
-  <img src="https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/screenshot2.png" alt="Screenshot 2" width="250"/>
-  <img src="https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/screenshot3.png" alt="Screenshot 3" width="250"/>
+  <img width="500" alt="image" src="https://github.com/user-attachments/assets/0052a65d-e13d-4a90-9551-1bf9f8ac21c1" />
+  <img width="500" alt="image" src="https://github.com/user-attachments/assets/cf06c11a-d051-444c-86b4-e5e3d185b0ee" />
 </p>
 
 ---
