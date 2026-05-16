@@ -6,134 +6,141 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
-### Added
-- Migration from `configuration.yaml` to UI-based device creation and management
+## [2.3.0] - 2026-05-16
+
+### 🚀 Added
+- 🔊 **Max Volume Entities**: Added `C4MaxVolumeNumber` entities to set volume ceilings per zone.
+- 🎛️ **Input Gain Configuration**: Added input gain trim configuration in the options flow to balance sources.
+- 🛠️ **New Services**: Added `party_mode` (sync all zones) and `send_raw_command` (send hex strings directly) services!
+
+### 🔄 Changed
+- 🔒 **Safe Transport Protocol**: Re-engineered UDP communication to use random sequencers and active acknowledgement polling, ensuring commands are delivered and matched correctly!
+- 🧹 **Codebase Clean-up**: Stripped out unsupported and dead code to ensure maximum reliability on legacy firmware.
 
 ---
 
 ## [2.0.1] - 2025-09-18
-### Added
+### 🚀 Added
 - **Bulk Add**: Add multiple zones at once with a prefix and zone count.
 - **Advanced Editor**: YAML/JSON source list editor with “Apply to all zones” option.
 - **Friendly messages** in config flow for when channels/zones are already configured.
 - Auto-suggest **first available channel** on re-renders.
 
-### Changed
+### 🔄 Changed
 - `unique_id` format standardized as `{host}:{port}:ch{channel}`.
 - Source list auto-inherits from existing zones on same amp unless overridden.
 
-### Fixed
+### 🐛 Fixed
 - Prevented form re-render unless amplifier size or bulk toggle changes.
 - Correctly applies next available channel if chosen one is already configured.
 
 ---
 
 ## [2.0.1] - 2025-09-18
-### Added
+### 🚀 Added
 - Preparation for branding support
 - Ability to install the integrations through HACS
 
 ---
 
 ## [2.0.2] - 2025-09-18
-### Fixed
+### 🐛 Fixed
 - Fixed version number in manifest to match version in [Releases](https://github.com/OtisPresley/control4-mediaplayer/releases)
 
 ---
 
 ## [2.0.3] - 2025-09-18
-### Fixed
+### 🐛 Fixed
 - Updated README
 
 ---
 
 ## [2.0.4] - 2025-09-19
-### Changed
+### 🔄 Changed
 - Moved assets folder out of the integration directory structure
 - Updated README to add badges and prepare for the official HACS repository
 
 ---
 
 ## [2.1.0] - 2025-09-19
-### Changed
+### 🔄 Changed
 - Updated for first release on HACS repo
 
 ---
 
 ## [2.1.1] - 2025-09-19
-### Changed
+### 🔄 Changed
 - Updated README badges
 
 ---
 
 ## [2.1.2] - 2025-09-20
-### Changed
+### 🔄 Changed
 - Updated README badges
 - Deleted local icons and logos
 
 ---
 
 ## [2.1.3] - 2025-09-20
-### Fixed
+### 🐛 Fixed
 - Fixed broken image links
 
 ---
 
 ## [2.1.4] - 2025-09-20
-### Fixed
+### 🐛 Fixed
 - Added missing config flow to manifest
 
 ---
 
 ## [2.1.5] - 2025-09-21
-### Changed
+### 🔄 Changed
 - Updated README minor issues
 - Added README acknowledgement
 
 ---
 
 ## [2.1.6 Beta 1] - 2025-09-22
-### Added
+### 🚀 Added
 - Added build validation with python
 
-### Changed
+### 🔄 Changed
 - Updated README to adjust badges
 
-### Fixed
+### 🐛 Fixed
 - Cleaned up code in config flow
 
 ---
 
 ## [2.1.6] - 2025-09-24
-### Added
+### 🚀 Added
 - Added build validation with python
 
-### Changed
+### 🔄 Changed
 - Updated README to adjust badges
 - Moved .pre-commit-config.yaml to tests
 - Updated .gitignore with more strings
 - Updated ci.yaml to point to new location of requirements
 
-### Fixed
+### 🐛 Fixed
 - Cleaned up code in config flow
 
 ---
 
 ## [2.1.7] - 2026-01-10
-### Fixed
+### 🐛 Fixed
 - Corrected power button behavior not reflecting state correctly in HA
 
 ---
 
 ## [2.1.8] - 2026-01-11
-### Fixed
+### 🐛 Fixed
 - Corrected power button not maintaining state in HA
 
 ---
 
 ## [2.1.9-beta.1] - 2026-01-11
-### Added
+### 🚀 Added
 - **External State Polling** per zone:
   - Creates additiona timer-based polling on a per-zone basis
   - Allows customization of the Polling interval between 1 and 300 seconds
@@ -142,7 +149,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## [2.1.9-beta.4] - 2026-01-17
-### Fixed
+### 🐛 Fixed
 - Polling was not actually firing
 
 ---
@@ -153,12 +160,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **Entity Naming & Registry Management**: Transitioned to a versioned registry to support consolidated device grouping. Existing entities from versions 2.1.8 and below will be purged from the registry to prevent "ghost" devices and naming conflicts.
 * **Configuration Method**: Manual setup via `configuration.yaml` is no longer supported. All users must migrate to the UI-based configuration via **Settings > Devices & Services**.
 
-### Added
+### 🚀 Added
 * **Power On Volume**: Added a per-zone configuration option to set a specific volume level (0-100%) when the zone is turned on.
 * **Bulk Input Sync**: New "Copy input list to all zones" checkbox in the options menu allows users to synchronize source names across all zones instantly.
 * **Options Update Listener**: Added a dynamic listener that reloads the integration immediately upon saving changes in the configuration dialog, ensuring names and inputs reflect instantly.
 * **Enhanced UI Labels**: Updated `strings.json` and translations to provide clear descriptions for all new configuration fields.
 
-### Changed
+### 🔄 Changed
 * **Standalone Options Flow**: Refactored the configuration handler into a standalone `OptionsFlowHandler` class to resolve 500 Internal Server Errors and improve stability.
 * **Unique ID Synchronization**: Standardized the unique ID format (`v27_{host}_ch{channel}`) across the entire integration for better reliability in the Home Assistant entity registry.

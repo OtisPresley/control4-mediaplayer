@@ -1,0 +1,41 @@
+party_mode:
+  name: Party Mode
+  description: Instantly sync all zones to a specific source and volume level.
+  fields:
+    source:
+      name: Source Name
+      description: The name of the input source to broadcast to all zones.
+      required: true
+      example: "Input 1"
+      selector:
+        text:
+    volume:
+      name: Volume Level
+      description: The volume level (0-100) to set for all zones.
+      required: true
+      example: 50
+      selector:
+        number:
+          min: 0
+          max: 100
+          mode: slider
+
+send_raw_command:
+  name: Send Raw Command
+  description: Send a raw hexadecimal string to the Control4 amplifier.
+  target:
+    entity:
+      integration: control4_mediaplayer
+      domain: media_player
+  fields:
+    command:
+      name: Hexadecimal Command
+      description: The raw command string to send (e.g. c4.amp.out 01 02).
+      required: true
+      example: "c4.amp.out 01 02"
+      selector:
+        text:
+
+
+
+

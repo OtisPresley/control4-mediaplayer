@@ -35,6 +35,7 @@ This integration alllows you to use your amplifier without a Control4 Controller
 
 ## Features
 * **Unified Device Management**: All 8 zones are grouped under a single "Matrix Amp" device for a cleaner UI.
+* **Custom Lovelace Card**: Designed to pair perfectly with the [Control4 Media Player Card](https://github.com/OtisPresley/control4-mediaplayer-card) for a gorgeous, source-centric UI!
 * **Per-Zone Configuration**: Customize names and settings for each zone independently.
 * **Power-On Volume**: Set a specific volume level (0-100%) that the zone will automatically jump to when turned on.
 * **Bulk Input Sync**: Update input names once and sync them to all 8 zones instantly with a single checkbox.
@@ -95,7 +96,7 @@ Once installed, you can tune each zone by clicking the **Configure** button on t
 
 * **Versioned Registry**: This integration uses a versioned unique ID system. When you upgrade or re-add the integration, it automatically purges old, orphaned entities from your Home Assistant registry to prevent "ghost" devices.
 * **Power-On Sequence**: Turning on a zone triggers a two-step UDP command: first, it sends a wake-up call to the amplifier's power-save system; second, it sets the zone to the designated Power On Volume and Source.
-* **Volume Mapping**: Volume levels in Home Assistant (0.0 to 1.0) are mapped to the Control4 hex scale with a protocol-required offset of 160. 
+* **Volume Mapping**: Volume levels in Home Assistant (0.0 to 1.0) are mapped to the Control4 hex scale with a protocol-required offset of 155. 
 * **State Synchronization**: Because the Control4 Matrix Amp does not provide a feedback state via UDP, Home Assistant manages the "assumed state". Clicking "Submit" in the Options menu will force a reload of the entity to ensure the UI reflects your latest settings.
 * **Bulk Updates**: Using the "Copy to all zones" feature will overwrite the `source_list` on all 8 entries but will *not* change their individual names or power-on volume settings.
 
