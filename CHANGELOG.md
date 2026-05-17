@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🔊 **Max Volume Entities**: Added `C4MaxVolumeNumber` entities to set volume ceilings per zone.
 - 🎛️ **Input Gain Configuration**: Added input gain trim configuration in the options flow to balance sources.
 - 🛠️ **New Services**: Added `party_mode` (sync all zones) and `send_raw_command` (send hex strings directly) services!
+- 🎨 **Companion Card**: Released the [Control4 Media Player Card](https://github.com/OtisPresley/control4-mediaplayer-card) for a gorgeous, source-centric UI!
 
 ### 🔄 Changed
 - 🔒 **Safe Transport Protocol**: Re-engineered UDP communication to use random sequencers and active acknowledgement polling, ensuring commands are delivered and matched correctly!
