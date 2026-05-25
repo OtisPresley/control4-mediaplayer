@@ -8,9 +8,10 @@ _LOGGER = logging.getLogger(__name__)
 class Control4Manager:
     """Centralized manager for Control4 Matrix Amp UDP communication."""
     
-    def __init__(self, host: str, port: int):
+    def __init__(self, host: str, port: int, udp_timeout: float = 2.0):
         self.host = host
         self.port = port
+        self.udp_timeout = udp_timeout
         self._lock = asyncio.Lock()
         
     async def async_send_command(self, command: str):
@@ -24,7 +25,8 @@ class Control4Manager:
             
             def _send_and_wait():
                 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                sock.settimeout(2.0) # 2000ms timeout
+                sock.settimeout(self.udp_timeout)
+
                 try:
                     sock.sendto(payload.encode('utf-8'), (self.host, self.port))
                     while True:

@@ -9,3 +9,5 @@ CONF_SOURCE_LIST = "source_list"
 DEFAULT_PORT = 8750
 DEFAULT_VOLUME = 5                 # percent
 DEFAULT_SOURCE_LIST = ["1", "2", "3", "4"]
+DEFAULT_UDP_TIMEOUT = 2.0
+
