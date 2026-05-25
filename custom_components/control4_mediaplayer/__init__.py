@@ -5,7 +5,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 
-from .const import DOMAIN, DEFAULT_UDP_TIMEOUT
+from .const import DEFAULT_UDP_TIMEOUT, DOMAIN
 from .manager import Control4Manager
 
 _LOGGER = logging.getLogger(__name__)

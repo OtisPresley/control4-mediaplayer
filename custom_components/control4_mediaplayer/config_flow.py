@@ -4,7 +4,7 @@ from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PORT
 from homeassistant.core import callback
 from homeassistant.helpers import selector
 
-from .const import DOMAIN, DEFAULT_UDP_TIMEOUT
+from .const import DEFAULT_UDP_TIMEOUT, DOMAIN
 
 
 def int_to_little_endian_hex(val: int) -> str:
@@ -51,7 +51,12 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         selector.TextSelectorConfig(multiline=True)
                     ),
                     vol.Optional("udp_timeout", default=DEFAULT_UDP_TIMEOUT): selector.NumberSelector(
-                        selector.NumberSelectorConfig(min=0.25, max=2.0, step=0.25, mode=selector.NumberSelectorMode.SLIDER)
+                        selector.NumberSelectorConfig(
+                            min=0.25,
+                            max=2.0,
+                            step=0.25,
+                            mode=selector.NumberSelectorMode.SLIDER,
+                        )
                     ),
                 }
             ),
@@ -135,8 +140,16 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     ): selector.TextSelector(
                         selector.TextSelectorConfig(multiline=True)
                     ),
-                    vol.Optional("udp_timeout", default=self._entry.data.get("udp_timeout", DEFAULT_UDP_TIMEOUT)): selector.NumberSelector(
-                        selector.NumberSelectorConfig(min=0.25, max=2.0, step=0.25, mode=selector.NumberSelectorMode.SLIDER)
+                    vol.Optional(
+                        "udp_timeout",
+                        default=self._entry.data.get("udp_timeout", DEFAULT_UDP_TIMEOUT),
+                    ): selector.NumberSelector(
+                        selector.NumberSelectorConfig(
+                            min=0.25,
+                            max=2.0,
+                            step=0.25,
+                            mode=selector.NumberSelectorMode.SLIDER,
+                        )
                     ),
                     vol.Optional("copy_to_all", default=False): bool,
                     vol.Optional("copy_timeout_to_all", default=False): bool,
