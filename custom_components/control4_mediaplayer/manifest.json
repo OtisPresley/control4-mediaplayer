@@ -1,7 +1,9 @@
 {
   "domain": "control4_mediaplayer",
   "name": "Control4 Media Player",
-  "codeowners": ["@OtisPresley"],
+  "codeowners": [
+    "@OtisPresley"
+  ],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/OtisPresley/control4-mediaplayer",
@@ -9,5 +11,5 @@
   "iot_class": "assumed_state",
   "issue_tracker": "https://github.com/OtisPresley/control4-mediaplayer/issues",
   "requirements": [],
-  "version": "2.3.0"
+  "version": "2.3.1-beta.1"
 }
