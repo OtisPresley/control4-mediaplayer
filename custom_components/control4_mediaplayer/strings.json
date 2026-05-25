@@ -9,7 +9,8 @@
           "port": "Port",
           "name": "Amplifier Name (Optional)",
           "amp_size": "Model / Zone Count",
-          "source_list": "Input Names (One per line)"
+          "source_list": "Input Names (One per line)",
+          "udp_timeout": "UDP Timeout"
         }
       },
       "zones": {
@@ -49,7 +50,9 @@
           "on_volume": "Power On Volume (0-100)",
           "source_list": "Source List (One per line)",
           "input_gains": "Input Gain Offsets (e.g., Input1: +2)",
+          "udp_timeout": "UDP Timeout",
           "copy_to_all": "Copy source list and gains to all zones",
+          "copy_timeout_to_all": "Copy UDP timeout to all zones",
           "return_to_main": "Go back to main menu"
         }
       },
