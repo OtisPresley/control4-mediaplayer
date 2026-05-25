@@ -4,7 +4,7 @@ from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PORT
 from homeassistant.core import callback
 from homeassistant.helpers import selector
 
-from .const import DOMAIN
+from .const import DOMAIN, DEFAULT_UDP_TIMEOUT
 
 
 def int_to_little_endian_hex(val: int) -> str:
@@ -49,6 +49,9 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     vol.Required("amp_size", default="8"): vol.In({"4": "4-Zone", "8": "8-Zone"}),
                     vol.Required("source_list", default=default_sources): selector.TextSelector(
                         selector.TextSelectorConfig(multiline=True)
+                    ),
+                    vol.Optional("udp_timeout", default=DEFAULT_UDP_TIMEOUT): selector.NumberSelector(
+                        selector.NumberSelectorConfig(min=0.25, max=2.0, step=0.25, mode=selector.NumberSelectorMode.SLIDER)
                     ),
                 }
             ),
@@ -97,16 +100,20 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 return await self.async_step_init()
 
             sync_all = user_input.pop("copy_to_all", False)
+            sync_timeout = user_input.pop("copy_timeout_to_all", False)
             new_data = {**self._entry.data, **user_input}
             self.hass.config_entries.async_update_entry(self._entry, data=new_data)
 
-            if sync_all:
-                source_list = user_input.get("source_list")
-                input_gains = user_input.get("input_gains", "")
+            if sync_all or sync_timeout:
                 current_entries = self.hass.config_entries.async_entries(DOMAIN)
                 for entry in current_entries:
                     if entry.entry_id != self._entry.entry_id:
-                        updated_data = {**entry.data, "source_list": source_list, "input_gains": input_gains}
+                        updated_data = {**entry.data}
+                        if sync_all:
+                            updated_data["source_list"] = user_input.get("source_list")
+                            updated_data["input_gains"] = user_input.get("input_gains", "")
+                        if sync_timeout:
+                            updated_data["udp_timeout"] = user_input.get("udp_timeout", DEFAULT_UDP_TIMEOUT)
                         self.hass.config_entries.async_update_entry(entry, data=updated_data)
 
             return self.async_create_entry(title="", data=None)
@@ -128,7 +135,11 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     ): selector.TextSelector(
                         selector.TextSelectorConfig(multiline=True)
                     ),
+                    vol.Optional("udp_timeout", default=self._entry.data.get("udp_timeout", DEFAULT_UDP_TIMEOUT)): selector.NumberSelector(
+                        selector.NumberSelectorConfig(min=0.25, max=2.0, step=0.25, mode=selector.NumberSelectorMode.SLIDER)
+                    ),
                     vol.Optional("copy_to_all", default=False): bool,
+                    vol.Optional("copy_timeout_to_all", default=False): bool,
                     vol.Optional("return_to_main", default=False): bool,
                 }
             ),
