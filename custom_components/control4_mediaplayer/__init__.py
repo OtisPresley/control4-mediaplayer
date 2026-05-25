@@ -5,7 +5,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 
-from .const import DOMAIN
+from .const import DOMAIN, DEFAULT_UDP_TIMEOUT
 from .manager import Control4Manager
 
 _LOGGER = logging.getLogger(__name__)
@@ -35,9 +35,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     host = entry.data.get("host")
     port = entry.data.get("port", 8750)
     amp_label = entry.data.get("name", "Matrix Amp")
-    
+    udp_timeout = float(entry.data.get("udp_timeout", DEFAULT_UDP_TIMEOUT))
+
+    # Persist the default on first load for entries created before this field existed
+    if "udp_timeout" not in entry.data:
+        hass.config_entries.async_update_entry(entry, data={**entry.data, "udp_timeout": udp_timeout})
+        _LOGGER.info("Control4: migrated entry %s, saved udp_timeout default %.2f", entry.entry_id, udp_timeout)
+
+    _LOGGER.info("Control4: manager for %s:%s using UDP timeout %.2f seconds", host, port, udp_timeout)
+
     hass.data.setdefault(DOMAIN, {})
-    manager = Control4Manager(host, port)
+    manager = Control4Manager(host, port, udp_timeout)
     hass.data[DOMAIN][entry.entry_id] = {
         "manager": manager
     }
