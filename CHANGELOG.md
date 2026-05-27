@@ -6,13 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [2.3.1-beta.1] - 2026-05-25
+## [2.3.1] - 2026-05-25
 
 ### 🚀 Added
 - 🔊 **UDP timeout setting**: Thanks @Hansen8601 for adding an option to adjust the UDP timeout.
 
 ---
 
+## [2.3.1-beta.1] - 2026-05-25
+
+### 🚀 Added
+- 🔊 **UDP timeout setting**: Thanks @Hansen8601 for adding an option to adjust the UDP timeout.
+
+---
 
 ## [2.3.0] - 2026-05-16
 
