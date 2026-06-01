@@ -145,7 +145,6 @@ To get the absolute best visual experience, pair this integration with the custo
 
 <img width="796" height="534" alt="image" src="https://github.com/user-attachments/assets/a6865404-f68b-4eb2-98fd-964b19a646da" alt="Screenshot" width="320"/>
 
-
 ---
 
 ## Services
