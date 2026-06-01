@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.2] - 2026-06-01
+
+### 🚀 Added
+- 🎛️ **Optional Per-Zone EQ Controls**: Treble, Bass, and Balance can now be exposed directly as `Number` entities in your Home Assistant dashboards. You can toggle this on or off in the Options Flow.
+- 🧹 **Programmatic Orphan EQ Cleanup**: Toggling EQ controls to **OFF** now programmatically removes the entities from Home Assistant's Entity Registry instantly, preventing "unavailable" placeholders.
+- 💾 **State Persistence (State & Settings)**: Switch from options-flow storage to Home Assistant's native state-restoration (`RestoreNumber` and `RestoreEntity`). Active player states (on/off, volume, active input source, mute) and configuration sliders are perfectly preserved across Home Assistant reboots.
+
+### ⚡ Optimized
+- ⚡ **Instant Command Execution**: Eliminated the legacy 2.0-second delay on network commands by matching UDP responses against the amplifier's response prefix. Commands now execute instantly in ~1–2ms.
+- 🧹 **Full DRY Codebase Optimization**: Centralized all display name and unique ID formatting into unified, robust helpers (`PREFIX`, `get_unique_id`, `get_entity_name`), eliminating redundant class repetitions.
+- 📦 **Consolidated EQ Architecture**: Replaced separate treble, bass, and balance subclasses with a single, highly maintainable generic `C4EQNumber` platform class.
+
+### 🔧 Fixed
+- 🔄 **Reload-Free Audio Adjustments**: Switched persistence off of `config_entries.data` modifications, completely resolving the bug where moving any audio slider (Max Volume, Treble, Bass, Balance) triggered integration reloads and turned active zones off.
+- 🔊 **Glitch-Free Software Max Volume Capping**: Capped volumes in software during playback and synchronized hardware caps (`chvolmax`) only during silent transitions (turning on or off). This completely eliminates transient volume spikes/jumps to max when moving the ceiling slider.
+- 🔄 **Uninterrupted Bootups**: Restoring media player states on HA reboot is now 100% passive, ensuring your background audio playback continues completely uninterrupted when Home Assistant restarts.
+- 🔊 **Fallback-Enabled Native Muting**: Native mute commands are attempted first, falling back to volume-based mute if the physical hardware does not support it.
+
+---
+
 ## [2.3.1] - 2026-05-25
 
 ### 🚀 Added

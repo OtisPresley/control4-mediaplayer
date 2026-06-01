@@ -45,13 +45,21 @@ class control4AmpChannel:
         return await self._manager.async_send_command(cmd)
 
     async def async_mute_volume(self, mute: bool):
-        if mute:
-            # Set volume to 0 (which is 155 in hex -> 9B)
-            cmd = f"c4.amp.chvol {int(self._channel):02x} 9b"
-            return await self._manager.async_send_command(cmd)
-        else:
-            # Restore previous volume
-            new_volume = int(float(self._volume) * 100) + 155
-            new_volume_hex = f"{new_volume:02x}"
-            cmd = f"c4.amp.chvol {int(self._channel):02x} {new_volume_hex}"
-            return await self._manager.async_send_command(cmd)
+        # Try native muting first
+        val = "01" if mute else "00"
+        cmd = f"c4.amp.mute {int(self._channel):02x} {val}"
+        res = await self._manager.async_send_command(cmd)
+        
+        # If native muting fails or is not supported (timed out/error returned), fallback to volume-based muting
+        if not res or "n01" in res:
+            if mute:
+                # Set volume to 0 (which is 155 in hex -> 9B)
+                cmd = f"c4.amp.chvol {int(self._channel):02x} 9b"
+                return await self._manager.async_send_command(cmd)
+            else:
+                # Restore previous volume
+                new_volume = int(float(self._volume) * 100) + 155
+                new_volume_hex = f"{new_volume:02x}"
+                cmd = f"c4.amp.chvol {int(self._channel):02x} {new_volume_hex}"
+                return await self._manager.async_send_command(cmd)
+        return res

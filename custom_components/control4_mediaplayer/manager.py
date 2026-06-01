@@ -33,7 +33,8 @@ class Control4Manager:
                         data, _ = sock.recvfrom(1024)
                         received = data.decode('utf-8').strip()
                         # Ensure we are capturing the response to our specific command
-                        if received.startswith(counter):
+                        expected_prefix = counter.replace("s", "r", 1)
+                        if received.startswith(expected_prefix):
                             return received
                 except TimeoutError:
                     # Timeout is an expected fallback condition for the amp if it doesn't ack

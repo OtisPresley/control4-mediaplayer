@@ -5,7 +5,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 
-from .const import DEFAULT_UDP_TIMEOUT, DOMAIN
+from .const import DEFAULT_UDP_TIMEOUT, DOMAIN, PREFIX
 from .manager import Control4Manager
 
 _LOGGER = logging.getLogger(__name__)
@@ -13,7 +13,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     ent_reg = er.async_get(hass)
     dev_reg = dr.async_get(hass)
-    prefix = "v27"
+    prefix = PREFIX
 
     # Registry cleanup logic remains exactly as is
     entities_to_remove = [

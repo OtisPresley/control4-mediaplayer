@@ -8,43 +8,44 @@
 [![HACS](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/hacs.yaml?branch=main&label=HACS)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/hacs.yaml)
 [![CI](https://img.shields.io/github/actions/workflow/status/OtisPresley/control4-mediaplayer/ci.yaml?branch=main&event=push)](https://github.com/OtisPresley/control4-mediaplayer/actions/workflows/ci.yaml)
 
-Control4 Matrix Amplifier integration for [Home Assistant](https://www.home-assistant.io/).  
-This integration alllows you to use your amplifier without a Control4 Controller and turn the channel/zones into media players in Home Assistant.
+Control4 Matrix Amplifier custom integration for [Home Assistant](https://www.home-assistant.io/).  
+This integration allows you to use your matrix amplifier without a Control4 Controller and turn its physical audio channels/zones into premium `media_player` entities in Home Assistant.
 
 ---
 
 ## Table of Contents
 - [Highlights](#highlights)
 - [Installation](#installation)
-  - [HACS (recommended)](#hacs-recommended)
+  - [HACS (Recommended)](#hacs-recommended)
   - [Manual Install](#manual-install)
-- [Migrating from configuration.yaml](#migrating-from-configurationyaml)
-- [Configuration](#configuration)
-  - [Adding a Single Zone](#adding-a-single-zone)
-  - [Bulk Add (Add Zones in Bulk)](#bulk-add-add-zones-in-bulk)
-  - [Editing Options](#editing-options-per-zone)
-- [Behavior Notes & Guardrails](#behavior-notes--guardrails)
+- [How It Works (Under the Hood)](#how-it-works-under-the-hood)
+  - [Instant UDP Command Engine](#1-instant-udp-command-engine)
+  - [Passive State & Volume Restoration](#2-passive-state--volume-restoration)
+  - [Glitch-Free Software Max Volume Capping](#3-glitch-free-software-max-volume-capping)
+  - [Hardware-Fallback Native Muting](#4-hardware-fallback-native-muting)
+  - [Dynamic EQ Control Sliders](#5-dynamic-eq-control-sliders)
+- [Configuration & Usage](#configuration--usage)
+  - [Initial Setup](#initial-setup)
+  - [Managing Zone Options](#managing-zone-options-options-flow)
+- [Custom Lovelace Companion Card](#custom-lovelace-companion-card)
+- [Services](#services)
+  - [`party_mode`](#party_mode)
+  - [`send_raw_command`](#send_raw_command)
 - [Troubleshooting](#troubleshooting)
 - [Known Limitations](#known-limitations)
-- [Changelog](https://github.com/OtisPresley/control4-mediaplayer/blob/main/CHANGELOG.md)
 - [Acknowledgements](#acknowledgements)
-- [Support](#support)
 - [License](#license)
 
 ---
 
-## Features
-* **Unified Device Management**: All 8 zones are grouped under a single "Matrix Amp" device for a cleaner UI.
-* **Custom Lovelace Card**: Designed to pair perfectly with the [Control4 Media Player Card](https://github.com/OtisPresley/control4-mediaplayer-card) for a gorgeous, source-centric UI!
-* **Per-Zone Configuration**: Customize names and settings for each zone independently.
-* **Power-On Volume**: Set a specific volume level (0-100%) that the zone will automatically jump to when turned on.
-* **Bulk Input Sync**: Update input names once and sync them to all 8 zones instantly with a single checkbox.
-* **Automatic Registry Cleanup**: Modern v27 architecture ensures old "ghost" entities are purged during updates.
+## Highlights
 
-<p float="left">
-  <img width="500" alt="image" src="https://github.com/user-attachments/assets/0052a65d-e13d-4a90-9551-1bf9f8ac21c1" />
-  <img width="500" alt="image" src="https://github.com/user-attachments/assets/cf06c11a-d051-444c-86b4-e5e3d185b0ee" />
-</p>
+* 🚀 **Instant UDP Command Execution**: Matched UDP responses in 1-2ms, eliminating the legacy 2.0s delays!
+* 🎛️ **Optional Per-Zone EQ Sliders**: Dynamically control Treble, Bass, and Balance directly from your dashboard!
+* 💾 **Bulletproof State Persistence**: Full support for Home Assistant's `RestoreEntity` and `RestoreNumber` engines. All configuration sliders and player states are perfectly preserved across HA reboots without active playback interruptions.
+* 🔄 **Reload-Free Audio Adjustments**: Make adjustments to limits and EQ settings instantly without integration reloads or active zones shutting down.
+* 🔊 **Glitch-Free Volume Capping**: Software-enforced volume capping during playback completely eliminates transient spikes to max volume.
+* 🧹 **Automatic Registry Cleaner**: Purges orphan and ghost entities programmatically when EQ settings are disabled or upgraded.
 
 ---
 
@@ -59,86 +60,136 @@ After installation, restart Home Assistant and add the integration:
 
 [![Open your Home Assistant instance and add this integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=control4_mediaplayer)
 
----
-
-#### Manual steps (if you prefer not to use the buttons)
+#### Manual HACS steps:
 1. In Home Assistant, open **HACS → Integrations**.  
 2. Click **Explore & Download Repositories**, search for **Control4 Media Player**, then click **Download**.  
 3. **Restart Home Assistant**.  
 4. Go to **Settings → Devices & Services → Add Integration → Control4 Media Player**.  
 
 ### Manual install
-1. Copy the `control4_mediaplayer` folder to your `custom_components` directory.
-2. Restart Home Assistant.
-3. ⚠️ This integration is configured via the UI. Manual setup in `configuration.yaml` is not supported.
-4. Navigate to **Settings > Devices & Services > Add Integration** and search for "Control4 Media Player".
+1. Copy the `custom_components/control4_mediaplayer` folder to your config `custom_components` directory.
+2. **Restart Home Assistant**.
+3. Navigate to **Settings > Devices & Services > Add Integration** and search for "Control4 Media Player".
+> [!WARNING]
+> Manual setup in `configuration.yaml` is not supported. All configuration must be completed through the Home Assistant dashboard.
+
+---
+
+## How It Works (Under the Hood)
+
+This integration is engineered specifically to extract maximum performance from the Control4 Matrix Amplifier's serial-over-UDP protocol.
+
+### 1. Instant UDP Command Engine
+Legacy integrations suffered from a mandatory 2.0-second delay per network command due to active socket polling. This integration utilizes a **Prefix Response Matching** algorithm. When Home Assistant sends a command (`0s2aXX...`), it generates a matching response prefix (`0r2aXX...`). The UDP receiver instantly intercepts and matches the corresponding amplifier response.
+* **Result**: Latency is reduced from 2,000ms to **1–2ms** per command, offering instantaneous response times when adjusting sliders, muting, or switching sources.
+
+### 2. Passive State & Volume Restoration
+Rebooting Home Assistant can often disrupt active audio playback. We resolved this by inheriting from Home Assistant's native **`RestoreEntity`** and **`RestoreNumber`** engines.
+* **Passive Boot**: During startup, the integration performs a completely silent restoration of player states, source selections, volume levels, mute states, and ceilings in memory. 
+* **Zero Command Boot**: No physical power, volume, or routing commands are sent to the hardware during startup. If you restart Home Assistant while the physical amplifier is actively playing in the background, your audio plays **completely uninterrupted** and the HA UI gracefully loads to reflect correct states.
+
+### 3. Glitch-Free Software Max Volume Capping
+The Control4 Matrix Amplifier's hardware-level limit command `c4.amp.chvolmax` has a firmware bug: receiving the command instantly sets the zone's active playback volume to that ceiling value.
+* **Enforced in Software**: To prevent this volume spike, adjusting the **Max Volume** slider now strictly and silently updates the limit inside Home Assistant's software memory. If the current playback volume exceeds the new cap, it immediately sends a smooth, capped volume update (`chvol`) to lower the active playback volume. No hardware `chvolmax` command is ever sent during slider adjustments.
+* **Silent Transition Syncing**: The hardware limit `chvolmax` is safely and silently synchronized to the physical amplifier only when the zone is quiet (during `async_turn_on()` and `async_turn_off()` transitions), ensuring the hardware and software limits remain perfectly aligned.
+
+### 4. Hardware-Fallback Native Muting
+To offer the cleanest audio cut, the integration uses a two-tiered muting system:
+1. **Native Muting**: Sends `c4.amp.mute {channel} 01` (mute) or `00` (unmute).
+2. **Software Fallback**: If the physical amplifier returns an unsupported error (`n01`) or times out, the integration automatically falls back to volume-based muting, instantly setting the hardware channel volume to 0% (hex value `9b`) and restoring it to the previous active level upon unmuting.
+
+### 5. Dynamic EQ Control Sliders
+When toggled on in the Options Flow, three `Number` entities are generated per zone:
+* 🔊 **Treble Slider**: `-12dB` to `+12dB` range.
+* 🔊 **Bass Slider**: `-12dB` to `+12dB` range.
+* 🔊 **Balance Slider**: `-10` (Left) to `+10` (Right) range (where `0` is center).
+
+#### Hardware Protocol Mechanics:
+The Control4 Matrix Amplifier expects EQ values as standard **8-bit signed two's complement hex bytes** (e.g., `-5` -> `fb`, `3` -> `03`, `0` -> `00`). The integration translates these ranges automatically on the fly. 
+
+If EQ controls are toggled **OFF**, the integration automatically contacts Home Assistant's `entity_registry` and programmatically purges them from the database, preventing ugly, ghost "unavailable" entities from cluttering your dashboard. Since the settings are saved on the physical hardware chips, whatever values you set will persist perfectly!
+
 ---
 
 ## Configuration & Usage
 
 ### Initial Setup
-1. Go to **Settings > Devices & Services**.
+1. Navigate to **Settings > Devices & Services**.
 2. Click **Add Integration** and search for **Control4 Media Player**.
-3. Provide the IP Address and Port (default 8750).
-4. Name your amplifier and define your initial input list.
-5. On the second screen, name each of your zones (e.g., "Kitchen", "Patio").
+3. Provide the **IP Address** and **Port** (default `8750`) of your Control4 Matrix Amplifier.
+4. Provide an optional custom name for your amplifier (e.g., "Main Amplifier").
+5. On the second screen, name the physical zone connected to that config flow channel (e.g., "Living Room").
 
-### Managing Zone Options
-Once installed, you can tune each zone by clicking the **Configure** button on the integration card:
-* **Zone Name**: Change the display name for that specific zone.
-* **Power On Volume**: Define the startup volume level.
-* **Source List**: Edit your input names.
-* **Sync to All**: Check **"Copy input list to all zones"** to push your current source names to every other zone on the amplifier automatically.
+> [!NOTE]
+> Each physical zone/channel on the amplifier is configured as an individual config entry in Home Assistant. This is a design requirement that allows Home Assistant to display a dedicated **Configure** button per zone.
+
+### Managing Zone Options (Options Flow)
+Click the **Configure** button on any of your zone cards to fine-tune its behavior:
+
+| Setting Option | Description |
+|---|---|
+| **Zone Name** | Custom display name for the media player and entities. |
+| **Power On Volume** | The startup volume percentage (0-100%) when turned on. |
+| **Source List** | Input source names (one per line, e.g. `Spotify`, `Apple TV`, `Sonos`). |
+| **Input Gain Offsets** | Trim values to balance different audio sources (one per line, e.g. `Input1: +2`). |
+| **Enable EQ Controls** | Check this box to dynamically expose Treble, Bass, and Balance sliders. |
+| **Copy to all zones** | Check this to instantly copy your current source list, input gains, and EQ toggle configuration to all other zones on this amplifier, saving you from repeating configuration screens! |
 
 ---
 
-## Behavior Notes & Guardrails
+## Custom Lovelace Companion Card
 
-* **Versioned Registry**: This integration uses a versioned unique ID system. When you upgrade or re-add the integration, it automatically purges old, orphaned entities from your Home Assistant registry to prevent "ghost" devices.
-* **Power-On Sequence**: Turning on a zone triggers a two-step UDP command: first, it sends a wake-up call to the amplifier's power-save system; second, it sets the zone to the designated Power On Volume and Source.
-* **Volume Mapping**: Volume levels in Home Assistant (0.0 to 1.0) are mapped to the Control4 hex scale with a protocol-required offset of 155. 
-* **State Synchronization**: Because the Control4 Matrix Amp does not provide a feedback state via UDP, Home Assistant manages the "assumed state". Clicking "Submit" in the Options menu will force a reload of the entity to ensure the UI reflects your latest settings.
-* **Bulk Updates**: Using the "Copy to all zones" feature will overwrite the `source_list` on all 8 entries but will *not* change their individual names or power-on volume settings.
+To get the absolute best visual experience, pair this integration with the custom source-centric card designed specifically for it.
 
-Example Dashboard Cards:
+👉 **Install**: [Control4 Media Player Lovelace Card](https://github.com/OtisPresley/control4-mediaplayer-card)
 
-<img src="https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/screenshot4.png" alt="Screenshot 4" width="300"/>
+<img src="https://raw.githubusercontent.com/otispresley/control4-mediaplayer/main/assets/screenshot4.png" alt="Screenshot" width="320"/>
+
+---
+
+## Services
+
+This integration exposes two highly powerful services to handle system-wide syncs and raw custom integrations.
+
+### `party_mode`
+Synchronizes all active zones on your amplifier to a single target input source and volume level instantly.
+* **Service ID**: `control4_mediaplayer.party_mode`
+* **Parameters**:
+  * `source` *(Required)*: The exact source name to route (e.g., `Spotify`).
+  * `volume` *(Optional)*: The master volume level (0-100%, default `50`).
+
+### `send_raw_command`
+Sends custom hex strings directly over UDP to target zones or the system. This is a bulletproof developer tool to integrate raw custom serial commands.
+* **Service ID**: `control4_mediaplayer.send_raw_command`
+* **Parameters**:
+  * `command` *(Required)*: The exact UDP raw string command (e.g., `c4.amp.trebgain 01 03`).
+  * `entity_id` *(Required)*: The target `media_player` or `number` entity ID to identify the correct manager.
 
 ---
 
 ## Troubleshooting
 
-* **Integration won't load/500 Error**: Ensure you have restarted Home Assistant after copying the files. The v27 architecture requires a clean boot to register the Options Flow handler.
-* **Entities missing after update**: If you previously used an older version (v26 or below), the v27 janitor logic in `__init__.py` will purge those entities to prevent registry corruption. Simply re-add the integration via the UI.
-* **Commands not responding**: Verify the IP address and Port (default 8750) are correct in your configuration. The integration uses one-way UDP; if the IP is wrong, Home Assistant will show the device as "On," but the physical amplifier will not react.
-* **Config changes not reflecting**: If names or inputs don't update instantly, ensure the `update_listener` is active. A single restart after the first installation usually resolves this.
+### Entities are Showing "Unavailable"
+* If you recently upgraded from an older version (v26 or below), the versioned registry janitor will clean up outdated entities to prevent database corruption. Simply re-add the integration via the integrations dashboard.
+* If you disabled **EQ Controls** in the Options flow, they are programmatically removed from the registry. This is expected behavior to keep your dashboard clean.
+
+### Command Latency or Physical Device Not Responding
+* Double-check that your Home Assistant host can reach your amplifier's IP address on Port `8750`.
+* Check the Home Assistant logs under **Settings > System > Logs** (search for `control4_mediaplayer`). The prefix acknowledgement system will log any timed out packets.
+* Verify the **UDP Timeout** setting in the Options Flow. A congested local network may require raising the timeout slightly (e.g., to `3.0` seconds).
 
 ---
 
 ## Known Limitations
 
-* **No State Feedback**: The Control4 Matrix Amp does not send status updates back over UDP. Home Assistant maintains an "assumed state." If you manually change a zone using a physical Control4 keypad, Home Assistant will not reflect that change.
-* **UDP Reliability**: As UDP is a connectionless protocol, commands can occasionally be dropped if your network is congested. The integration uses random counters to help the amp distinguish between unique commands.
-* **UI Only**: Configuration via `configuration.yaml` is not supported. All setup and zone adjustments must be done through the Home Assistant Integrations dashboard.
-* **Single Device Logic**: While all zones appear on a single device page, they are technically individual config entries. This is required to allow the "Configure" button to work for each specific zone.
+* **No Physical State Feedback**: The Control4 Matrix Amplifier does not stream physical state updates back over UDP. Home Assistant manages an "assumed state." If you adjust the volume using a separate, physical Control4 keypad or physical controller, Home Assistant's UI will not reflect that adjustment until a command is sent from HA.
+* **UI Config Only**: Setup via `configuration.yaml` is not supported.
 
 ---
 
 ## Acknowledgements
-This integration is a fork of the original [control4-mediaplayer](https://github.com/Hansen8601/control4-mediaplayer) by [@Hansen8601](https://github.com/Hansen8601) and based off the work of [@kmakar89](https://github.com/kmakar89).  
-Huge thanks to their initial work building the foundation that made this project possible.  
-This fork expands with config flow (UI), bulk add, advanced source editing, and other enhancements.
-
----
-
-## Support
-- [Open an issue](https://github.com/OtisPresley/control4-mediaplayer/issues) if you find a bug.
-- Contributions via PRs are welcome.
-
-If you find this integration useful and want to support development, you can:
-
-[![Buy Me a Coffee](https://img.shields.io/badge/Support-Buy%20Me%20a%20Coffee-orange)](https://www.buymeacoffee.com/OtisPresley)
-[![Donate via PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://paypal.me/OtisPresley)
+This integration is a fork of the original [control4-mediaplayer](https://github.com/Hansen8601/control4-mediaplayer) by [@Hansen8601](https://github.com/Hansen8601) and is built upon the foundational work of [@kmakar89](https://github.com/kmakar89).  
+Special thanks to their their initial work creating the network communications base that made this project possible.
 
 ---
 

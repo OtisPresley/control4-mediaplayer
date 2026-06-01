@@ -50,6 +50,7 @@ class Control4ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     vol.Required("source_list", default=default_sources): selector.TextSelector(
                         selector.TextSelectorConfig(multiline=True)
                     ),
+                    vol.Optional("enable_eq", default=False): bool,
                     vol.Optional("udp_timeout", default=DEFAULT_UDP_TIMEOUT): selector.NumberSelector(
                         selector.NumberSelectorConfig(
                             min=0.25,
@@ -101,9 +102,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
     async def async_step_zone_settings(self, user_input=None):
         if user_input is not None:
-            if user_input.pop("return_to_main", False):
-                return await self.async_step_init()
-
             sync_all = user_input.pop("copy_to_all", False)
             sync_timeout = user_input.pop("copy_timeout_to_all", False)
             new_data = {**self._entry.data, **user_input}
@@ -117,6 +115,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                         if sync_all:
                             updated_data["source_list"] = user_input.get("source_list")
                             updated_data["input_gains"] = user_input.get("input_gains", "")
+                            updated_data["enable_eq"] = user_input.get("enable_eq", False)
                         if sync_timeout:
                             updated_data["udp_timeout"] = user_input.get("udp_timeout", DEFAULT_UDP_TIMEOUT)
                         self.hass.config_entries.async_update_entry(entry, data=updated_data)
@@ -134,6 +133,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     vol.Required("source_list", default=self._entry.data.get("source_list", "")): selector.TextSelector(
                         selector.TextSelectorConfig(multiline=True)
                     ),
+                    vol.Optional("enable_eq", default=self._entry.data.get("enable_eq", False)): bool,
                     vol.Optional(
                         "input_gains",
                         default=self._entry.data.get("input_gains") or "0\n0\n0\n0\n0\n0\n0\n0"
@@ -153,7 +153,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     ),
                     vol.Optional("copy_to_all", default=False): bool,
                     vol.Optional("copy_timeout_to_all", default=False): bool,
-                    vol.Optional("return_to_main", default=False): bool,
                 }
             ),
         )

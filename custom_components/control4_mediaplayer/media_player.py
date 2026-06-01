@@ -6,8 +6,9 @@ from homeassistant.components.media_player import (
 )
 from homeassistant.const import STATE_OFF, STATE_ON
 from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.restore_state import RestoreEntity
 
-from .const import DOMAIN
+from .const import DOMAIN, get_entity_name, get_unique_id
 from .control4Amp import control4AmpChannel
 
 _LOGGER = logging.getLogger(__name__)
@@ -21,9 +22,11 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     # Retrieve the manager initialized in __init__.py
     manager = hass.data[DOMAIN][config_entry.entry_id]["manager"]
     
-    async_add_entities([C4MediaPlayer(host, port, channel, name, config_entry, manager)], update_before_add=True)
+    entity = C4MediaPlayer(host, port, channel, name, config_entry, manager)
+    hass.data[DOMAIN][config_entry.entry_id]["media_player"] = entity
+    async_add_entities([entity], update_before_add=True)
 
-class C4MediaPlayer(MediaPlayerEntity):
+class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
     _attr_supported_features = (
         MediaPlayerEntityFeature.VOLUME_SET | MediaPlayerEntityFeature.VOLUME_STEP |
         MediaPlayerEntityFeature.TURN_ON | MediaPlayerEntityFeature.TURN_OFF |
@@ -41,10 +44,10 @@ class C4MediaPlayer(MediaPlayerEntity):
 
         self._attr_has_entity_name = True
         
-        self._attr_name = config_entry.data.get("zone_custom_name", zone_custom_name)
+        self._attr_name = get_entity_name(config_entry.data.get("zone_custom_name", zone_custom_name))
         
         # Maintaining the v27_ prefix as explicitly requested by the user
-        self._attr_unique_id = f"v27_{host}_ch{channel}"
+        self._attr_unique_id = get_unique_id(host, channel)
         
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, f"v27_{host}_main_amp")},
@@ -67,11 +70,29 @@ class C4MediaPlayer(MediaPlayerEntity):
     @property
     def source(self): return self._source
 
+    @property
+    def max_volume(self) -> float:
+        """Return the current maximum volume level as a float (0.0 to 1.0)."""
+        max_vol_entity = self.hass.data[DOMAIN][self._config_entry.entry_id].get("max_volume_entity")
+        if max_vol_entity and max_vol_entity.native_value is not None:
+            return float(max_vol_entity.native_value) / 100.0
+        return 1.0
+
     async def async_turn_on(self):
+        # Update physical amp's max volume limit while it is still off/silent
+        max_vol_entity = self.hass.data[DOMAIN][self._config_entry.entry_id].get("max_volume_entity")
+        if max_vol_entity and max_vol_entity.native_value is not None:
+            await self._amp._manager.async_set_max_volume(self._channel, max_vol_entity.native_value)
+
         await self._amp.async_turn_on()
         
         on_vol_percent = self._config_entry.data.get("on_volume", 50)
         self._volume = on_vol_percent / 100.0
+        
+        # Cap the on_volume to max_volume if needed
+        max_vol = self.max_volume
+        if self._volume > max_vol:
+            self._volume = max_vol
         
         await self._amp.async_set_volume(self._volume)
         
@@ -81,9 +102,18 @@ class C4MediaPlayer(MediaPlayerEntity):
     async def async_turn_off(self):
         await self._amp.async_turn_off()
         self._state = STATE_OFF
+        
+        # Sync the physical amp's max volume limit now that the zone is off/silent
+        max_vol_entity = self.hass.data[DOMAIN][self._config_entry.entry_id].get("max_volume_entity")
+        if max_vol_entity and max_vol_entity.native_value is not None:
+            await self._amp._manager.async_set_max_volume(self._channel, max_vol_entity.native_value)
+            
         self.async_write_ha_state()
 
     async def async_set_volume_level(self, volume):
+        max_vol = self.max_volume
+        if volume > max_vol:
+            volume = max_vol
         await self._amp.async_set_volume(volume)
         self._volume = volume
         self.async_write_ha_state()
@@ -99,3 +129,33 @@ class C4MediaPlayer(MediaPlayerEntity):
             await self._amp.async_set_source(idx)
             self._source = source
             self.async_write_ha_state()
+
+    async def async_added_to_hass(self):
+        """Restore state on startup."""
+        await super().async_added_to_hass()
+        
+        last_state = await self.async_get_last_state()
+        if last_state:
+            self._state = last_state.state
+            
+            # Restore volume
+            if "volume_level" in last_state.attributes:
+                self._volume = float(last_state.attributes["volume_level"])
+            
+            # Restore muted
+            if "is_volume_muted" in last_state.attributes:
+                self._muted = bool(last_state.attributes["is_volume_muted"])
+            elif "muted" in last_state.attributes:
+                self._muted = bool(last_state.attributes["muted"])
+                
+            # Restore source
+            if "source" in last_state.attributes:
+                self._source = last_state.attributes["source"]
+                if self._source in self._source_list:
+                    idx = self._source_list.index(self._source) + 1
+                    self._amp._source = idx
+                    
+        # Software cap the restored volume on load (completely silent/passive)
+        max_vol = self.max_volume
+        if self._volume > max_vol:
+            self._volume = max_vol

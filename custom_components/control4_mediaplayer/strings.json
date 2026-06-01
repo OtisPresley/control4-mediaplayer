@@ -10,6 +10,7 @@
           "name": "Amplifier Name (Optional)",
           "amp_size": "Model / Zone Count",
           "source_list": "Input Names (One per line)",
+          "enable_eq": "Enable Treble/Bass/Balance EQ Controls",
           "udp_timeout": "UDP Timeout"
         }
       },
@@ -51,9 +52,9 @@
           "source_list": "Source List (One per line)",
           "input_gains": "Input Gain Offsets (e.g., Input1: +2)",
           "udp_timeout": "UDP Timeout",
-          "copy_to_all": "Copy source list and gains to all zones",
-          "copy_timeout_to_all": "Copy UDP timeout to all zones",
-          "return_to_main": "Go back to main menu"
+          "enable_eq": "Enable Treble/Bass/Balance EQ Controls",
+          "copy_to_all": "Copy source list, gains, and EQ settings to all zones",
+          "copy_timeout_to_all": "Copy UDP timeout to all zones"
         }
       },
       "manual_eq": {
@@ -75,8 +76,7 @@
           "b5_gain": "Band 5 Gain (dB)",
           "b5_freq": "Band 5 Frequency (kHz)",
           "b5_q": "Band 5 Q-Factor",
-          "copy_to_all": "Apply this EQ to all zones instantly",
-          "return_to_main": "Go back to main menu"
+          "copy_to_all": "Apply this EQ to all zones instantly"
         }
       },
       "manage_presets_menu": {
