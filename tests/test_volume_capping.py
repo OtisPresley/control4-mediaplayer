@@ -1,12 +1,12 @@
-import unittest
 import sys
-from unittest.mock import MagicMock, AsyncMock
+import unittest
+from unittest.mock import AsyncMock, MagicMock
 
 # Mock Home Assistant modules before importing our custom component if they are not installed
 try:
-    import homeassistant
-    import homeassistant.config_entries
-    import homeassistant.core
+    import homeassistant  # noqa: F401
+    import homeassistant.config_entries  # noqa: F401
+    import homeassistant.core  # noqa: F401
 except ImportError:
     from types import ModuleType
     
@@ -98,9 +98,10 @@ except ImportError:
     sys.modules["homeassistant.components.number"] = ha_num
 
 # Now import the actual code
+from custom_components.control4_mediaplayer.const import DOMAIN
 from custom_components.control4_mediaplayer.media_player import C4MediaPlayer
 from custom_components.control4_mediaplayer.number import C4MaxVolumeNumber
-from custom_components.control4_mediaplayer.const import DOMAIN
+
 
 class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
     async def test_volume_capping_and_sync(self):
