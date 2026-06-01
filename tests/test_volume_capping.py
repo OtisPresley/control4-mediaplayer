@@ -1,96 +1,104 @@
 import sys
 import unittest
-
-# Mock Home Assistant modules before importing our custom component
-from types import ModuleType
 from unittest.mock import AsyncMock, MagicMock
 
-# 1. Mock homeassistant
-ha = ModuleType("homeassistant")
-sys.modules["homeassistant"] = ha
+# Check if homeassistant is already installed/available
+try:
+    import homeassistant  # noqa: F401
+    HAS_HOMEASSISTANT = True
+except ModuleNotFoundError:
+    HAS_HOMEASSISTANT = False
 
-# 2. Mock homeassistant.config_entries
-ha_ce = ModuleType("homeassistant.config_entries")
-class DummyConfigEntry:
-    pass
-ha_ce.ConfigEntry = DummyConfigEntry
-sys.modules["homeassistant.config_entries"] = ha_ce
+if not HAS_HOMEASSISTANT:
+    # Mock Home Assistant modules before importing our custom component
+    from types import ModuleType
 
-# 3. Mock homeassistant.core
-ha_core = ModuleType("homeassistant.core")
-class DummyHomeAssistant:
-    pass
-ha_core.HomeAssistant = DummyHomeAssistant
-sys.modules["homeassistant.core"] = ha_core
+    # 1. Mock homeassistant
+    ha = ModuleType("homeassistant")
+    sys.modules["homeassistant"] = ha
 
-# 4. Mock homeassistant.const
-ha_const = ModuleType("homeassistant.const")
-ha_const.STATE_OFF = "off"
-ha_const.STATE_ON = "on"
-sys.modules["homeassistant.const"] = ha_const
-
-# 5. Mock homeassistant.helpers
-ha_helpers = ModuleType("homeassistant.helpers")
-sys.modules["homeassistant.helpers"] = ha_helpers
-
-# 6. Mock homeassistant.helpers.device_registry
-ha_dr = ModuleType("homeassistant.helpers.device_registry")
-ha_dr.DeviceInfo = MagicMock()
-sys.modules["homeassistant.helpers.device_registry"] = ha_dr
-
-# 7. Mock homeassistant.helpers.entity_registry
-ha_er = ModuleType("homeassistant.helpers.entity_registry")
-ha_er.async_get = MagicMock()
-sys.modules["homeassistant.helpers.entity_registry"] = ha_er
-
-# 7b. Mock homeassistant.helpers.restore_state
-ha_rs = ModuleType("homeassistant.helpers.restore_state")
-class DummyRestoreEntity:
-    async def async_added_to_hass(self):
+    # 2. Mock homeassistant.config_entries
+    ha_ce = ModuleType("homeassistant.config_entries")
+    class DummyConfigEntry:
         pass
-    async def async_get_last_state(self):
-        return getattr(self, "_mock_last_state", None)
-ha_rs.RestoreEntity = DummyRestoreEntity
-sys.modules["homeassistant.helpers.restore_state"] = ha_rs
+    ha_ce.ConfigEntry = DummyConfigEntry
+    sys.modules["homeassistant.config_entries"] = ha_ce
 
-# 8. Mock homeassistant.components
-ha_comp = ModuleType("homeassistant.components")
-sys.modules["homeassistant.components"] = ha_comp
+    # 3. Mock homeassistant.core
+    ha_core = ModuleType("homeassistant.core")
+    class DummyHomeAssistant:
+        pass
+    ha_core.HomeAssistant = DummyHomeAssistant
+    sys.modules["homeassistant.core"] = ha_core
 
-# 9. Mock homeassistant.components.media_player
-ha_mp = ModuleType("homeassistant.components.media_player")
-class DummyMediaPlayerEntity:
-    def async_write_ha_state(self):
-        pass
-ha_mp.MediaPlayerEntity = DummyMediaPlayerEntity
-class DummyMediaPlayerEntityFeature:
-    VOLUME_SET = 1
-    VOLUME_STEP = 2
-    TURN_ON = 4
-    TURN_OFF = 8
-    SELECT_SOURCE = 16
-    VOLUME_MUTE = 32
-ha_mp.MediaPlayerEntityFeature = DummyMediaPlayerEntityFeature
-sys.modules["homeassistant.components.media_player"] = ha_mp
+    # 4. Mock homeassistant.const
+    ha_const = ModuleType("homeassistant.const")
+    ha_const.STATE_OFF = "off"
+    ha_const.STATE_ON = "on"
+    sys.modules["homeassistant.const"] = ha_const
 
-# 10. Mock homeassistant.components.number
-ha_num = ModuleType("homeassistant.components.number")
-class DummyNumberEntity:
-    def async_write_ha_state(self):
-        pass
-    @property
-    def native_value(self):
-        return getattr(self, "_attr_native_value", None)
-        
-class DummyRestoreNumber(DummyNumberEntity):
-    async def async_added_to_hass(self):
-        pass
-    async def async_get_last_number_data(self):
-        return getattr(self, "_mock_last_number_data", None)
-        
-ha_num.NumberEntity = DummyNumberEntity
-ha_num.RestoreNumber = DummyRestoreNumber
-sys.modules["homeassistant.components.number"] = ha_num
+    # 5. Mock homeassistant.helpers
+    ha_helpers = ModuleType("homeassistant.helpers")
+    sys.modules["homeassistant.helpers"] = ha_helpers
+
+    # 6. Mock homeassistant.helpers.device_registry
+    ha_dr = ModuleType("homeassistant.helpers.device_registry")
+    ha_dr.DeviceInfo = MagicMock()
+    sys.modules["homeassistant.helpers.device_registry"] = ha_dr
+
+    # 7. Mock homeassistant.helpers.entity_registry
+    ha_er = ModuleType("homeassistant.helpers.entity_registry")
+    ha_er.async_get = MagicMock()
+    sys.modules["homeassistant.helpers.entity_registry"] = ha_er
+
+    # 7b. Mock homeassistant.helpers.restore_state
+    ha_rs = ModuleType("homeassistant.helpers.restore_state")
+    class DummyRestoreEntity:
+        async def async_added_to_hass(self):
+            pass
+        async def async_get_last_state(self):
+            return getattr(self, "_mock_last_state", None)
+    ha_rs.RestoreEntity = DummyRestoreEntity
+    sys.modules["homeassistant.helpers.restore_state"] = ha_rs
+
+    # 8. Mock homeassistant.components
+    ha_comp = ModuleType("homeassistant.components")
+    sys.modules["homeassistant.components"] = ha_comp
+
+    # 9. Mock homeassistant.components.media_player
+    ha_mp = ModuleType("homeassistant.components.media_player")
+    class DummyMediaPlayerEntity:
+        def async_write_ha_state(self):
+            pass
+    ha_mp.MediaPlayerEntity = DummyMediaPlayerEntity
+    class DummyMediaPlayerEntityFeature:
+        VOLUME_SET = 1
+        VOLUME_STEP = 2
+        TURN_ON = 4
+        TURN_OFF = 8
+        SELECT_SOURCE = 16
+        VOLUME_MUTE = 32
+    ha_mp.MediaPlayerEntityFeature = DummyMediaPlayerEntityFeature
+    sys.modules["homeassistant.components.media_player"] = ha_mp
+
+    # 10. Mock homeassistant.components.number
+    ha_num = ModuleType("homeassistant.components.number")
+    class DummyNumberEntity:
+        def async_write_ha_state(self):
+            pass
+        @property
+        def native_value(self):
+            return getattr(self, "_attr_native_value", None)
+            
+    class DummyRestoreNumber(DummyNumberEntity):
+        async def async_added_to_hass(self):
+            pass
+        async def async_get_last_number_data(self):
+            return getattr(self, "_mock_last_number_data", None)
+            
+    ha_num.NumberEntity = DummyNumberEntity
+    ha_num.RestoreNumber = DummyRestoreNumber
+    sys.modules["homeassistant.components.number"] = ha_num
 
 # Now import the actual code
 from custom_components.control4_mediaplayer.const import DOMAIN  # noqa: E402
@@ -235,7 +243,9 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
                 self.state = state
                 self.attributes = {"volume_level": volume_level}
                 
-        media_player._mock_last_state = DummyState("on", 0.9)
+        mock_state = DummyState("on", 0.9)
+        media_player._mock_last_state = mock_state
+        media_player.async_get_last_state = AsyncMock(return_value=mock_state)
         
         # Restore state on startup
         await media_player.async_added_to_hass()
@@ -372,9 +382,18 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
                 self.native_value = val
                 
         # Mock last saved state
-        treble_entity._mock_last_number_data = DummyNumberData(5.0)
-        bass_entity._mock_last_number_data = DummyNumberData(-2.0)
-        bal_entity._mock_last_number_data = DummyNumberData(-1.0)
+        treble_data = DummyNumberData(5.0)
+        bass_data = DummyNumberData(-2.0)
+        bal_data = DummyNumberData(-1.0)
+
+        treble_entity._mock_last_number_data = treble_data
+        treble_entity.async_get_last_number_data = AsyncMock(return_value=treble_data)
+
+        bass_entity._mock_last_number_data = bass_data
+        bass_entity.async_get_last_number_data = AsyncMock(return_value=bass_data)
+
+        bal_entity._mock_last_number_data = bal_data
+        bal_entity.async_get_last_number_data = AsyncMock(return_value=bal_data)
         
         # Call async_added_to_hass to trigger restoration
         manager.async_send_command = AsyncMock()
