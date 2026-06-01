@@ -5,7 +5,11 @@ from homeassistant.components.media_player import (
     MediaPlayerEntityFeature,
 )
 from homeassistant.const import STATE_OFF, STATE_ON
-from homeassistant.helpers.device_registry import DeviceInfo
+
+try:
+    from homeassistant.helpers.device_registry import DeviceInfo
+except ImportError:
+    from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.restore_state import RestoreEntity
 
 from .const import DOMAIN, get_entity_name, get_unique_id

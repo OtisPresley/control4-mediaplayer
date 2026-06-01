@@ -1,7 +1,11 @@
 import logging
 
 from homeassistant.components.number import RestoreNumber
-from homeassistant.helpers.device_registry import DeviceInfo
+
+try:
+    from homeassistant.helpers.device_registry import DeviceInfo
+except ImportError:
+    from homeassistant.helpers.entity import DeviceInfo
 
 from .const import DOMAIN, get_entity_name, get_unique_id
 
