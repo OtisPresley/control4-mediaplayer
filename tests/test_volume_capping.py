@@ -143,6 +143,7 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         
         # Instantiate Entities
         media_player = C4MediaPlayer("10.0.12.246", 8750, 1, "Living Room", entry, manager)
+        media_player.entity_id = "media_player.living_room"
         # Give media_player a mock hass
         media_player.hass = hass
         
@@ -150,6 +151,7 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         hass.data[DOMAIN]["test_entry_id"]["media_player"] = media_player
         
         max_volume_number = C4MaxVolumeNumber(hass, entry, manager, "10.0.12.246", 1, device_info, "Living Room")
+        max_volume_number.entity_id = "number.living_room_max_volume"
         hass.data[DOMAIN]["test_entry_id"]["max_volume_entity"] = max_volume_number
         
         # 1. Test max volume property retrieval
@@ -223,16 +225,19 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
                 "test_entry_id": {
                     "manager": manager
                 }
-            }
+            },
+            "entity_registry": MagicMock()
         }
         
         # Instantiate media player
         media_player = C4MediaPlayer("10.0.12.246", 8750, 1, "Living Room", entry, manager)
+        media_player.entity_id = "media_player.living_room"
         media_player.hass = hass
         
         # Setup max volume entity
         device_info = MagicMock()
         max_volume_number = C4MaxVolumeNumber(hass, entry, manager, "10.0.12.246", 1, device_info, "Living Room")
+        max_volume_number.entity_id = "number.living_room_max_volume"
         max_volume_number._attr_native_value = 80.0 # max volume is 80%
         hass.data[DOMAIN]["test_entry_id"]["max_volume_entity"] = max_volume_number
         hass.data[DOMAIN]["test_entry_id"]["media_player"] = media_player
@@ -269,6 +274,7 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         manager.async_send_command = AsyncMock(return_value="0r2a49 000")
         
         media_player = C4MediaPlayer("10.0.12.246", 8750, 1, "Living Room", entry, manager)
+        media_player.entity_id = "media_player.living_room"
         media_player.hass = hass
         media_player._volume = 0.25
         
@@ -289,6 +295,7 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         manager.async_send_command = AsyncMock(return_value=None)
         
         media_player = C4MediaPlayer("10.0.12.246", 8750, 1, "Living Room", entry, manager)
+        media_player.entity_id = "media_player.living_room"
         media_player.hass = hass
         media_player._volume = 0.25
         
@@ -321,12 +328,15 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         hass.config_entries.async_update_entry = mock_async_update_entry
         
         manager = MagicMock()
+        mock_ent_reg = MagicMock()
+        mock_ent_reg.async_get_entity_id.return_value = None
         hass.data = {
             DOMAIN: {
                 "test_entry_id": {
                     "manager": manager
                 }
-            }
+            },
+            "entity_registry": mock_ent_reg
         }
         
         registered_entities = []
@@ -350,10 +360,14 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         self.assertIn("C4MaxVolumeNumber", entity_classes)
         self.assertEqual(entity_classes.count("C4EQNumber"), 3)
         
-        # Find the treble, bass, balance entities by config key
+        # Find the treble, bass, balance entities by config key and set entity_ids
+        registered_entities[0].entity_id = "number.living_room_max_volume"
         treble_entity = next(e for e in registered_entities if getattr(e, "_config_key", None) == "treble")
+        treble_entity.entity_id = "number.living_room_treble"
         bass_entity = next(e for e in registered_entities if getattr(e, "_config_key", None) == "bass")
+        bass_entity.entity_id = "number.living_room_bass"
         bal_entity = next(e for e in registered_entities if getattr(e, "_config_key", None) == "balance")
+        bal_entity.entity_id = "number.living_room_balance"
         
         # Test C4TrebleNumber sends c4.amp.trebgain command
         manager.async_send_command = AsyncMock()
