@@ -1,6 +1,7 @@
 import logging
 
 from homeassistant.components.number import RestoreNumber
+from homeassistant.const import STATE_OFF
 
 try:
     from homeassistant.helpers.device_registry import DeviceInfo
@@ -183,7 +184,15 @@ class C4MaxVolumeNumber(C4NumberEntity):
                 current_volume = max_volume_float
                 media_player._volume = current_volume
                 media_player.async_write_ha_state()
+                # Re-apply the capped volume immediately to keep HA and hardware aligned
                 await media_player._amp.async_set_volume(current_volume)
+
+            # Sync the physical amp's max volume limit only if the zone is off/silent
+            if media_player.state == STATE_OFF:
+                await self._manager.async_set_max_volume(self._channel, value)
+        else:
+            # Fallback if media player entity isn't registered yet
+            await self._manager.async_set_max_volume(self._channel, value)
 
 
 class C4EQNumber(C4NumberEntity):

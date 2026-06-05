@@ -83,35 +83,39 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
         return 1.0
 
     async def async_turn_on(self):
-        # Update physical amp's max volume limit while it is still off/silent
-        max_vol_entity = self.hass.data[DOMAIN][self._config_entry.entry_id].get("max_volume_entity")
-        if max_vol_entity and max_vol_entity.native_value is not None:
-            await self._amp._manager.async_set_max_volume(self._channel, max_vol_entity.native_value)
+        # 1. Disable power save / wake up the system
+        await self._amp._manager.async_set_power_save(False)
 
-        await self._amp.async_turn_on()
-        
+        # 2. Calculate and cap the play volume
         on_vol_percent = self._config_entry.data.get("on_volume", 50)
         self._volume = on_vol_percent / 100.0
-        
-        # Cap the on_volume to max_volume if needed
         max_vol = self.max_volume
         if self._volume > max_vol:
             self._volume = max_vol
-        
+
+        # 3. Set the physical play volume (this corrects the volume register to the play volume!)
         await self._amp.async_set_volume(self._volume)
-        
+
+        # 4. Finally, route the input to start playing (guarantees zero volume spikes!)
+        if self._source in self._source_list:
+            idx = self._source_list.index(self._source) + 1
+        else:
+            idx = 1
+        self._amp._source = idx
+        await self._amp.async_set_source(idx)
+
         self._state = STATE_ON
         self.async_write_ha_state()
 
     async def async_turn_off(self):
         await self._amp.async_turn_off()
         self._state = STATE_OFF
-        
+
         # Sync the physical amp's max volume limit now that the zone is off/silent
         max_vol_entity = self.hass.data[DOMAIN][self._config_entry.entry_id].get("max_volume_entity")
         if max_vol_entity and max_vol_entity.native_value is not None:
             await self._amp._manager.async_set_max_volume(self._channel, max_vol_entity.native_value)
-            
+
         self.async_write_ha_state()
 
     async def async_set_volume_level(self, volume):

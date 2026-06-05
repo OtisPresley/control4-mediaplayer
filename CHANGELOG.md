@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.3-beta.1] - 2026-06-05
+
+### 🔧 Fixed
+- 🔊 **Speaker Startup Volume Blast**: Restructured maximum volume synchronization logic (`chvolmax`). The limit is now only sent to the physical hardware during silent/inactive states (when the zone is powered off, or when adjusting the slider while the zone is off). This prevents the physical amplifier from forcing the playback register to the maximum during turn-on transitions.
+
+---
+
 ## [2.3.2] - 2026-06-01
 
 ### 🚀 Added

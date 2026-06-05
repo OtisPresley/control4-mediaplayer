@@ -130,6 +130,7 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         manager = MagicMock()
         manager.async_send_command = AsyncMock(return_value="OK")
         manager.async_set_max_volume = AsyncMock()
+        manager.async_set_power_save = AsyncMock()
         
         hass.data = {
             DOMAIN: {
