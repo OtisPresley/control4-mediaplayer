@@ -83,20 +83,22 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
         return 1.0
 
     async def async_turn_on(self):
-        # 1. Disable power save / wake up the system
-        await self._amp._manager.async_set_power_save(False)
-
-        # 2. Calculate and cap the play volume
+        # 1. Calculate and cap the play volume
         on_vol_percent = self._config_entry.data.get("on_volume", 50)
         self._volume = on_vol_percent / 100.0
         max_vol = self.max_volume
         if self._volume > max_vol:
             self._volume = max_vol
 
-        # 3. Set the physical play volume (this corrects the volume register to the play volume!)
+        # 2. Pre-load the correct play volume into the amp BEFORE waking it from
+        #    power save. This ensures the register is already at the right level
+        #    the instant the amp resumes routing, preventing any volume blast.
         await self._amp.async_set_volume(self._volume)
 
-        # 4. Finally, route the input to start playing (guarantees zero volume spikes!)
+        # 3. Wake the system out of power save (amp now resumes at the correct volume)
+        await self._amp._manager.async_set_power_save(False)
+
+        # 4. Route the input to start playing
         if self._source in self._source_list:
             idx = self._source_list.index(self._source) + 1
         else:

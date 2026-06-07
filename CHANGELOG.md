@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.3-beta.2] - 2026-06-07
+
+### 🔧 Fixed
+- 🔊 **Speaker Startup Volume Blast (sub-second)**: Corrected the command order in the zone turn-on sequence. The play volume (`chvol`) is now written to the amplifier's register *before* the power-save wake command (`psave`) is sent. This ensures the volume register is already at the correct level the instant the amp resumes routing audio, eliminating the remaining sub-second blast at startup.
+
+---
+
 ## [2.3.3-beta.1] - 2026-06-05
 
 ### 🔧 Fixed
