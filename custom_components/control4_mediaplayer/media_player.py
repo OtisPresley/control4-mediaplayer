@@ -112,12 +112,6 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
     async def async_turn_off(self):
         await self._amp.async_turn_off()
         self._state = STATE_OFF
-
-        # Sync the physical amp's max volume limit now that the zone is off/silent
-        max_vol_entity = self.hass.data[DOMAIN][self._config_entry.entry_id].get("max_volume_entity")
-        if max_vol_entity and max_vol_entity.native_value is not None:
-            await self._amp._manager.async_set_max_volume(self._channel, max_vol_entity.native_value)
-
         self.async_write_ha_state()
 
     async def async_set_volume_level(self, volume):

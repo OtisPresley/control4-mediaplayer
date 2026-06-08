@@ -1,7 +1,6 @@
 import logging
 
 from homeassistant.components.number import RestoreNumber
-from homeassistant.const import STATE_OFF
 
 try:
     from homeassistant.helpers.device_registry import DeviceInfo
@@ -175,7 +174,10 @@ class C4MaxVolumeNumber(C4NumberEntity):
         )
 
     async def _async_send_value_command(self, value: float):
-        # Re-apply current volume of media player to ensure the physical amp matches HA state
+        # Software-only volume capping: cap the active play volume in HA and
+        # send a chvol command if it exceeds the new maximum. No hardware
+        # chvolmax command is ever sent to avoid amplifier register corruption
+        # that causes audible volume blasts.
         media_player = self.hass.data[DOMAIN][self._config_entry.entry_id].get("media_player")
         if media_player:
             current_volume = media_player.volume_level  # float 0.0 to 1.0
@@ -184,15 +186,7 @@ class C4MaxVolumeNumber(C4NumberEntity):
                 current_volume = max_volume_float
                 media_player._volume = current_volume
                 media_player.async_write_ha_state()
-                # Re-apply the capped volume immediately to keep HA and hardware aligned
                 await media_player._amp.async_set_volume(current_volume)
-
-            # Sync the physical amp's max volume limit only if the zone is off/silent
-            if media_player.state == STATE_OFF:
-                await self._manager.async_set_max_volume(self._channel, value)
-        else:
-            # Fallback if media player entity isn't registered yet
-            await self._manager.async_set_max_volume(self._channel, value)
 
 
 class C4EQNumber(C4NumberEntity):

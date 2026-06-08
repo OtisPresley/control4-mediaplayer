@@ -198,11 +198,11 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         # But it should send chvol to cap the active volume
         manager.async_send_command.assert_any_call("c4.amp.chvol 01 b9") # 30 + 155 = 185 = b9
         
-        # Now let's turn off the zone. This should safely sync the max volume limit to the hardware.
+        # Now let's turn off the zone. Hardware chvolmax is NOT sent (software-only capping).
         manager.async_set_max_volume.reset_mock()
         await media_player.async_turn_off()
         self.assertEqual(media_player.state, "off")
-        manager.async_set_max_volume.assert_called_with(1, 30.0)
+        manager.async_set_max_volume.assert_not_called()
 
     async def test_media_player_state_restoration_sync(self):
         # Verify media player state restoration and playing sync on startup
