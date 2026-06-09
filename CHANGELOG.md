@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.3] - 2026-06-09
+
+### 🔧 Fixed
+- 🔇 **Speaker Startup Volume Blast (eliminated)**: Switched to **software-only** volume capping. The hardware max-volume limit command (`c4.amp.chvolmax`) is no longer sent to the physical amplifier under any circumstances. Every time this command was dispatched — even while the zone was silent — the amplifier's internal playback register was being overwritten with the maximum limit, causing an audible blast on the next turn-on. All capping is now enforced purely in Home Assistant software via `chvol`, which is safe and reliable in all conditions.
+
+---
+
 ## [2.3.3-beta.3] - 2026-06-08
 
 ### 🔧 Fixed
