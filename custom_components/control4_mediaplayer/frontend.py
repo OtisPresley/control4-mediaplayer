@@ -2,7 +2,13 @@ import json
 import logging
 from pathlib import Path
 
-from homeassistant.components.http import StaticPathConfig
+try:
+    from homeassistant.components.http import StaticPathConfig
+
+    HAS_STATIC_PATH_CONFIG = True
+except ImportError:
+    HAS_STATIC_PATH_CONFIG = False
+
 from homeassistant.core import HomeAssistant
 
 _LOGGER = logging.getLogger(__name__)
@@ -19,16 +25,24 @@ async def async_register_frontend(hass: HomeAssistant) -> None:
         _LOGGER.warning("Frontend directory not found at %s", frontend_dir)
         return
 
-    # Use the async path registration
-    await hass.http.async_register_static_paths(
-        [
-            StaticPathConfig(
-                url_path=f"{URL_BASE}/{CARD_FILENAME}",
-                path=str(frontend_dir / CARD_FILENAME),
-                cache_headers=False,
-            )
-        ]
-    )
+    if HAS_STATIC_PATH_CONFIG:
+        # Use the async path registration
+        await hass.http.async_register_static_paths(
+            [
+                StaticPathConfig(
+                    url_path=f"{URL_BASE}/{CARD_FILENAME}",
+                    path=str(frontend_dir / CARD_FILENAME),
+                    cache_headers=False,
+                )
+            ]
+        )
+    else:
+        # Fallback for older HA versions (like those in test environments)
+        hass.http.register_static_path(
+            f"{URL_BASE}/{CARD_FILENAME}",
+            str(frontend_dir / CARD_FILENAME),
+            False,
+        )
 
     # 2. Register the Lovelace resource
     # To avoid the lazy loading data loss bug, we ensure the resources are loaded first.
