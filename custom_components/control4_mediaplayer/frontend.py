@@ -1,4 +1,3 @@
-import json
 import logging
 from pathlib import Path
 
@@ -67,19 +66,17 @@ async def async_register_frontend(hass: HomeAssistant) -> None:
     if not resources.loaded:
         await resources.async_load()
 
-    # Find the version from manifest.json
-    version = "2.3.4"
+    # Find the version dynamically from the integration manifest
     try:
-        manifest_path = Path(__file__).parent / "manifest.json"
+        from homeassistant.loader import async_get_integration
 
-        def _load_manifest_version():
-            with open(manifest_path, encoding="utf-8") as f:
-                manifest = json.load(f)
-                return manifest.get("version", version)
+        from .const import DOMAIN
 
-        version = await hass.async_add_executor_job(_load_manifest_version)
+        integration = await async_get_integration(hass, DOMAIN)
+        version = integration.version
     except Exception as err:
-        _LOGGER.warning("Could not read manifest.json for version: %s", err)
+        _LOGGER.warning("Could not retrieve integration version: %s", err)
+        version = "2.3.4"
 
     url = f"{URL_BASE}/{CARD_FILENAME}?v={version}"
 
