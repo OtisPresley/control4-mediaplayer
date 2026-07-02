@@ -5,7 +5,10 @@
     "@OtisPresley"
   ],
   "config_flow": true,
-  "dependencies": [],
+  "dependencies": [
+    "frontend",
+    "http"
+  ],
   "documentation": "https://github.com/OtisPresley/control4-mediaplayer",
   "integration_type": "device",
   "iot_class": "assumed_state",

@@ -139,11 +139,48 @@ Click the **Configure** button on any of your zone cards to fine-tune its behavi
 
 ## Custom Lovelace Companion Card
 
-To get the absolute best visual experience, pair this integration with the custom source-centric card designed specifically for it.
+This integration includes a gorgeous, **Source-Centric** custom Lovelace Card featuring a Glassmorphism design, built exclusively for it. 
 
-👉 **Install**: [Control4 Media Player Lovelace Card](https://github.com/OtisPresley/control4-mediaplayer-card)
+### 🚫 No Manual Resource Configuration Required
+The card is bundled directly inside the integration and is automatically registered as a dashboard resource during setup. 
 
-<img width="796" height="534" alt="image" src="https://github.com/user-attachments/assets/a6865404-f68b-4eb2-98fd-964b19a646da" alt="Screenshot" width="320"/>
+After installing the integration and restarting Home Assistant, reload your browser cache. The card will then be available in your card picker as:
+
+**Custom: Control4 Glass Source Card**
+
+### Card Features
+
+- 🎯 **Source-Centric Design**: Tie a Home Assistant media player (e.g., Spotify) directly to a Control4 Amplifier Input.
+- 🔊 **Dynamic Active Zones**: Automatically detects and displays volume controls for zones currently listening to the selected source.
+- 🪟 **Glassmorphism UI**: Sleek, modern design with background blur and frosted glass aesthetics that matches artwork colors!
+- 🎨 **Visual Editor**: Full support for the native Home Assistant UI editor—no YAML required!
+
+<p align="center">
+  <img width="32%" alt="image" src="https://github.com/user-attachments/assets/5bb373a9-de7a-4310-bd27-4356ad52330e" />
+  <img width="32%" alt="image" src="https://github.com/user-attachments/assets/c6709698-3234-470b-8600-a00d8d488685" />
+  <img width="32%" alt="image" src="https://github.com/user-attachments/assets/b904325e-602a-49d1-9723-17d3d9770549" />
+</p>
+
+### ⚙️ Configuration & Usage
+
+#### Card Options
+When you add the card to your dashboard, you can configure it using the visual editor:
+- **Title**: The title displayed at the top of the card (e.g., "Command Center").
+- **Default Zone**: Select the zone that should be active by default when the card loads.
+- **Unjoin Default Input**: Specify the input that a zone should switch back to when you "Unjoin" or unlink it from a group (defaults to the first available input if not set).
+- **Mappings**: Map your **Amplifier Input Names** to your **Home Assistant Media Players** (e.g., mapping Input `Spotify` to `media_player.spotify`). This allows the card to fetch artwork and control playback!
+
+#### ⭐ Managing Favorites
+Save your favorite inputs or specific media commands for quick recall:
+- **Save a Favorite**: Click the ⭐ icon next to the media info.
+- **Add Manual Favorite**: Click the `+` icon in the Favorites section to manually define a name, target input, and command (e.g., "Play NPR").
+- **Recall**: Click a favorite chip to instantly switch the zone to that input and send the command to the mapped player!
+- **Delete**: Click the `x` on a favorite chip to remove it.
+
+#### 🔗 Linking & Unlinking Zones (Multi-Room Audio)
+Since the legacy amplifier firmware does not support native hardware linking, this card simulates multi-room audio by grouping zones to the same source:
+- **Link a Zone**: Click on a grayed-out zone chip in the "Linked Zones (Join)" section. This will switch that zone to the *same input* as your current active zone, and it will now show up with its own volume slider!
+- **Unlink a Zone**: Click on a highlighted blue zone chip. This will switch that zone back to its default input (or the first available input), removing it from the group.
 
 ---
 

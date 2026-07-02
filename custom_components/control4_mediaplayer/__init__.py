@@ -6,9 +6,17 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 
 from .const import DEFAULT_UDP_TIMEOUT, DOMAIN, PREFIX
+from .frontend import async_register_frontend
 from .manager import Control4Manager
 
 _LOGGER = logging.getLogger(__name__)
+
+
+async def async_setup(hass: HomeAssistant, config: dict) -> bool:
+    """Set up the Control4 Media Player integration."""
+    await async_register_frontend(hass)
+    return True
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     ent_reg = er.async_get(hass)
@@ -17,16 +25,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # Registry cleanup logic remains exactly as is
     entities_to_remove = [
-        entity.entity_id for entity in ent_reg.entities.values() 
+        entity.entity_id
+        for entity in ent_reg.entities.values()
         if entity.platform == DOMAIN and not str(entity.unique_id).startswith(prefix)
     ]
     for entity_id in entities_to_remove:
         ent_reg.async_remove(entity_id)
 
     devices_to_remove = [
-        device.id for device in dev_reg.devices.values() 
-        if any(identifier[0] == DOMAIN and not str(identifier[1]).startswith(prefix) 
-               for identifier in device.identifiers)
+        device.id
+        for device in dev_reg.devices.values()
+        if any(
+            identifier[0] == DOMAIN and not str(identifier[1]).startswith(prefix) for identifier in device.identifiers
+        )
     ]
     for device_id in devices_to_remove:
         dev_reg.async_remove_device(device_id)
@@ -46,9 +57,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data.setdefault(DOMAIN, {})
     manager = Control4Manager(host, port, udp_timeout)
-    hass.data[DOMAIN][entry.entry_id] = {
-        "manager": manager
-    }
+    hass.data[DOMAIN][entry.entry_id] = {"manager": manager}
 
     # Force device name to match user-set name from config entry
     device = dev_reg.async_get_device(identifiers={(DOMAIN, f"v27_{host}_main_amp")})
@@ -70,9 +79,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     except ValueError:
                         _LOGGER.warning("Invalid input gain value in config: %s", gain)
 
-
-
     if not hass.services.has_service(DOMAIN, "party_mode"):
+
         async def handle_party_mode(call):
             source = call.data.get("source")
             volume = call.data.get("volume", 50)
@@ -92,12 +100,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.services.async_register(DOMAIN, "party_mode", handle_party_mode)
 
     if not hass.services.has_service(DOMAIN, "send_raw_command"):
+
         async def handle_send_raw_command(call):
             command = call.data.get("command")
             entity_ids = call.data.get("entity_id", [])
             if isinstance(entity_ids, str):
                 entity_ids = [entity_ids]
-            
+
             for entity_id in entity_ids:
                 entity = ent_reg.async_get(entity_id)
                 if entity and entity.config_entry_id in hass.data.get(DOMAIN, {}):
@@ -108,20 +117,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     entry.async_on_unload(entry.add_update_listener(update_listener))
 
-    await hass.config_entries.async_forward_entry_setups(
-        entry, ["media_player", "number"]
-    )
+    await hass.config_entries.async_forward_entry_setups(entry, ["media_player", "number"])
     return True
+
 
 async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Handle options update."""
     await hass.config_entries.async_reload(entry.entry_id)
 
+
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload entry."""
-    unload_ok = await hass.config_entries.async_unload_platforms(
-        entry, ["media_player", "number"]
-    )
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, ["media_player", "number"])
     if unload_ok and entry.entry_id in hass.data.get(DOMAIN, {}):
         hass.data[DOMAIN].pop(entry.entry_id)
     return unload_ok
