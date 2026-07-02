@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.4] - 2026-07-02
+
+### 🚀 Added
+- 📦 **Embedded Lovelace Companion Card**: Bundled the `control4-mediaplayer-card` directly inside the integration repo, serving it on startup and automatically registering it as a Lovelace resource (for storage dashboards).
+
+### 🔧 Fixed
+- 🌐 **LovelaceData Attribute Compatibility**: Fixed startup failure on Home Assistant 2026.2+ by checking for both `resource_mode` and `mode` attributes.
+- ⚙️ **Event Loop Safety (Non-blocking I/O)**: Moved the `manifest.json` file read to Home Assistant's executor thread pool to prevent blocking the async event loop.
+- 🧪 **Testing Environment Backward Compatibility**: Conditionally import `StaticPathConfig` and fall back to synchronous static path registration to support unit testing suites executing under older HA environments (like `homeassistant==2023.7.3`).
+
+---
+
 ## [2.3.3] - 2026-06-09
 
 ### 🔧 Fixed

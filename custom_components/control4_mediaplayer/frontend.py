@@ -68,7 +68,7 @@ async def async_register_frontend(hass: HomeAssistant) -> None:
         await resources.async_load()
 
     # Find the version from manifest.json
-    version = "2.3.3"
+    version = "2.3.4"
     try:
         manifest_path = Path(__file__).parent / "manifest.json"
 
