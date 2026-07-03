@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.5] - 2026-07-03
+
+### 🔧 Fixed
+- 🎨 **Light Theme Compatibility**: Fixed rendering issues of the companion card and configuration editor under Light dashboard themes. Replaced hardcoded text/background colors with theme-adaptive Home Assistant CSS variables and dynamic overrides.
+
+---
+
 ## [2.3.4] - 2026-07-02
 
 ### 🚀 Added

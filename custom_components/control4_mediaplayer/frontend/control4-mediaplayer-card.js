@@ -234,16 +234,38 @@ class Control4Card extends HTMLElement {
       this.innerHTML = `
         <style>
           .glass-card {
+            --text-color: var(--primary-text-color, white);
+            --text-color-secondary: var(--secondary-text-color, rgba(255, 255, 255, 0.5));
+            --text-color-disabled: var(--disabled-text-color, rgba(255, 255, 255, 0.3));
+            --card-bg: var(--ha-card-background, var(--card-background-color, rgba(255, 255, 255, 0.05)));
+            --border-color: var(--ha-card-border-color, rgba(255, 255, 255, 0.1));
+            --glass-bg: rgba(var(--rgb-primary-text-color, 255, 255, 255), 0.05);
+            --glass-bg-hover: rgba(var(--rgb-primary-text-color, 255, 255, 255), 0.1);
+            --glass-bg-active: rgba(var(--rgb-primary-text-color, 255, 255, 255), 0.15);
+            --select-arrow: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            
             position: relative;
-            background: rgba(255, 255, 255, 0.05) !important;
+            background: var(--card-bg) !important;
             backdrop-filter: blur(10px) !important;
             -webkit-backdrop-filter: blur(10px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            border-radius: 16px !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: var(--ha-card-border-radius, 16px) !important;
             padding: 20px !important;
-            color: white !important;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+            color: var(--text-color) !important;
+            box-shadow: var(--ha-card-box-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.37)) !important;
             overflow: hidden;
+          }
+          
+          .glass-card.has-artwork {
+            --text-color: white;
+            --text-color-secondary: rgba(255, 255, 255, 0.6);
+            --text-color-disabled: rgba(255, 255, 255, 0.3);
+            --card-bg: rgba(0, 0, 0, 0.25);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg-hover: rgba(255, 255, 255, 0.15);
+            --glass-bg-active: rgba(255, 255, 255, 0.2);
+            --select-arrow: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
           }
           
           .card-bg {
@@ -274,15 +296,15 @@ class Control4Card extends HTMLElement {
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-color-secondary);
           }
           
           .glass-select {
             width: 100%;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.05) !important;
-            color: white !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: var(--glass-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color) !important;
             border-radius: 8px !important;
             font-size: 14px;
             backdrop-filter: blur(5px);
@@ -290,7 +312,7 @@ class Control4Card extends HTMLElement {
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            background-image: var(--select-arrow);
             background-repeat: no-repeat;
             background-position-x: 98%;
             background-position-y: 50%;
@@ -298,11 +320,16 @@ class Control4Card extends HTMLElement {
           }
           
           .glass-select:focus {
-            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            border: 1px solid var(--text-color-secondary) !important;
             outline: none;
           }
           
           .glass-select option {
+            background: var(--card-background-color, #2c2c2c);
+            color: var(--primary-text-color, white);
+          }
+          
+          .glass-card.has-artwork .glass-select option {
             background: #2c2c2c;
             color: white;
           }
@@ -317,11 +344,11 @@ class Control4Card extends HTMLElement {
           .power-btn {
             background: none;
             border: none;
-            color: ${isOn ? '#03a9f4' : 'rgba(255,255,255,0.4)'};
+            color: ${isOn ? '#03a9f4' : 'var(--text-color-disabled)'};
             cursor: pointer;
             padding: 8px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.05);
+            background: var(--glass-bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -331,10 +358,10 @@ class Control4Card extends HTMLElement {
             display: flex;
             flex-direction: column;
             align-items: stretch;
-            background: rgba(255,255,255,0.03);
+            background: var(--glass-bg);
             padding: 10px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
             min-width: 0; /* Prevent grid overflow */
           }
           
@@ -342,7 +369,7 @@ class Control4Card extends HTMLElement {
             font-size: 12px;
             font-weight: bold;
             margin-bottom: 4px;
-            color: rgba(255,255,255,0.9);
+            color: var(--text-color);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -366,24 +393,25 @@ class Control4Card extends HTMLElement {
             font-size: 13px;
             width: 35px;
             text-align: right;
-            color: rgba(255,255,255,0.7);
+            color: var(--text-color-secondary);
             flex-shrink: 0; /* Prevent percentage from shrinking */
           }
           
           .fav-chip {
-            background: rgba(255,255,255,0.05);
+            background: var(--glass-bg);
             padding: 6px 12px;
             border-radius: 16px;
             font-size: 12px;
+            color: var(--text-color);
             cursor: pointer;
             display: flex;
             align-items: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
           }
           
           .fav-chip:hover {
-            background: rgba(255,255,255,0.15);
+            background: var(--glass-bg-hover);
             transform: translateY(-1px);
           }
           
@@ -397,11 +425,11 @@ class Control4Card extends HTMLElement {
           .control-btn {
             background: none;
             border: none;
-            color: white;
+            color: var(--text-color);
             cursor: pointer;
             padding: 10px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.08);
+            background: var(--glass-bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -411,7 +439,7 @@ class Control4Card extends HTMLElement {
           }
           
           .control-btn:hover {
-            background: rgba(255,255,255,0.2);
+            background: var(--glass-bg-hover);
             transform: scale(1.05);
           }
           
@@ -425,20 +453,21 @@ class Control4Card extends HTMLElement {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 8px;
-            background: rgba(255,255,255,0.03);
+            background: var(--glass-bg);
             padding: 12px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
           }
           
           .zone-chip {
-            background: rgba(255,255,255,0.05);
+            background: var(--glass-bg);
             padding: 8px;
             border-radius: 6px;
             font-size: 12px;
+            color: var(--text-color);
             cursor: pointer;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
             transition: all 0.2s;
             white-space: nowrap;
             overflow: hidden;
@@ -453,7 +482,7 @@ class Control4Card extends HTMLElement {
           }
           
           .zone-chip:hover {
-            background: rgba(255,255,255,0.1);
+            background: var(--glass-bg-hover);
           }
           
           .zone-chip.joined:hover {
@@ -471,19 +500,19 @@ class Control4Card extends HTMLElement {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            background: rgba(255,255,255,0.03);
+            background: var(--glass-bg);
             padding: 12px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
             margin-bottom: 12px;
           }
           
           .manual-fav-form input, .manual-fav-form select {
             width: 100%;
             padding: 8px;
-            background: rgba(255,255,255,0.05) !important;
-            color: white !important;
-            border: 1px solid rgba(255,255,255,0.1) !important;
+            background: var(--glass-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color) !important;
             border-radius: 4px !important;
             font-size: 13px;
             box-sizing: border-box !important;
@@ -504,6 +533,11 @@ class Control4Card extends HTMLElement {
           }
           
           .manual-fav-form select option {
+            background: var(--card-background-color, #2c2c2c) !important;
+            color: var(--primary-text-color, white) !important;
+          }
+          
+          .glass-card.has-artwork .manual-fav-form select option {
             background: #2c2c2c !important;
             color: white !important;
           }
@@ -511,7 +545,7 @@ class Control4Card extends HTMLElement {
 
         </style>
 
-        <ha-card class="glass-card">
+        <ha-card class="glass-card ${artwork ? 'has-artwork' : ''}">
           <div class="card-bg"></div>
           
           <div class="card-content">
@@ -528,28 +562,28 @@ class Control4Card extends HTMLElement {
                 <!-- Media Info -->
                 <div id="media-info-container">
                   ${mappedPlayerState ? `
-                    <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; position: relative; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="background: var(--glass-bg); padding: 16px; border-radius: 12px; position: relative; border: 1px solid var(--border-color);">
                       <div style="display: flex; align-items: center;">
                         <div class="media-artwork" style="margin-right: 16px;">
                           ${artwork ? `
                             <img src="${artwork}" style="width: 70px; height: 70px; border-radius: 8px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
                           ` : `
-                            <div style="width: 70px; height: 70px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
-                              <ha-icon icon="mdi:music" style="color: rgba(255,255,255,0.2); font-size: 30px;"></ha-icon>
+                            <div style="width: 70px; height: 70px; border-radius: 8px; background: var(--glass-bg); display: flex; align-items: center; justify-content: center;">
+                              <ha-icon icon="mdi:music" style="color: var(--text-color-disabled); font-size: 30px;"></ha-icon>
                             </div>
                           `}
                         </div>
                         <div style="flex: 1; min-width: 0; padding-right: 70px;">
                           <div class="media-title" style="font-weight: bold; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">${mappedPlayerState.attributes.media_title || 'Unknown Title'}</div>
-                          <div class="media-artist" style="font-size: 13px; color: rgba(255,255,255,0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">${mappedPlayerState.attributes.media_artist || 'Unknown Artist'}</div>
-                          <div style="font-size: 11px; color: rgba(255,255,255,0.3);">via ${mappedPlayerState.attributes.friendly_name || mappedPlayerId}</div>
+                          <div class="media-artist" style="font-size: 13px; color: var(--text-color-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">${mappedPlayerState.attributes.media_artist || 'Unknown Artist'}</div>
+                          <div style="font-size: 11px; color: var(--text-color-disabled);">via ${mappedPlayerState.attributes.friendly_name || mappedPlayerId}</div>
                         </div>
                         <div style="position: absolute; right: 12px; top: 12px; display: flex; gap: 8px;">
 
-                          <button id="browse-btn" style="background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; padding: 2px;" title="Browse Media">
+                          <button id="browse-btn" style="background: none; border: none; color: var(--text-color-secondary); cursor: pointer; padding: 2px;" title="Browse Media">
                             <ha-icon icon="mdi:folder-music"></ha-icon>
                           </button>
-                          <button id="fav-btn" style="background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; padding: 2px;" title="Save as Favorite">
+                          <button id="fav-btn" style="background: none; border: none; color: var(--text-color-secondary); cursor: pointer; padding: 2px;" title="Save as Favorite">
                             <ha-icon icon="mdi:star-outline"></ha-icon>
                           </button>
                         </div>
@@ -558,12 +592,12 @@ class Control4Card extends HTMLElement {
                       <!-- Source Player Controls -->
                       <div class="player-controls">
                         <button class="control-btn" id="prev-btn" title="Previous"><ha-icon icon="mdi:skip-previous"></ha-icon></button>
-                        <button class="control-btn" id="play-btn" style="width: 46px; height: 46px; background: rgba(255,255,255,0.15);" title="Play/Pause"><ha-icon icon="${mappedPlayerState.state === 'playing' ? 'mdi:pause' : 'mdi:play'}"></ha-icon></button>
+                        <button class="control-btn" id="play-btn" style="width: 46px; height: 46px; background: var(--glass-bg-active);" title="Play/Pause"><ha-icon icon="${mappedPlayerState.state === 'playing' ? 'mdi:pause' : 'mdi:play'}"></ha-icon></button>
                         <button class="control-btn" id="next-btn" title="Next"><ha-icon icon="mdi:skip-next"></ha-icon></button>
                       </div>
                     </div>
                   ` : `
-                    <div style="text-align: center; color: rgba(255,255,255,0.3); font-size: 13px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); position: relative;">
+                    <div style="text-align: center; color: var(--text-color-disabled); font-size: 13px; padding: 20px; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--border-color); position: relative;">
                       No player mapped for this input.
                       <div style="position: absolute; right: 12px; top: 12px;">
 
@@ -583,7 +617,7 @@ class Control4Card extends HTMLElement {
                         ${getShortName(this._hass.states[this.selectedZoneId]?.attributes?.friendly_name || 'Main Zone')}
                       </div>
                       <div class="vol-control-row">
-                        <button id="mute-btn" style="background:none; border:none; color:white; cursor:pointer; padding:2px; display:flex; align-items:center;">
+                        <button id="mute-btn" style="background:none; border:none; color: var(--text-color); cursor:pointer; padding:2px; display:flex; align-items:center;">
                           <ha-icon icon="${isMuted ? 'mdi:volume-off' : 'mdi:volume-high'}" style="font-size: 20px;"></ha-icon>
                         </button>
                         <input id="volume-slider" class="vol-slider" type="range" min="0" max="100" value="${vol}">
@@ -603,7 +637,7 @@ class Control4Card extends HTMLElement {
                         <div class="vol-container">
                           <div class="vol-title">${shortName}</div>
                           <div class="vol-control-row">
-                            <button class="linked-mute-btn" data-zone="${id}" style="background:none; border:none; color:white; cursor:pointer; padding:2px; display:flex; align-items:center;">
+                            <button class="linked-mute-btn" data-zone="${id}" style="background:none; border:none; color: var(--text-color); cursor:pointer; padding:2px; display:flex; align-items:center;">
                               <ha-icon icon="${zMuted ? 'mdi:volume-off' : 'mdi:volume-high'}" style="font-size: 20px;"></ha-icon>
                             </button>
                             <input class="linked-vol-slider" data-zone="${id}" type="range" min="0" max="100" value="${zVol}" style="flex: 1; margin: 0; accent-color: #03a9f4; min-width: 50px;">
@@ -649,7 +683,7 @@ class Control4Card extends HTMLElement {
                         </div>
                       `;
                     }).join('')}
-                    ${zones.length <= 1 ? `<div style="font-size: 11px; color: rgba(255,255,255,0.3); grid-column: 1 / -1; text-align: center;">No other zones available.</div>` : ''}
+                    ${zones.length <= 1 ? `<div style="font-size: 11px; color: var(--text-color-disabled); grid-column: 1 / -1; text-align: center;">No other zones available.</div>` : ''}
                   </div>
                 </div>
                 
@@ -657,7 +691,7 @@ class Control4Card extends HTMLElement {
                 <div>
                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <label class="glass-label" style="margin-bottom: 0;">Favorites</label>
-                    <button id="toggle-manual-fav" style="background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; display: flex; align-items: center;" title="Add Manual Favorite">
+                    <button id="toggle-manual-fav" style="background: none; border: none; color: var(--text-color-secondary); cursor: pointer; display: flex; align-items: center;" title="Add Manual Favorite">
                       <ha-icon icon="mdi:plus" style="font-size: 20px;"></ha-icon>
                     </button>
                   </div>
@@ -680,7 +714,7 @@ class Control4Card extends HTMLElement {
                       </div>
                     `).join('')}
                     ${(favorites.length === 0) ? `
-                      <div style="font-size: 12px; color: rgba(255,255,255,0.3); padding: 10px; text-align: center; background: rgba(255,255,255,0.02); border-radius: 8px; width: 100%;">No favorites saved yet.</div>
+                      <div style="font-size: 12px; color: var(--text-color-disabled); padding: 10px; text-align: center; background: var(--glass-bg); border-radius: 8px; width: 100%;">No favorites saved yet.</div>
                     ` : ''}
                   </div>
                 </div>
@@ -1081,13 +1115,14 @@ class Control4Card extends HTMLElement {
     }
     
     if (powerBtn) {
-      powerBtn.style.color = isOn ? '#03a9f4' : 'rgba(255,255,255,0.4)';
+      powerBtn.style.color = isOn ? '#03a9f4' : 'var(--text-color-disabled)';
     }
     
     // Update media info dynamically
     const mappedPlayerId = this._config?.mappings?.[this.selectedInputName];
     const mediaContainer = this.querySelector('#media-info-container');
     const cardBg = this.querySelector('.card-bg');
+    const cardEl = this.querySelector('.glass-card');
     
     if (mediaContainer && mappedPlayerId && this._hass.states[mappedPlayerId]) {
       const playerState = this._hass.states[mappedPlayerId];
@@ -1110,19 +1145,24 @@ class Control4Card extends HTMLElement {
             cardBg.style.backgroundImage = `url('${artwork}')`;
             cardBg.style.display = 'block';
           }
+          if (cardEl) cardEl.classList.add('has-artwork');
         } else {
           artEl.innerHTML = `
-            <div style="width: 70px; height: 70px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
-              <ha-icon icon="mdi:music" style="color: rgba(255,255,255,0.2); font-size: 30px;"></ha-icon>
+            <div style="width: 70px; height: 70px; border-radius: 8px; background: var(--glass-bg); display: flex; align-items: center; justify-content: center;">
+              <ha-icon icon="mdi:music" style="color: var(--text-color-disabled); font-size: 30px;"></ha-icon>
             </div>
           `;
           if (cardBg) cardBg.style.display = 'none';
+          if (cardEl) cardEl.classList.remove('has-artwork');
         }
       }
       
       if (playBtn) {
         playBtn.setAttribute('icon', playerState.state === 'playing' ? 'mdi:pause' : 'mdi:play');
       }
+    } else {
+      if (cardEl) cardEl.classList.remove('has-artwork');
+      if (cardBg) cardBg.style.display = 'none';
     }
     
     // Update zone joining states dynamically
@@ -1226,36 +1266,36 @@ class Control4CardEditor extends HTMLElement {
     const allPlayers = Object.keys(this._hass.states).filter(id => id.startsWith('media_player.') && !zones.includes(id));
 
     this.innerHTML = `
-      <div style="padding: 16px; color: white; background: #1c1c1c; border-radius: 8px;">
+      <div style="padding: 16px; color: var(--primary-text-color, white); background: var(--ha-card-background, var(--card-background-color, #1c1c1c)); border: 1px solid var(--ha-card-border-color, var(--divider-color, #444)); border-radius: 8px;">
         <h3 style="margin-top: 0; margin-bottom: 16px;">Control4 Card Configuration</h3>
         
         <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 4px; font-size: 12px; color: #aaa;">Card Title</label>
-          <input id="editor-title" type="text" value="${this._config.title || 'Control4 Command Center'}" style="width: 100%; padding: 8px; background: #2c2c2c; color: white; border: 1px solid #444; border-radius: 4px;">
+          <label style="display: block; margin-bottom: 4px; font-size: 12px; color: var(--secondary-text-color, #aaa);">Card Title</label>
+          <input id="editor-title" type="text" value="${this._config.title || 'Control4 Command Center'}" style="width: 100%; padding: 8px; background: var(--card-background-color, #2c2c2c); color: var(--primary-text-color, white); border: 1px solid var(--ha-card-border-color, var(--divider-color, #444)); border-radius: 4px; box-sizing: border-box;">
         </div>
 
         <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 4px; font-size: 12px; color: #aaa;">Default Zone</label>
-          <select id="editor-zone-select" style="width: 100%; padding: 8px; background: #2c2c2c; color: white; border: 1px solid #444; border-radius: 4px;">
+          <label style="display: block; margin-bottom: 4px; font-size: 12px; color: var(--secondary-text-color, #aaa);">Default Zone</label>
+          <select id="editor-zone-select" style="width: 100%; padding: 8px; background: var(--card-background-color, #2c2c2c); color: var(--primary-text-color, white); border: 1px solid var(--ha-card-border-color, var(--divider-color, #444)); border-radius: 4px; box-sizing: border-box;">
             ${zones.map(id => `<option value="${id}" ${id === selectedZone ? 'selected' : ''}>${this._hass.states[id].attributes.friendly_name || id}</option>`).join('')}
           </select>
         </div>
         
         <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 4px; font-size: 12px; color: #aaa;">Unjoin Default Input</label>
-          <select id="editor-unjoin-input" style="width: 100%; padding: 8px; background: #2c2c2c; color: white; border: 1px solid #444; border-radius: 4px;">
+          <label style="display: block; margin-bottom: 4px; font-size: 12px; color: var(--secondary-text-color, #aaa);">Unjoin Default Input</label>
+          <select id="editor-unjoin-input" style="width: 100%; padding: 8px; background: var(--card-background-color, #2c2c2c); color: var(--primary-text-color, white); border: 1px solid var(--ha-card-border-color, var(--divider-color, #444)); border-radius: 4px; box-sizing: border-box;">
             <option value="None" ${this._config.unjoin_default_input === 'None' ? 'selected' : ''}>None</option>
             ${inputs.map(input => `<option value="${input}" ${this._config.unjoin_default_input === input ? 'selected' : ''}>${input}</option>`).join('')}
           </select>
         </div>
 
         <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 8px; font-size: 12px; color: #aaa;">Input Mappings</label>
+          <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--secondary-text-color, #aaa);">Input Mappings</label>
           ${inputs.map(input => `
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
               <div style="flex: 1; font-size: 14px;">${input}</div>
               <div style="flex: 2;">
-                <select class="player-select" data-input="${input}" style="width: 100%; padding: 6px; background: #2c2c2c; color: white; border: 1px solid #444; border-radius: 4px;">
+                <select class="player-select" data-input="${input}" style="width: 100%; padding: 6px; background: var(--card-background-color, #2c2c2c); color: var(--primary-text-color, white); border: 1px solid var(--ha-card-border-color, var(--divider-color, #444)); border-radius: 4px; box-sizing: border-box;">
                   <option value="">None</option>
                   ${allPlayers.map(id => `<option value="${id}" ${mappings[input] === id ? 'selected' : ''}>${this._hass.states[id].attributes.friendly_name || id}</option>`).join('')}
                 </select>
