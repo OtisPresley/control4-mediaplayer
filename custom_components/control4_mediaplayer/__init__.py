@@ -34,7 +34,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     devices_to_remove = [
         device.id
-        for device in dev_reg.devices.values()
+        for device in dev_reg.devices
         if any(
             identifier[0] == DOMAIN and not str(identifier[1]).startswith(prefix) for identifier in device.identifiers
         )
@@ -60,7 +60,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = {"manager": manager}
 
     # Force device name to match user-set name from config entry
-    device = dev_reg.async_get_device(identifiers={(DOMAIN, f"v27_{host}_main_amp")})
+    device = dev_reg.async_get_device_by_identifier((DOMAIN, f"v27_{host}_main_amp"), entry.entry_id)
     if device and device.name != amp_label:
         _LOGGER.info("Updating device name to %s", amp_label)
         dev_reg.async_update_device(device.id, name=amp_label)
