@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.6] - 2026-09-14
+
+### 🔧 Fixed
+- 🛠️ **Device Registry Deprecations**: Resolved deprecated `device_registry` API calls by iterating `dev_reg.devices` directly and using `async_get_device_by_identifier` scoped to the configuration entry, eliminating deprecation warnings scheduled for removal in Home Assistant 2027.8.0/2027.9.0. Thanks @kevinclark for the contribution!
+
+---
+
 ## [2.3.5] - 2026-07-03
 
 ### 🔧 Fixed
