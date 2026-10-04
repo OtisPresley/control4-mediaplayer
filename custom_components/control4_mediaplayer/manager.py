@@ -5,6 +5,31 @@ import socket
 
 _LOGGER = logging.getLogger(__name__)
 
+# The amp silently drops any frame whose sequence number equals the last one it
+# accepted (from any sender), so a command can be lost with no reply at all.
+SEQ_MIN = 10
+SEQ_MAX = 99
+
+# Commands that set an absolute value and are therefore safe to resend if the
+# reply (rather than the command) was lost. Anything not listed here (for
+# example a free-form send_raw_command) is sent once and never retried, since
+# it could be a relative command (volume up/down, toggle).
+_IDEMPOTENT_COMMANDS = frozenset(
+    {
+        "c4.amp.psave",
+        "c4.amp.out",
+        "c4.amp.chvol",
+        "c4.amp.chvolmax",
+        "c4.amp.chmode",
+        "c4.amp.ingain",
+        "c4.amp.mute",
+        "c4.amp.trebgain",
+        "c4.amp.bassgain",
+        "c4.amp.bal",
+    }
+)
+
+
 class Control4Manager:
     """Centralized manager for Control4 Matrix Amp UDP communication."""
     
@@ -13,43 +38,66 @@ class Control4Manager:
         self.port = port
         self.udp_timeout = udp_timeout
         self._lock = asyncio.Lock()
-        
+        # Random start so a restart does not predictably reuse the last number.
+        self._seq = random.randint(SEQ_MIN, SEQ_MAX)
+
+    def _next_counter(self) -> str:
+        """Return the next sequence prefix, never equal to the previous one."""
+        self._seq = SEQ_MIN + (self._seq - SEQ_MIN + 1) % (SEQ_MAX - SEQ_MIN + 1)
+        return f"0s2a{self._seq}"
+
     async def async_send_command(self, command: str):
         """Send a UDP command to the amplifier using Safe Transport logic."""
         async with self._lock:
-            # Use random sequencer prefix
-            counter = f"0s2a{random.randint(10, 99)}"
-            payload = f"{counter} {command} \r\n"
-            
-            loop = asyncio.get_running_loop()
-            
-            def _send_and_wait():
-                sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                sock.settimeout(self.udp_timeout)
+            can_retry = command.split(" ", 1)[0] in _IDEMPOTENT_COMMANDS
+            res, timed_out = await self._async_send_once(command)
 
-                try:
-                    sock.sendto(payload.encode('utf-8'), (self.host, self.port))
-                    while True:
-                        data, _ = sock.recvfrom(1024)
-                        received = data.decode('utf-8').strip()
-                        # Ensure we are capturing the response to our specific command
-                        expected_prefix = counter.replace("s", "r", 1)
-                        if received.startswith(expected_prefix):
-                            return received
-                except TimeoutError:
-                    # Timeout is an expected fallback condition for the amp if it doesn't ack
-                    return None
-                except Exception as e:
-                    _LOGGER.error("Error sending UDP to %s:%s - %s", self.host, self.port, e)
-                    return None
-                finally:
-                    sock.close()
-                    
-            res = await loop.run_in_executor(None, _send_and_wait)
-            
-            # 10ms hardware guard delay to prevent packet drops on legacy network cards
-            await asyncio.sleep(0.01)
+            if res is None and timed_out and can_retry:
+                _LOGGER.debug(
+                    "No reply from %s:%s to %r; retrying once with a new sequence number",
+                    self.host, self.port, command,
+                )
+                res, timed_out = await self._async_send_once(command)
+                if res is None and timed_out:
+                    _LOGGER.warning(
+                        "No reply from %s:%s to %r after retry", self.host, self.port, command
+                    )
             return res
+
+    async def _async_send_once(self, command: str):
+        """Send one frame; return (reply or None, whether it timed out)."""
+        counter = self._next_counter()
+        payload = f"{counter} {command} \r\n"
+
+        loop = asyncio.get_running_loop()
+
+        def _send_and_wait():
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.settimeout(self.udp_timeout)
+
+            try:
+                sock.sendto(payload.encode('utf-8'), (self.host, self.port))
+                while True:
+                    data, _ = sock.recvfrom(1024)
+                    received = data.decode('utf-8').strip()
+                    # Ensure we are capturing the response to our specific command
+                    expected_prefix = counter.replace("s", "r", 1)
+                    if received.startswith(expected_prefix):
+                        return received, False
+            except (TimeoutError, socket.timeout):
+                # Timeout is an expected fallback condition for the amp if it doesn't ack
+                return None, True
+            except Exception as e:
+                _LOGGER.error("Error sending UDP to %s:%s - %s", self.host, self.port, e)
+                return None, False
+            finally:
+                sock.close()
+
+        res = await loop.run_in_executor(None, _send_and_wait)
+
+        # 10ms hardware guard delay to prevent packet drops on legacy network cards
+        await asyncio.sleep(0.01)
+        return res
 
 
     async def async_set_max_volume(self, zone: int, volume: float):
