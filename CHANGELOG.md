@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.7] - 2026-10-04
+
+### 🔧 Fixed
+- 🔄 **UDP Sequence Number De-duplication & Retries**: Resolved silent command packet drops caused by consecutive duplicate UDP sequence numbers. Control4 matrix amplifiers silently drop any incoming frame whose sequence number matches the last accepted frame. Replaced random sequence number generation with a non-repeating counter (wrapping 10–99) and added a single retry on timeout for safe, idempotent setter commands (`psave`, `out`, `chvol`, `chvolmax`, `chmode`, `ingain`, `mute`, `trebgain`, `bassgain`, `bal`). Thanks @kevinclark for the contribution!
+
+---
+
 ## [2.3.6] - 2026-09-14
 
 ### 🔧 Fixed
