@@ -84,7 +84,7 @@ class Control4Manager:
                     expected_prefix = counter.replace("s", "r", 1)
                     if received.startswith(expected_prefix):
                         return received, False
-            except (TimeoutError, socket.timeout):
+            except TimeoutError:
                 # Timeout is an expected fallback condition for the amp if it doesn't ack
                 return None, True
             except Exception as e:
