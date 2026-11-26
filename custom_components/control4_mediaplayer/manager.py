@@ -30,6 +30,61 @@ _IDEMPOTENT_COMMANDS = frozenset(
 )
 
 
+# ── reading the amp back ─────────────────────────────────────────────────────
+# The amp answers GET frames ("0g<seq> <command>") with its live values:
+#   c4.amp.ain   the input each zone is routed to (00 = off), one byte a zone
+#   c4.amp.avol  each zone's volume, percent + 155
+#   c4.amp.amut  each zone's mute flag
+# Checked on two C4-16AMP3-B, firmware 03.26.52. One read serves every zone of
+# a chassis (the zones are separate config entries with separate managers),
+# so it is shared per host and kept for STATUS_MAX_AGE seconds.
+STATUS_COMMANDS = ("c4.amp.ain", "c4.amp.avol", "c4.amp.amut")
+STATUS_MAX_AGE = 5.0
+_STATUS_CACHE: dict = {}
+_STATUS_LOCKS: dict = {}
+
+
+def parse_list_reply(reply, command):
+    """The hex bytes after `command` in a GET reply, as ints; None unless OK.
+
+    "0r4e03 000 c4.amp.ain 01 02 03 04 05 06 08 08" -> [1, 2, 3, 4, 5, 6, 8, 8]
+    """
+    if not reply:
+        return None
+    parts = reply.split()
+    if len(parts) < 3 or parts[1] != "000" or command not in parts:
+        return None
+    out = []
+    for tok in parts[parts.index(command) + 1:]:
+        try:
+            out.append(int(tok, 16))
+        except ValueError:
+            return None
+    return out or None
+
+
+def zone_state(status, channel, source_list):
+    """One zone's live state from a chassis status, or None when unknown.
+
+    {"on", "source_index" (1-based input), "source" (its name or None),
+     "volume" (0-1), "muted"}
+    """
+    if not status:
+        return None
+    i = int(channel) - 1
+    ain, avol, amut = status.get("ain"), status.get("avol"), status.get("amut")
+    if not ain or i < 0 or i >= len(ain):
+        return None
+    out = {"on": ain[i] != 0, "source_index": ain[i] or None, "source": None, "volume": None, "muted": None}
+    if ain[i] and source_list and ain[i] <= len(source_list):
+        out["source"] = source_list[ain[i] - 1]
+    if avol and i < len(avol):
+        out["volume"] = max(0.0, min(1.0, (avol[i] - 155) / 100.0))
+    if amut and i < len(amut):
+        out["muted"] = amut[i] == 1
+    return out
+
+
 class Control4Manager:
     """Centralized manager for Control4 Matrix Amp UDP communication."""
     
@@ -129,5 +184,59 @@ class Control4Manager:
         gain_hex = f"{int(128 + level):02x}"
         await self.async_send_command(f"c4.amp.ingain {input_hex} {gain_hex}")
 
+    async def async_query(self, command: str):
+        """Send one GET frame; the reply line, or None.
 
+        GETs use their own random 4-hex sequence ("0g1a2b"): the amp drops a
+        frame whose number equals the last one it accepted, and the SET
+        counter ("0s2aNN") never takes this shape.
+        """
+        seq = f"{random.randint(0x1000, 0xfff0):04x}"
+        payload = f"0g{seq} {command}\r\n"
+        want = f"0r{seq}"
+        loop = asyncio.get_running_loop()
 
+        def _ask():
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.settimeout(self.udp_timeout)
+            try:
+                sock.sendto(payload.encode("utf-8"), (self.host, self.port))
+                while True:
+                    data, _ = sock.recvfrom(1024)
+                    text = data.decode("utf-8", "replace").strip()
+                    if text.startswith(want):
+                        return text
+            except (TimeoutError, OSError):
+                return None
+            finally:
+                sock.close()
+
+        async with self._lock:
+            res = await loop.run_in_executor(None, _ask)
+            await asyncio.sleep(0.01)
+            return res
+
+    async def async_status(self, max_age: float = STATUS_MAX_AGE):
+        """The chassis' live routing, volumes and mutes, read at most once
+        per `max_age` seconds for all its zones: {"ain", "avol", "amut"} as
+        lists of ints, or None when the amp did not answer."""
+        key = (self.host, self.port)
+        lock = _STATUS_LOCKS.setdefault(key, asyncio.Lock())
+        async with lock:
+            loop = asyncio.get_running_loop()
+            hit = _STATUS_CACHE.get(key)
+            if hit and loop.time() - hit[0] < max_age:
+                return hit[1]
+            out = {}
+            for command in STATUS_COMMANDS:
+                values = parse_list_reply(await self.async_query(command), command)
+                out[command.rsplit(".", 1)[1]] = values
+            status = out if out.get("ain") else None
+            if status is None:
+                _LOGGER.debug("No status from %s:%s", self.host, self.port)
+            _STATUS_CACHE[key] = (loop.time(), status)
+            return status
+
+    def forget_status(self):
+        """Drop the shared read after a command, so the next poll reads anew."""
+        _STATUS_CACHE.pop((self.host, self.port), None)

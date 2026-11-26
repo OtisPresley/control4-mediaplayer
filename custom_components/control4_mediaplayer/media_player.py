@@ -1,4 +1,5 @@
 import logging
+from datetime import timedelta
 
 from homeassistant.components.media_player import (
     MediaPlayerEntity,
@@ -14,8 +15,13 @@ from homeassistant.helpers.restore_state import RestoreEntity
 
 from .const import DOMAIN, get_entity_name, get_unique_id
 from .control4Amp import control4AmpChannel
+from .manager import zone_state
 
 _LOGGER = logging.getLogger(__name__)
+
+# The amp is read back this often (one read per chassis, shared by its zones):
+# a zone changed by Control4, a keypad or a power cut shows within this time.
+SCAN_INTERVAL = timedelta(seconds=15)
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     host = config_entry.data.get("host")
@@ -31,6 +37,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities([entity], update_before_add=True)
 
 class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
+    _attr_should_poll = True
     _attr_supported_features = (
         MediaPlayerEntityFeature.VOLUME_SET | MediaPlayerEntityFeature.VOLUME_STEP |
         MediaPlayerEntityFeature.TURN_ON | MediaPlayerEntityFeature.TURN_OFF |
@@ -133,6 +140,24 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
             await self._amp.async_set_source(idx)
             self._source = source
             self.async_write_ha_state()
+
+    async def async_update(self):
+        """Read the zone back from the amp. An amp that does not answer
+        leaves the last known state as it was."""
+        manager = self._amp._manager
+        live = zone_state(await manager.async_status(), self._channel, self._source_list)
+        if live is None:
+            return
+        self._state = STATE_ON if live["on"] else STATE_OFF
+        if live["on"] and live["source_index"]:
+            self._amp._source = live["source_index"]
+            if live["source"] is not None:
+                self._source = live["source"]
+        if live["volume"] is not None:
+            self._volume = live["volume"]
+            self._amp._volume = live["volume"]
+        if live["muted"] is not None:
+            self._muted = live["muted"]
 
     async def async_added_to_hass(self):
         """Restore state on startup."""

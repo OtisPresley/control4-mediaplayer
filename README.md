@@ -219,7 +219,7 @@ Sends custom hex strings directly over UDP to target zones or the system. This i
 
 ## Known Limitations
 
-* **No Physical State Feedback**: The Control4 Matrix Amplifier does not stream physical state updates back over UDP. Home Assistant manages an "assumed state." If you adjust the volume using a separate, physical Control4 keypad or physical controller, Home Assistant's UI will not reflect that adjustment until a command is sent from HA.
+* **State Read Back Every 15 Seconds**: The amplifier does not push changes, but it answers queries for every zone's routing, volume and mute (`c4.amp.ain`, `c4.amp.avol`, `c4.amp.amut`). The integration reads each chassis once every 15 seconds (one read shared by all its zones), so a change made from a Control4 keypad, Composer or another controller shows in Home Assistant within that time. An amp that does not answer keeps the last known state.
 * **UI Config Only**: Setup via `configuration.yaml` is not supported.
 
 ---
