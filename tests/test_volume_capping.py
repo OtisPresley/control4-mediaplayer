@@ -53,11 +53,16 @@ if not HAS_HOMEASSISTANT:
 
     # 7b. Mock homeassistant.helpers.restore_state
     ha_rs = ModuleType("homeassistant.helpers.restore_state")
+    class DummyExtraStoredData:
+        pass
     class DummyRestoreEntity:
         async def async_added_to_hass(self):
             pass
         async def async_get_last_state(self):
             return getattr(self, "_mock_last_state", None)
+        async def async_get_last_extra_data(self):
+            return getattr(self, "_mock_last_extra_data", None)
+    ha_rs.ExtraStoredData = DummyExtraStoredData
     ha_rs.RestoreEntity = DummyRestoreEntity
     sys.modules["homeassistant.helpers.restore_state"] = ha_rs
 
@@ -306,6 +311,61 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         manager.async_send_command.assert_any_call("c4.amp.mute 01 01")
         manager.async_send_command.assert_any_call("c4.amp.chvol 01 9b")
         self.assertTrue(media_player.is_volume_muted)
+
+    async def test_mute_restoration_across_restart_and_poll(self):
+        hass = MagicMock()
+        entry = MagicMock()
+        entry.entry_id = "test_entry_id"
+        entry.data = {
+            "host": "10.0.12.246",
+            "port": 8750,
+            "channel": 1,
+            "source_list": "Input 1\nInput 2",
+        }
+        manager = MagicMock()
+        manager.async_send_command = AsyncMock(return_value=None)
+        # Hardware reports zone ON (input 1), volume 0x9b (0.0 from volume-mute fallback), amut=0
+        manager.async_status = AsyncMock(
+            return_value={"ain": [1], "avol": [0x9B], "amut": [0]}
+        )
+        hass.data = {DOMAIN: {"test_entry_id": {"manager": manager}}}
+
+        # 1. Before restart: zone is muted at 0.35 volume and saved via extra_restore_state_data
+        mp_before = C4MediaPlayer("10.0.12.246", 8750, 1, "Living Room", entry, manager)
+        mp_before.hass = hass
+        mp_before._volume = 0.35
+        mp_before._muted = True
+        mp_before._source = "Input 2"
+        saved_extra = mp_before.extra_restore_state_data
+
+        # 2. Simulate HA restart where update_before_add=True runs async_update() BEFORE async_added_to_hass()
+        mp_after = C4MediaPlayer("10.0.12.246", 8750, 1, "Living Room", entry, manager)
+        mp_after.hass = hass
+
+        class DummyState:
+            state = "off"
+            attributes = {}  # When state is OFF, HA strips is_volume_muted & volume_level from attributes
+
+        mp_after.async_get_last_state = AsyncMock(return_value=DummyState())
+        mp_after.async_get_last_extra_data = AsyncMock(return_value=saved_extra)
+
+        await mp_after.async_update()
+        await mp_after.async_added_to_hass()
+
+        # Verify mute state and pre-mute volume (0.35) survived both the initial poll and state restore
+        self.assertTrue(mp_after.is_volume_muted)
+        self.assertEqual(mp_after.volume_level, 0.35)
+        self.assertEqual(mp_after._amp._volume, 0.35)
+
+        # Subsequent 15s poll should also keep it muted and preserve pre-mute volume
+        await mp_after.async_update()
+        self.assertTrue(mp_after.is_volume_muted)
+        self.assertEqual(mp_after.volume_level, 0.35)
+
+        # Unmuting after restart should restore hardware volume to 35% (35 + 155 = 190 = 0xbe)
+        await mp_after.async_mute_volume(False)
+        self.assertFalse(mp_after.is_volume_muted)
+        manager.async_send_command.assert_any_call("c4.amp.chvol 01 be")
 
     async def test_optional_eq_entities(self):
         # 1. Verify EQ entities are NOT created if enable_eq is False

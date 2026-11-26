@@ -11,13 +11,45 @@ try:
     from homeassistant.helpers.device_registry import DeviceInfo
 except ImportError:
     from homeassistant.helpers.entity import DeviceInfo
-from homeassistant.helpers.restore_state import RestoreEntity
+try:
+    from homeassistant.helpers.restore_state import ExtraStoredData, RestoreEntity
+except ImportError:
+    from homeassistant.helpers.restore_state import RestoreEntity
+
+    class ExtraStoredData:  # type: ignore[no-redef]
+        """Fallback for test environments without ExtraStoredData."""
 
 from .const import DOMAIN, get_entity_name, get_unique_id
 from .control4Amp import control4AmpChannel
 from .manager import zone_state
 
 _LOGGER = logging.getLogger(__name__)
+
+
+class C4ExtraStoredData(ExtraStoredData):
+    """Extra stored data for C4MediaPlayer to persist mute, volume, and source even when OFF."""
+
+    def __init__(self, volume_level: float | None, is_volume_muted: bool, source: str | None) -> None:
+        self.volume_level = volume_level
+        self.is_volume_muted = is_volume_muted
+        self.source = source
+
+    def as_dict(self) -> dict:
+        return {
+            "volume_level": self.volume_level,
+            "is_volume_muted": self.is_volume_muted,
+            "source": self.source,
+        }
+
+    @classmethod
+    def from_dict(cls, restored: dict) -> "C4ExtraStoredData | None":
+        if not isinstance(restored, dict):
+            return None
+        return cls(
+            volume_level=restored.get("volume_level"),
+            is_volume_muted=bool(restored.get("is_volume_muted", False)),
+            source=restored.get("source"),
+        )
 
 # The amp is read back this often (one read per chassis, shared by its zones):
 # a zone changed by Control4, a keypad or a power cut shows within this time.
@@ -83,6 +115,15 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
     def source(self): return self._source
 
     @property
+    def extra_restore_state_data(self) -> C4ExtraStoredData:
+        """Return extra state data to be restored across HA restarts (even when zone is OFF)."""
+        return C4ExtraStoredData(
+            volume_level=self._volume,
+            is_volume_muted=self._muted,
+            source=self._source,
+        )
+
+    @property
     def max_volume(self) -> float:
         """Return the current maximum volume level as a float (0.0 to 1.0)."""
         max_vol_entity = self.hass.data[DOMAIN][self._config_entry.entry_id].get("max_volume_entity")
@@ -128,6 +169,8 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
             volume = max_vol
         await self._amp.async_set_volume(volume)
         self._volume = volume
+        if volume > 0 and self._muted:
+            self._muted = False
         self.async_write_ha_state()
 
     async def async_mute_volume(self, mute):
@@ -155,6 +198,11 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
             self._amp._source = live["source_index"]
             if live["source"] is not None:
                 self._source = live["source"]
+        # Amps that do not support native c4.amp.mute fall back to setting hardware
+        # volume to 0x9b (0.0) while keeping amut=0. Preserve software mute and
+        # pre-mute volume when the hardware reports volume 0.0 and unmuted.
+        if self._muted and live.get("volume") == 0.0 and not live.get("muted"):
+            return
         if live["volume"] is not None:
             self._volume = live["volume"]
             self._amp._volume = live["volume"]
@@ -164,34 +212,63 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
     async def async_added_to_hass(self):
         """Restore state on startup."""
         await super().async_added_to_hass()
-        
+
         last_state = await self.async_get_last_state()
-        if last_state and not self._has_live_state:
-            self._state = last_state.state
-            
-            # Restore volume
-            if "volume_level" in last_state.attributes:
-                self._volume = float(last_state.attributes["volume_level"])
-            
-            # Restore muted
+        extra_fn = getattr(self, "async_get_last_extra_data", None)
+        last_extra = await extra_fn() if extra_fn else None
+        extra_dict = last_extra.as_dict() if last_extra else {}
+
+        restored_muted = None
+        if "is_volume_muted" in extra_dict and extra_dict["is_volume_muted"] is not None:
+            restored_muted = bool(extra_dict["is_volume_muted"])
+        elif last_state:
             if "is_volume_muted" in last_state.attributes:
-                self._muted = bool(last_state.attributes["is_volume_muted"])
+                restored_muted = bool(last_state.attributes["is_volume_muted"])
             elif "muted" in last_state.attributes:
-                self._muted = bool(last_state.attributes["muted"])
-                
-            # Restore source
-            if "source" in last_state.attributes:
-                self._source = last_state.attributes["source"]
+                restored_muted = bool(last_state.attributes["muted"])
+
+        restored_volume = None
+        if extra_dict.get("volume_level") is not None:
+            restored_volume = float(extra_dict["volume_level"])
+        elif last_state and "volume_level" in last_state.attributes:
+            restored_volume = float(last_state.attributes["volume_level"])
+
+        restored_source = extra_dict.get("source")
+        if restored_source is None and last_state and "source" in last_state.attributes:
+            restored_source = last_state.attributes["source"]
+
+        if not self._has_live_state:
+            if last_state:
+                self._state = last_state.state
+            if restored_volume is not None:
+                self._volume = restored_volume
+                self._amp._volume = restored_volume
+            if restored_muted is not None:
+                self._muted = restored_muted
+            if restored_source:
+                self._source = restored_source
                 if self._source in self._source_list:
-                    idx = self._source_list.index(self._source) + 1
-                    self._amp._source = idx
-        elif last_state and self._source is None and "source" in last_state.attributes:
-            # If the zone was off during the initial live poll, preserve the last selected source for next turn_on
-            self._source = last_state.attributes["source"]
-            if self._source in self._source_list:
-                self._amp._source = self._source_list.index(self._source) + 1
-                    
+                    self._amp._source = self._source_list.index(self._source) + 1
+        else:
+            # Initial live poll ran before async_added_to_hass (update_before_add=True):
+            # 1. If the zone was off during the initial poll, preserve the last selected source.
+            if self._source is None and restored_source:
+                self._source = restored_source
+                if self._source in self._source_list:
+                    self._amp._source = self._source_list.index(self._source) + 1
+            # 2. If the zone was muted via volume-fallback (hardware reports volume 0.0 and amut=0),
+            #    restore the muted flag and pre-mute volume so mute state survives HA restarts.
+            if restored_muted and not self._muted and self._volume == 0.0:
+                self._muted = True
+                if restored_volume is not None and restored_volume > 0.0:
+                    self._volume = restored_volume
+                    self._amp._volume = restored_volume
+            elif not self._state == STATE_ON and restored_muted is not None:
+                # When the zone is OFF, some amps reset amut to 0; preserve the saved mute state
+                self._muted = restored_muted
+
         # Software cap the restored volume on load (completely silent/passive)
         max_vol = self.max_volume
         if self._volume > max_vol:
             self._volume = max_vol
+            self._amp._volume = max_vol
