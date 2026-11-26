@@ -340,6 +340,7 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
 
         # 2. Simulate HA restart where update_before_add=True runs async_update() BEFORE async_added_to_hass()
         mp_after = C4MediaPlayer("10.0.12.246", 8750, 1, "Living Room", entry, manager)
+        mp_after.entity_id = "media_player.living_room"
         mp_after.hass = hass
 
         class DummyState:
@@ -350,7 +351,12 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         mp_after.async_get_last_extra_data = AsyncMock(return_value=saved_extra)
 
         await mp_after.async_update()
-        await mp_after.async_added_to_hass()
+        # Mock super().async_added_to_hass() so real HA RestoreEntity doesn't require full EntityPlatform
+        with unittest.mock.patch(
+            "homeassistant.helpers.restore_state.RestoreEntity.async_added_to_hass",
+            new=AsyncMock(),
+        ):
+            await mp_after.async_added_to_hass()
 
         # Verify mute state and pre-mute volume (0.35) survived both the initial poll and state restore
         self.assertTrue(mp_after.is_volume_muted)
@@ -363,6 +369,7 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(mp_after.volume_level, 0.35)
 
         # Unmuting after restart should restore hardware volume to 35% (35 + 155 = 190 = 0xbe)
+        mp_after.async_write_ha_state = MagicMock()
         await mp_after.async_mute_volume(False)
         self.assertFalse(mp_after.is_volume_muted)
         manager.async_send_command.assert_any_call("c4.amp.chvol 01 be")
