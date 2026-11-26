@@ -93,7 +93,13 @@ def test_parse_list_reply():
 def test_zone_state():
     st = {"ain": [0, 2, 8], "avol": [0xCD, 0xE1, 0x9B], "amut": [0, 1, 0]}
     assert M.zone_state(st, 1, ["A", "B"])["on"] is False
-    assert M.zone_state(st, 2, ["A", "B"]) == {"on": True, "source_index": 2, "source": "B", "volume": 0.7, "muted": True}
+    assert M.zone_state(st, 2, ["A", "B"]) == {
+        "on": True,
+        "source_index": 2,
+        "source": "B",
+        "volume": 0.7,
+        "muted": True,
+    }
     third = M.zone_state(st, 3, ["A", "B"])
     assert third["on"] and third["source"] is None and third["volume"] == 0.0
     assert M.zone_state(None, 1, []) is None

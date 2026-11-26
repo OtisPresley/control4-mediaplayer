@@ -117,6 +117,7 @@ class Control4Manager:
                     _LOGGER.warning(
                         "No reply from %s:%s to %r after retry", self.host, self.port, command
                     )
+            self.forget_status()
             return res
 
     async def _async_send_once(self, command: str):

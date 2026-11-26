@@ -52,6 +52,7 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
         amp_label = config_entry.data.get("name", "Matrix Amp")
         
         self._state, self._volume, self._muted, self._source = STATE_OFF, 0.5, False, None
+        self._has_live_state = False
 
         self._attr_has_entity_name = True
         
@@ -148,6 +149,7 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
         live = zone_state(await manager.async_status(), self._channel, self._source_list)
         if live is None:
             return
+        self._has_live_state = True
         self._state = STATE_ON if live["on"] else STATE_OFF
         if live["on"] and live["source_index"]:
             self._amp._source = live["source_index"]
@@ -164,7 +166,7 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
         await super().async_added_to_hass()
         
         last_state = await self.async_get_last_state()
-        if last_state:
+        if last_state and not self._has_live_state:
             self._state = last_state.state
             
             # Restore volume
@@ -183,6 +185,11 @@ class C4MediaPlayer(MediaPlayerEntity, RestoreEntity):
                 if self._source in self._source_list:
                     idx = self._source_list.index(self._source) + 1
                     self._amp._source = idx
+        elif last_state and self._source is None and "source" in last_state.attributes:
+            # If the zone was off during the initial live poll, preserve the last selected source for next turn_on
+            self._source = last_state.attributes["source"]
+            if self._source in self._source_list:
+                self._amp._source = self._source_list.index(self._source) + 1
                     
         # Software cap the restored volume on load (completely silent/passive)
         max_vol = self.max_volume

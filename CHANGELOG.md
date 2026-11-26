@@ -6,10 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [2.3.8] - 2026-11-26
 
 ### ✨ Added
-- 🔁 **Live State Read-Back**: Zones now show the amplifier's real routing (on/off and input), volume and mute. Each chassis is queried with `c4.amp.ain`, `c4.amp.avol` and `c4.amp.amut` every 15 seconds, one read shared by all of its zones, and re-read after any command. Changes made outside Home Assistant (keypads, Composer, power cuts) now show up, and `media_player.toggle` acts on the real state. An amp that does not answer keeps the last known state. Verified on two C4-16AMP3-B (firmware 03.26.52).
+- 🔁 **Live State Read-Back**: Zones now show the amplifier's real routing (on/off and input), volume and mute. Each chassis is queried with `c4.amp.ain`, `c4.amp.avol` and `c4.amp.amut` every 15 seconds, one read shared by all of its zones, and re-read after any command. Changes made outside Home Assistant (keypads, Composer, power cuts) now show up, and `media_player.toggle` acts on the real state. An amp that does not answer keeps the last known state. Verified on two C4-16AMP3-B (firmware 03.26.52). Thanks @ronluna for the contribution!
 
 ---
 
