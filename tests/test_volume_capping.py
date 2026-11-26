@@ -257,6 +257,7 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         mock_state = DummyState("on", 0.9)
         media_player._mock_last_state = mock_state
         media_player.async_get_last_state = AsyncMock(return_value=mock_state)
+        media_player.async_get_last_extra_data = AsyncMock(return_value=None)
         
         # Restore state on startup
         await media_player.async_added_to_hass()
@@ -351,12 +352,7 @@ class TestVolumeCappingAndSync(unittest.IsolatedAsyncioTestCase):
         mp_after.async_get_last_extra_data = AsyncMock(return_value=saved_extra)
 
         await mp_after.async_update()
-        # Mock super().async_added_to_hass() so real HA RestoreEntity doesn't require full EntityPlatform
-        with unittest.mock.patch(
-            "homeassistant.helpers.restore_state.RestoreEntity.async_added_to_hass",
-            new=AsyncMock(),
-        ):
-            await mp_after.async_added_to_hass()
+        await mp_after.async_added_to_hass()
 
         # Verify mute state and pre-mute volume (0.35) survived both the initial poll and state restore
         self.assertTrue(mp_after.is_volume_muted)
